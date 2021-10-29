@@ -30,8 +30,10 @@ public final class Config {
     public Config read() {
         final Gson gson = new Gson();
         try (FileReader reader = new FileReader(file)) {
+
             final BufferedReader bufferedReader = new BufferedReader(reader);
             return gson.fromJson(bufferedReader, Config.class);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
