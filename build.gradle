@@ -1,8 +1,9 @@
 plugins {
     id 'java'
+    id "com.github.johnrengelman.shadow" version "7.1.0"
 }
 
-group 'com.openfunbot'
+group 'com.openpackagedbot'
 version '1.0'
 
 repositories {
@@ -13,13 +14,27 @@ repositories {
     }
 }
 
+jar{
+    manifest{
+        attributes 'Main-Class': 'com.openpackagedbot.init.OpenPackagedBot'
+    }
+}
+
 dependencies {
 
     implementation 'net.dv8tion:JDA:4.3.0_339'
-    implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'org.mongodb:mongodb-driver-sync:4.3.2'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.8'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8'
+    implementation group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.32'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+shadowJar{
+    destinationDirectory.set(file("."))
 }
 
 test {

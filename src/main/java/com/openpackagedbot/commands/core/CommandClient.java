@@ -1,4 +1,4 @@
-package com.openfunbot.commands.core;
+package com.openpackagedbot.commands.core;
 
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 

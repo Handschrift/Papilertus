@@ -1,6 +1,6 @@
-package com.openfunbot.commands.fun;
+package com.openpackagedbot.commands.fun;
 
-import com.openfunbot.commands.core.Command;
+import com.openpackagedbot.commands.core.Command;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 

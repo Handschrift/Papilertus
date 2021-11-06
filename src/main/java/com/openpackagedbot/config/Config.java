@@ -1,4 +1,4 @@
-package com.openfunbot.config;
+package com.openpackagedbot.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,7 +42,11 @@ public final class Config {
 
     private Config() {
         if (!file.exists()) {
+            System.err.println("Config file not found... creating...");
             save();
+            System.err.println("Config file created... Shutting down");
+            System.err.println("Please enter a token and the database credentials and restart!");
+            System.exit(0);
         }
     }
 
