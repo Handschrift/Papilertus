@@ -17,13 +17,15 @@ import javax.security.auth.login.LoginException;
 
 public class OpenPackagedBot {
     public static void main(String[] args) throws LoginException, InterruptedException {
-        PluginLoader.load();
+        PluginLoader loader = new PluginLoader("plugins/");
+        loader.load();
+
         Config config = Config.getConfig();
         BasicConfigurator.configure();
 
         CommandClient commandClient = new CommandClient();
-        commandClient.addCommands(new TestCommand());
-        commandClient.addCommands(PluginLoader.getRegisteredCommands().toArray(new Command[0]));
+       // commandClient.addCommands(new TestCommand());
+        commandClient.addCommands(loader.getRegisteredCommands().toArray(new Command[0]));
 
         JDABuilder builder = JDABuilder.create(config.getToken(), GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS));
         builder.addEventListeners(new CommandListener(commandClient));

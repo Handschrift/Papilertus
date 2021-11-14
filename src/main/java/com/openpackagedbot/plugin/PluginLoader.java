@@ -15,24 +15,36 @@ import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
 
 public class PluginLoader {
-    private static final File initialPath = new File("plugins/");
-    private static final ArrayList<Command> commands = new ArrayList<>();
+    private final File initialPath;
+    private final ArrayList<Command> commands = new ArrayList<>();
 
-    public static void load() {
+    public PluginLoader(String path) {
+        initialPath = new File(path);
+    }
+
+    public void load() {
         for (String s : initialPath.list()) {
-            System.out.println(s);
-            String path = "plugins/" + s;
+            System.out.println("Loading " + s + "...");
+            String path = initialPath.getPath() + "/" + s;
             try {
                 JarFile file = new JarFile(path);
                 URL[] urls = {new URL("jar:file:" + path + "!/")};
                 URLClassLoader cl = URLClassLoader.newInstance(urls);
                 JarEntry je = file.getJarEntry("plugin.json");
+
+                if (je == null)
+                    continue;
+
                 FileInputStream fileStream = new FileInputStream(path);
                 JarInputStream jarStream = new JarInputStream(fileStream);
                 JarEntry jeTemp;
                 PluginData data = null;
 
-                while ((jeTemp = jarStream.getNextJarEntry()) != null && jeTemp.getName().equals("plugin.json")) {
+                while ((jeTemp = jarStream.getNextJarEntry()) != null) {
+
+                    if (!jeTemp.getName().equals("plugin.json"))
+                        continue;
+
                     byte[] pluginData = new byte[(int) je.getSize()];
                     jarStream.read(pluginData, 0, pluginData.length);
                     data = PluginData.getFromJson(new String(pluginData));
@@ -40,7 +52,7 @@ public class PluginLoader {
                 }
 
                 if (data == null) {
-                    System.err.println("PluginCouldn't be loaded!");
+                    System.err.println("Plugin Couldn't be loaded!");
                     System.exit(-1);
                 }
 
@@ -57,18 +69,21 @@ public class PluginLoader {
                 loadMethod.invoke(instance);
 
                 Method commandMethod = c.getMethod("getCommands");
+                Object commandList = commandMethod.invoke(instance);
 
-                List<Command> currentCommands = (List<Command>) commandMethod.invoke(instance);
+                if (commandList instanceof List) {
+                    List<Command> currentCommands = (List<Command>) commandList;
 
-                commands.addAll(currentCommands);
-
+                    commands.addAll(currentCommands);
+                    System.out.println(s + " loaded!");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static List<Command> getRegisteredCommands() {
+    public List<Command> getRegisteredCommands() {
         return commands;
     }
 }
