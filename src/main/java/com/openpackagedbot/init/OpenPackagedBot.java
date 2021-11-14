@@ -3,7 +3,6 @@ package com.openpackagedbot.init;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.commands.core.CommandClient;
 import com.openpackagedbot.commands.core.CommandListener;
-import com.openpackagedbot.commands.fun.TestCommand;
 import com.openpackagedbot.config.Config;
 import com.openpackagedbot.plugin.PluginLoader;
 import net.dv8tion.jda.api.JDA;
@@ -24,7 +23,6 @@ public class OpenPackagedBot {
         BasicConfigurator.configure();
 
         CommandClient commandClient = new CommandClient();
-       // commandClient.addCommands(new TestCommand());
         commandClient.addCommands(loader.getRegisteredCommands().toArray(new Command[0]));
 
         JDABuilder builder = JDABuilder.create(config.getToken(), GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS));
