@@ -1,5 +1,6 @@
 package com.openpackagedbot.commands.core;
 
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,14 @@ public class CommandListener extends ListenerAdapter {
 
     @Override
     public void onSlashCommand(@NotNull SlashCommandEvent event) {
-        commandClient.getCommand(event.getName()).execute(event);
+        if (event.getChannel().getType() == ChannelType.PRIVATE) {
+            if(commandClient.getCommand(event.getName()).isPrivateCommand()){
+                commandClient.getCommand(event.getName()).execute(event);
+            } else {
+                event.reply("This command is only usable on servers!").setEphemeral(true).queue();
+            }
+        } else {
+            commandClient.getCommand(event.getName()).execute(event);
+        }
     }
 }

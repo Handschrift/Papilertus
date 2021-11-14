@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 public abstract class Command {
     private String name;
     private String description;
+    private boolean privateCommand = false;
+    private boolean enabled = true;
     private String help;
     private CommandData data;
 
@@ -41,5 +43,21 @@ public abstract class Command {
 
     protected void setData(CommandData data) {
         this.data = data;
+    }
+
+    public boolean isPrivateCommand() {
+        return privateCommand;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    protected void setPrivateCommand(boolean privateCommand) {
+        this.privateCommand = privateCommand;
+    }
+
+    protected void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

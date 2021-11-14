@@ -12,8 +12,10 @@ public class CommandClient {
 
     public void addCommands(Command... commands) {
         for (Command command : commands) {
-            commandDataSet.add(command.getData());
-            commandHashMap.put(command.getName(), command);
+            if (command.isEnabled()) {
+                commandDataSet.add(command.getData());
+                commandHashMap.put(command.getName(), command);
+            }
         }
     }
 
