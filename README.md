@@ -1,7 +1,7 @@
 # About this project
 The "OpenPackageBot" is a (high configurable) general purpose bot providing different abilities for basic server management, moderation and entertainment.
-It also provides a plugin interface giving the ability to extend the bot with custom features. [See How to create plugins](#How to create plugins) <br>
-Currently the bot is in a very early state so feel free to open any issures if there are some.
+It also provides a plugin interface giving the ability to extend the bot with custom features. [See How to create plugins](#how-to-create-plugins) <br>
+Currently the bot is in a very early state so feel free to open any issues if there are some.
 # Requirements
 - Java 11
 # Installation
