@@ -23,6 +23,8 @@ public class PluginLoader {
     }
 
     public void load() {
+        if(!initialPath.exists())
+            return;
         for (String s : initialPath.list()) {
             System.out.println("Loading " + s + "...");
             String path = initialPath.getPath() + "/" + s;
