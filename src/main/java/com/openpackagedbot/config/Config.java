@@ -10,7 +10,11 @@ public final class Config {
     private static transient Config config = new Config();
     private transient final File file = new File("config.json");
 
-    private String token = "";
+    private final String token = "";
+    private final String pluginDir = "plugins/";
+    private final String databaseUrl = "mongodb://localhost/";
+    private final String databaseUsername = "admin";
+    private final String databasePassword = "admin";
 
     public static Config getConfig() {
         config = config.read();
@@ -55,7 +59,19 @@ public final class Config {
         return token;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public String getDatabaseUrl() {
+        return databaseUrl;
+    }
+
+    public String getDatabaseUsername() {
+        return databaseUsername;
+    }
+
+    public String getDatabasePassword() {
+        return databasePassword;
+    }
+
+    public String getPluginDir() {
+        return pluginDir;
     }
 }

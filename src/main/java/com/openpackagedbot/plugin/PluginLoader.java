@@ -4,7 +4,9 @@ import com.openpackagedbot.commands.core.Command;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -17,14 +19,17 @@ import java.util.jar.JarInputStream;
 public class PluginLoader {
     private final File initialPath;
     private final ArrayList<Command> commands = new ArrayList<>();
+    private final ArrayList<PluginData> loadedPlugins = new ArrayList<>();
 
     public PluginLoader(String path) {
         initialPath = new File(path);
     }
 
     public void load() {
-        if(!initialPath.exists())
+        if (!initialPath.exists()) {
+            initialPath.mkdir();
             return;
+        }
         for (String s : initialPath.list()) {
             System.out.println("Loading " + s + "...");
             String path = initialPath.getPath() + "/" + s;
@@ -58,13 +63,13 @@ public class PluginLoader {
                     System.exit(-1);
                 }
 
-                String mainClassName = data.getMainClass().replace(".", "/") + ".class";
-                JarEntry mainClass = file.getJarEntry(mainClassName);
+                final String mainClassName = data.getMainClass().replace(".", "/") + ".class";
+                final JarEntry mainClass = file.getJarEntry(mainClassName);
                 String className = mainClass.getName().substring(0, mainClass.getName().length() - 6);
                 className = className.replace('/', '.');
                 Class<?> c = cl.loadClass(className);
 
-                Method loadMethod = c.getMethod("onLoad");
+                final Method loadMethod = c.getMethod("onLoad");
 
                 Constructor<?> t = c.getDeclaredConstructor();
                 Object instance = t.newInstance();
@@ -78,8 +83,12 @@ public class PluginLoader {
 
                     commands.addAll(currentCommands);
                     System.out.println(s + " loaded!");
+                    loadedPlugins.add(data);
                 }
-            } catch (Exception e) {
+                fileStream.close();
+                jarStream.close();
+            } catch (IOException | NoSuchMethodException | ClassNotFoundException | InvocationTargetException
+                    | InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
@@ -87,5 +96,9 @@ public class PluginLoader {
 
     public List<Command> getRegisteredCommands() {
         return commands;
+    }
+
+    public ArrayList<PluginData> getLoadedPlugins() {
+        return loadedPlugins;
     }
 }
