@@ -16,7 +16,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
 
-public class PluginLoader {
+public final class PluginLoader {
     private final File initialPath;
     private final ArrayList<Command> commands = new ArrayList<>();
     private final ArrayList<PluginData> loadedPlugins = new ArrayList<>();
@@ -73,7 +73,7 @@ public class PluginLoader {
 
                 Constructor<?> t = c.getDeclaredConstructor();
                 Object instance = t.newInstance();
-                loadMethod.invoke(instance);
+                loadMethod.invoke(instance, data);
 
                 Method commandMethod = c.getMethod("getCommands");
                 Object commandList = commandMethod.invoke(instance);

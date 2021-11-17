@@ -22,7 +22,6 @@ public class OpenPackagedBot {
         loader.load();
 
         BasicConfigurator.configure();
-
         final CommandClient commandClient = new CommandClient();
         commandClient.addCommands(loader.getRegisteredCommands().toArray(new Command[0]));
 

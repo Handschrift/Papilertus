@@ -7,7 +7,7 @@ public final class PluginData {
     private final String name;
     private final String mainClass;
 
-    public static PluginData getFromJson(String json) {
+    protected static PluginData getFromJson(String json) {
         return new Gson().fromJson(json, PluginData.class);
     }
 

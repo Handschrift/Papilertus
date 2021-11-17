@@ -5,7 +5,7 @@ import com.openpackagedbot.commands.core.Command;
 import java.util.List;
 
 public interface Plugin {
-    void onLoad();
+    void onLoad(PluginData pluginData);
     List<Command> getCommands();
     void onUnload();
 }
