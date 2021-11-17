@@ -3,19 +3,54 @@ package com.openpackagedbot.plugin;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-public class PluginConfig {
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public final class PluginConfig {
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private final JsonObject config = new JsonObject();
+    private final JsonObject config;
     private PluginData data;
 
     public PluginConfig(PluginData data) {
         this.data = data;
+
+        File file = new File(data.getName() + ".json");
+
+        if (file.exists()) {
+            config = read(file);
+        } else {
+            config = new JsonObject();
+            save(file);
+        }
+
     }
 
-    public PluginConfig() {
+    private void save(File file) {
+        try (FileWriter writer = new FileWriter(file)) {
+            gson.toJson(config, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private JsonObject read(File file) {
+        try (FileReader reader = new FileReader(file)) {
+            return JsonParser.parseReader(reader).getAsJsonObject();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Deprecated
+    public PluginConfig() {
+        config = new JsonObject();
     }
 
     public void addEntry(String name, String value) {
@@ -31,7 +66,11 @@ public class PluginConfig {
     }
 
     public String readString(String name) {
-        return "";
+        return config.get(name).getAsString();
+    }
+
+    public int readInt(String name) {
+        return config.get(name).getAsInt();
     }
 
     @Override

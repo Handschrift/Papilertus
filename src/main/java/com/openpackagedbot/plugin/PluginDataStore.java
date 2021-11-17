@@ -1,10 +1,13 @@
 package com.openpackagedbot.plugin;
 
-import com.mongodb.client.MongoClient;
-import com.openpackagedbot.database.DatabaseConnection;
+public final class PluginDataStore {
+    private final PluginData data;
 
-public class PluginDataStore {
     public PluginDataStore(PluginData data) {
+        this.data = data;
+    }
+
+    public void createCollection() {
 
     }
 }

@@ -31,7 +31,7 @@ public final class Config {
     }
 
 
-    public Config read() {
+    private Config read() {
         final Gson gson = new Gson();
         try (FileReader reader = new FileReader(file)) {
 

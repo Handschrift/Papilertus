@@ -26,8 +26,4 @@ public class PluginTest {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Assertions.assertEquals(gson.toJson(object), config.toString());
     }
-
-    @Test
-    public void checkFileExistence() {
-    }
 }

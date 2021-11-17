@@ -10,7 +10,6 @@ import com.openpackagedbot.config.Config;
 public class DatabaseConnection {
 
     private static MongoClient client;
-
     public static MongoClient getConnection() {
         Config config = Config.getConfig();
         if (client == null) {
