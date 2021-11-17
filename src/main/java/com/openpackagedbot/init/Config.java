@@ -1,4 +1,4 @@
-package com.openpackagedbot.config;
+package com.openpackagedbot.init;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,7 +16,7 @@ public final class Config {
     private final String databaseUsername = "admin";
     private final String databasePassword = "admin";
 
-    public static Config getConfig() {
+    protected static Config getConfig() {
         config = config.read();
         return config;
     }

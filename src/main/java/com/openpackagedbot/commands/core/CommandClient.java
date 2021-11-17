@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CommandClient {
+public final class CommandClient {
     private final HashMap<String, Command> commandHashMap = new HashMap<>();
     private final Set<CommandData> commandDataSet = new HashSet<>();
 

@@ -1,16 +1,17 @@
-package com.openpackagedbot.database;
+package com.openpackagedbot.init;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.openpackagedbot.config.Config;
+import com.openpackagedbot.plugin.PluginDataStore;
 
-public class DatabaseConnection {
+public final class DatabaseConnection {
 
     private static MongoClient client;
-    public static MongoClient getConnection() {
+
+     static MongoClient getConnection() {
         Config config = Config.getConfig();
         if (client == null) {
             MongoCredential credential = MongoCredential.createCredential(config.getDatabaseUsername(), "admin", config.getDatabasePassword().toCharArray());
@@ -19,5 +20,9 @@ public class DatabaseConnection {
                     .build());
         }
         return client;
+    }
+
+    public static MongoClient getConnection(PluginDataStore.DatabaseSignature signature) {
+        return getConnection();
     }
 }

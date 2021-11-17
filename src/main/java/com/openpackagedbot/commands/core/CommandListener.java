@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-public class CommandListener extends ListenerAdapter {
+public final class CommandListener extends ListenerAdapter {
 
     private final CommandClient commandClient;
 
