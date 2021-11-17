@@ -11,7 +11,7 @@ public final class DatabaseConnection {
 
     private static MongoClient client;
 
-     static MongoClient getConnection() {
+    static MongoClient getConnection() {
         Config config = Config.getConfig();
         if (client == null) {
             MongoCredential credential = MongoCredential.createCredential(config.getDatabaseUsername(), "admin", config.getDatabasePassword().toCharArray());
