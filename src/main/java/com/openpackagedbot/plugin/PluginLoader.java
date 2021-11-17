@@ -69,7 +69,7 @@ public final class PluginLoader {
                 className = className.replace('/', '.');
                 Class<?> c = cl.loadClass(className);
 
-                final Method loadMethod = c.getMethod("onLoad");
+                final Method loadMethod = c.getMethod("onLoad", PluginData.class);
 
                 Constructor<?> t = c.getDeclaredConstructor();
                 Object instance = t.newInstance();

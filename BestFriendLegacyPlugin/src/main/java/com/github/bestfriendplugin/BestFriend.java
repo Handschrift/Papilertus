@@ -13,7 +13,7 @@ public class BestFriend implements Plugin {
 
     @Override
     public void onLoad(PluginData pluginData) {
-
+        System.out.println("Hello World!");
     }
 
     @Override
