@@ -1,3 +1,4 @@
 rootProject.name = 'OpenPackagedBot'
 include 'BestFriendLegacyPlugin'
+include 'RandomUtils'
 
