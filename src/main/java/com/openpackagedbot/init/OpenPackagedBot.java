@@ -31,6 +31,9 @@ public final class OpenPackagedBot {
 
         builder.addEventListeners(new BotJoinListener(commandClient));
 
+        //Add Plugin event listeners
+        builder.addEventListeners(loader.getRegisteredEventListeners());
+
         builder.setStatus(OnlineStatus.ONLINE);
 
         final JDA jda = builder.build().awaitReady();

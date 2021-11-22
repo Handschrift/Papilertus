@@ -19,7 +19,11 @@ import java.util.jar.JarInputStream;
 public final class PluginLoader {
     private final File initialPath;
     private final ArrayList<Command> commands = new ArrayList<>();
+    private final ArrayList<Object> eventListeners = new ArrayList<>();
+
+
     private final ArrayList<PluginData> loadedPlugins = new ArrayList<>();
+
 
     public PluginLoader(String path) {
         initialPath = new File(path);
@@ -76,15 +80,25 @@ public final class PluginLoader {
                 loadMethod.invoke(instance, data);
 
                 Method commandMethod = c.getMethod("getCommands");
+                Method listenerMethod = c.getMethod("getListeners");
+
                 Object commandList = commandMethod.invoke(instance);
+                Object listenerList = listenerMethod.invoke(instance);
+
+                if (listenerList instanceof List) {
+                    List<Object> currentListeners = (List<Object>) listenerList;
+                    eventListeners.addAll(currentListeners);
+                }
 
                 if (commandList instanceof List) {
                     List<Command> currentCommands = (List<Command>) commandList;
 
                     commands.addAll(currentCommands);
-                    System.out.println(s + " loaded!");
                     loadedPlugins.add(data);
                 }
+
+                System.out.println(s + " loaded!");
+
                 fileStream.close();
                 jarStream.close();
             } catch (IOException | NoSuchMethodException | ClassNotFoundException | InvocationTargetException
@@ -100,5 +114,9 @@ public final class PluginLoader {
 
     public ArrayList<PluginData> getLoadedPlugins() {
         return loadedPlugins;
+    }
+
+    public ArrayList<Object> getRegisteredEventListeners() {
+        return eventListeners;
     }
 }

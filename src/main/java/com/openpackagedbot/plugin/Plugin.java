@@ -6,6 +6,10 @@ import java.util.List;
 
 public interface Plugin {
     void onLoad(PluginData pluginData);
+
     List<Command> getCommands();
+
+    List<Object> getListeners();
+
     void onUnload();
 }
