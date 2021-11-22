@@ -1,6 +1,7 @@
 package com.openpackagedbot.plugin;
 
 import com.openpackagedbot.commands.core.Command;
+import net.dv8tion.jda.api.hooks.EventListener;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface Plugin {
 
     List<Command> getCommands();
 
-    List<Object> getListeners();
+    List<? extends EventListener> getListeners();
 
     void onUnload();
 }

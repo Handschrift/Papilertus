@@ -1,5 +1,6 @@
 package com.openpackagedbot.init;
 
+import com.openpackagedbot.commands.base.PluginCommand;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.commands.core.CommandClient;
 import com.openpackagedbot.commands.core.CommandListener;
@@ -22,7 +23,12 @@ public final class OpenPackagedBot {
 
         BasicConfigurator.configure();
         final CommandClient commandClient = new CommandClient();
+
+        //adding plugin commands
         commandClient.addCommands(loader.getRegisteredCommands().toArray(new Command[0]));
+
+        //adding inbuild commands
+        commandClient.addCommands(new PluginCommand(loader.getLoadedPlugins()));
 
         final JDABuilder builder = JDABuilder.create(config.getToken(), GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS));
 
@@ -32,7 +38,9 @@ public final class OpenPackagedBot {
         builder.addEventListeners(new BotJoinListener(commandClient));
 
         //Add Plugin event listeners
-        builder.addEventListeners(loader.getRegisteredEventListeners());
+        if (loader.getRegisteredEventListeners().size() > 0) {
+            builder.addEventListeners(loader.getRegisteredEventListeners());
+        }
 
         builder.setStatus(OnlineStatus.ONLINE);
 

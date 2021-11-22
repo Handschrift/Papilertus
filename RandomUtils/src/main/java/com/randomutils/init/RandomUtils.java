@@ -5,8 +5,10 @@ import com.openpackagedbot.plugin.Plugin;
 import com.openpackagedbot.plugin.PluginData;
 import com.randomutils.commands.ChoiceCommand;
 import com.randomutils.commands.DiceCommand;
+import net.dv8tion.jda.api.hooks.EventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RandomUtils implements Plugin {
@@ -22,6 +24,11 @@ public class RandomUtils implements Plugin {
         commands.add(new ChoiceCommand());
         commands.add(new DiceCommand());
         return commands;
+    }
+
+    @Override
+    public List<? extends EventListener> getListeners() {
+        return Collections.emptyList();
     }
 
     @Override

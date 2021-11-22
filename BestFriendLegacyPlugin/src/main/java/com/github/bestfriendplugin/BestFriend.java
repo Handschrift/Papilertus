@@ -4,12 +4,13 @@ import com.github.bestfriendplugin.commands.*;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.plugin.Plugin;
 import com.openpackagedbot.plugin.PluginData;
+import net.dv8tion.jda.api.hooks.EventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BestFriend implements Plugin {
-
 
     @Override
     public void onLoad(PluginData pluginData) {
@@ -25,6 +26,11 @@ public class BestFriend implements Plugin {
         commands.add(new UnluckCommand());
         commands.add(new PickupCommand());
         return commands;
+    }
+
+    @Override
+    public List<? extends EventListener> getListeners() {
+        return Collections.emptyList();
     }
 
     @Override
