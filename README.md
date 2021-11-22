@@ -1,4 +1,4 @@
-![](papilertus.png "Papilertus")
+![](papilertus.png#center "Papilertus")
 # About this project
 The Papilertus is a (high configurable) general purpose bot providing different abilities for basic server management, moderation and entertainment.
 It also provides a plugin interface giving the ability to extend the bot with custom features. [See How to create plugins](#how-to-create-plugins) <br>
