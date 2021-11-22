@@ -62,7 +62,7 @@ public final class PluginLoader {
 
                 }
 
-                if (data == null) {
+                if (data == null || data.getName() == null || data.getMainClass() == null) {
                     System.err.println("Plugin Couldn't be loaded!");
                     System.exit(-1);
                 }
