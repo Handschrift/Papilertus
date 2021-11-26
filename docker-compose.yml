@@ -7,3 +7,9 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: omega
     ports:
       - 27017:27017
+  papilertus:
+    image: papilertus:latest
+    volumes:
+      - ./config:/app/config
+volumes:
+  config:

@@ -19,7 +19,7 @@ public final class PluginConfig {
     public PluginConfig(PluginData data) {
         this.data = data;
 
-        File file = new File(data.getName() + ".json");
+        File file = new File("config/" + data.getName() + ".json");
 
         if (file.exists()) {
             config = read(file);

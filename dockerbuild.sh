@@ -1,1 +1,1 @@
-docker build -t openmeetbot:openmeetbot .;
+docker build -t papilertus:latest .;

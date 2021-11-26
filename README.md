@@ -5,7 +5,7 @@ It also provides a plugin interface giving the ability to extend the bot with cu
 Currently the bot is in a very early state so feel free to open any issues if there are some.
 # Requirements
 - Java 11
-- MongoDB 5.0.4 (soon)
+- MongoDB 5.0.4
 # Installation
 ## Gradle
 ### Clone from GitHub:
@@ -20,15 +20,37 @@ This should create an executable OpenPackagedBot-1.0-all.jar
 After the first start it should create a configuration file where you can enter your bot token.
 If you don't have a token, create a bot at the [Discord developer portal](https://discord.com/developers).
 ## Docker
-- Coming Soon
+### Prerequisites
+Make shure that you have the latest version of docker and docker-compose installed.
+### Clone from GitHub:
+`git clone https://github.com/Handschrift/OpenPackagedBot.git`
+### Build the docker container
+`docker build -t papilertus:latest .`
+### Creating config
+In your clone directory create another directory called config.
+Then you have to manually create a "config.json". It should look like this:
+```
+{
+  "token": "YOUR TOKEN!",
+  "pluginDir": "plugins/",
+  "databaseUrl": "mongodb://localhost/",
+  "databaseUsername": "admin",
+  "databasePassword": "admin"
+}
+```
+You just have to provide the bot token. You can leave the other fields if you don't use a mongodb.
+### Run from docker-compose file
+`docker-compose -f docker-compose.yml up`
+### Editing the config
+If you want to edit the config just terminate the docker containers with `docker-compose -f docker-compose.yml down` edit the config you created and restart the docker containers.
 ## Configuration
 | Key          | Default value     | Description |
 |--------------|-----------|------------|
 | token        | empty     | The bot token if you plan to host the bot yourself           |
 | plugindir    | "plugins/"     | Path to your Plugins folder           |
-| databaseUrl        | "mongodb://localhost/"     | URL to your mongodb (currently not used)           |
-| databaseUsername        | "admin"     | username of your mongodb (currently not used)           |
-| databasePassword        | "admin"     | password of your mongodb (currently not used)           |
+| databaseUrl        | "mongodb://localhost/"     | URL to your mongodb          |
+| databaseUsername        | "admin"     | username of your mongodb         |
+| databasePassword        | "admin"     | password of your mongodb         |
 - more configurations are coming soon
 # Plugins
 ## How to install plugins
