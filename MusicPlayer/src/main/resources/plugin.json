@@ -1,0 +1,5 @@
+{
+  "name": "MusicPlayer",
+  "author": "Handschrift",
+  "mainClass": "com.musicplayer.init.MusicPlayer"
+}

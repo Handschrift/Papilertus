@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'war'
+    id "com.github.johnrengelman.shadow"
+}
+
+group 'com.openpackagedbot'
+version '1.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://m2.dv8tion.net/releases'
+    }
+}
+
+dependencies {
+    providedCompile files("../OpenPackagedBot-1.0-all.jar")
+    shadow 'com.sedmelluq:lavaplayer:1.3.77'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+shadowJar {
+    destinationDirectory.set(file("../plugins/"))
+    configurations = [project.configurations.shadow]
+}
+
+test {
+    useJUnitPlatform()
+}
