@@ -2,8 +2,10 @@ package com.openpackagedbot.init;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public final class Config {
 
@@ -15,6 +17,14 @@ public final class Config {
     private String databaseUrl = "mongodb://localhost/";
     private String databaseUsername = "admin";
     private String databasePassword = "admin";
+    private final ArrayList<CacheFlag> cacheFlags = new ArrayList<>() {
+        {
+            add(CacheFlag.EMOTE);
+            add(CacheFlag.ACTIVITY);
+            add(CacheFlag.CLIENT_STATUS);
+            add(CacheFlag.ONLINE_STATUS);
+        }
+    };
 
     static Config getConfig() {
         config = config.read();
@@ -73,5 +83,9 @@ public final class Config {
 
     String getPluginDir() {
         return pluginDir;
+    }
+
+    ArrayList<CacheFlag> getCacheFlags() {
+        return cacheFlags;
     }
 }
