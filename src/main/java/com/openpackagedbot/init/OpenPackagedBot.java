@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.xml.DOMConfigurator;
 
 import javax.security.auth.login.LoginException;
 
@@ -21,7 +22,6 @@ public final class OpenPackagedBot {
         final PluginLoader loader = new PluginLoader(config.getPluginDir());
         loader.load();
 
-        BasicConfigurator.configure();
         final CommandClient commandClient = new CommandClient();
 
         //adding plugin commands
