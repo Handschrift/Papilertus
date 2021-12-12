@@ -9,6 +9,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.managers.AudioManager;
@@ -45,7 +46,12 @@ public class PlayCommand extends MusicCommand {
         }
 
         if (!manager.isConnected()) {
-            manager.openAudioConnection(executor.getVoiceState().getChannel());
+            try {
+                manager.openAudioConnection(executor.getVoiceState().getChannel());
+            } catch (InsufficientPermissionException exception) {
+                slashCommandEvent.reply("I don't have the permission to join the channel!").setEphemeral(true).queue();
+                return;
+            }
         } else if (!executor.getVoiceState().getChannel().getId().equals(manager.getConnectedChannel().getId())) { //Check if member is NOT in the same channel
             slashCommandEvent.reply("You have to be in the same voice channel!").setEphemeral(true).queue();
             return;
