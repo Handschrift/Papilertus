@@ -16,7 +16,7 @@ public final class CommandListener extends ListenerAdapter {
     @Override
     public void onSlashCommand(@NotNull SlashCommandEvent event) {
         if (event.getChannel().getType() == ChannelType.PRIVATE) {
-            if(commandClient.getCommand(event.getName()).isPrivateCommand()){
+            if (commandClient.getCommand(event.getName()).isPrivateCommand()) {
                 commandClient.getCommand(event.getName()).execute(event);
             } else {
                 event.reply("This command is only usable on servers!").setEphemeral(true).queue();

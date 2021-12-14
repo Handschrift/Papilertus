@@ -3,3 +3,5 @@
 build
 config/
 plugins/
+clear.sh
+stop.sh
