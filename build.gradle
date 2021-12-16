@@ -32,8 +32,8 @@ dependencies {
     implementation 'net.dv8tion:JDA:4.3.0_339'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'org.mongodb:mongodb-driver-sync:4.4.0'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.15.0'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.15.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.16.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.16.0'
     implementation group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.32'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
