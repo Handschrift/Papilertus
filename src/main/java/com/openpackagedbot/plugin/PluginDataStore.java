@@ -31,8 +31,8 @@ public final class PluginDataStore {
         database.getCollection(data.getName()).insertOne(Document.parse(json));
     }
 
-    public void modifyEntry() {
-
+    public void modifyEntry(Bson filter, Bson update) {
+        database.getCollection(data.getName()).updateOne(filter, update);
     }
 
     public Document getEntry(Bson filter) {

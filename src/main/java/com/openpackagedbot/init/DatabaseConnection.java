@@ -14,10 +14,13 @@ public final class DatabaseConnection {
     static MongoClient getConnection() {
         Config config = Config.getConfig();
         if (client == null) {
-            MongoCredential credential = MongoCredential.createCredential(config.getDatabaseUsername(), "admin", config.getDatabasePassword().toCharArray());
-            client = MongoClients.create(MongoClientSettings.builder().credential(credential)
-                    .applyConnectionString(new ConnectionString(config.getDatabaseUrl()))
-                    .build());
+            final MongoCredential credential = MongoCredential.createCredential(config.getDatabaseUsername(), "Papilertus", config.getDatabasePassword().toCharArray());
+            final MongoClientSettings.Builder settings = MongoClientSettings.builder()
+                    .applyConnectionString(new ConnectionString(config.getDatabaseUrl()));
+            if(!config.getDatabaseUsername().isEmpty() || !config.getDatabasePassword().isEmpty()){
+                settings.credential(credential);
+            }
+            client = MongoClients.create(settings.build());
         }
         return client;
     }

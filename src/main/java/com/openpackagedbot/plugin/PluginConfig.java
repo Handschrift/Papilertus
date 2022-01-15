@@ -15,11 +15,12 @@ public final class PluginConfig {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final JsonObject config;
     private PluginData data;
+    private File file;
 
     public PluginConfig(PluginData data) {
         this.data = data;
 
-        File file = new File("config/" + data.getName() + ".json");
+        file = new File("config/" + data.getName() + ".json");
 
         if (file.exists()) {
             config = read(file);
@@ -62,6 +63,10 @@ public final class PluginConfig {
     }
 
     public void addEntry(String name, double value) {
+        config.addProperty(name, value);
+    }
+
+    public void addEntry(String name, boolean value) {
         config.addProperty(name, value);
     }
 
