@@ -1,5 +1,6 @@
 package com.economy.database.models;
 
+import com.economy.database.databases.UserDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -32,7 +33,7 @@ public class EconomyUser {
         this.id = new EconomyUserKey(userId, guildId);
     }
 
-    private EconomyUserKey getKey(){
+    private EconomyUserKey getKey() {
         return this.id;
     }
 
@@ -49,7 +50,21 @@ public class EconomyUser {
     }
 
     public void setCoins(double coins) {
+        final UserDatabase database = new UserDatabase();
+        database.updateUser(getUserId(), getGuildId(), "coins", coins);
         this.coins = coins;
+    }
+
+    public void addCoins(double coins) {
+        final UserDatabase database = new UserDatabase();
+        database.updateUser(getUserId(), getGuildId(), "coins", getCoins() + coins);
+        this.coins += coins;
+    }
+
+    public void removeCoins(double coins) {
+        final UserDatabase database = new UserDatabase();
+        database.updateUser(getUserId(), getGuildId(), "coins", getCoins() - coins);
+        this.coins -= coins;
     }
 
     public String toJson() {

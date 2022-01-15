@@ -1,9 +1,6 @@
 package com.openpackagedbot.plugin;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
 import java.io.File;
 import java.io.FileReader;
@@ -55,19 +52,42 @@ public final class PluginConfig {
     }
 
     public void addEntry(String name, String value) {
-        config.addProperty(name, value);
+        if (!config.has(name)) {
+            config.addProperty(name, value);
+            save(file);
+        }
     }
 
     public void addEntry(String name, int value) {
-        config.addProperty(name, value);
+        if (!config.has(name)) {
+            config.addProperty(name, value);
+            save(file);
+        }
     }
 
     public void addEntry(String name, double value) {
-        config.addProperty(name, value);
+        if (!config.has(name)) {
+            config.addProperty(name, value);
+            save(file);
+        }
     }
 
     public void addEntry(String name, boolean value) {
-        config.addProperty(name, value);
+        if (!config.has(name)) {
+            config.addProperty(name, value);
+            save(file);
+        }
+    }
+
+    public void addEntry(String name, String[] values) {
+        if (!config.has(name)) {
+            final JsonArray array = new JsonArray();
+            for (String s : values) {
+                array.add(s);
+            }
+            config.add(name, array);
+            save(file);
+        }
     }
 
     public String readString(String name) {
@@ -76,6 +96,14 @@ public final class PluginConfig {
 
     public int readInt(String name) {
         return config.get(name).getAsInt();
+    }
+
+    public boolean readBoolean(String name) {
+        return config.get(name).getAsBoolean();
+    }
+
+    public JsonArray readArray(String name){
+        return config.get(name).getAsJsonArray();
     }
 
     @Override

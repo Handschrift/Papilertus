@@ -12,19 +12,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Economy implements Plugin {
-    private PluginDataStore store;
+    //singleton for database
+    private static PluginDataStore store;
+    private static PluginConfig config;
 
     @Override
     public void onLoad(PluginData pluginData) {
         store = new PluginDataStore(pluginData);
-        final PluginConfig config = new PluginConfig(pluginData);
-        config.addEntry("main", 0);
+        config = new PluginConfig(pluginData);
+        config.addEntry("currency_name", "Crypcoin");
+        config.addEntry("currency_icon", "");
+        config.addEntry("coin_on_message_sent", true);
+        config.addEntry("coin_on_voice_activity", true);
+        config.addEntry("coin_on_message_amount", 10);
+        config.addEntry("coin_on_voice_activity_amount", 10);
+        config.addEntry("whitelist_mode", false);
+        config.addEntry("listed_users", new String[]{});
+        config.addEntry("listed_roles", new String[]{});
     }
 
     @Override
     public List<Command> getCommands() {
         ArrayList<Command> commands = new ArrayList<>();
-        commands.add(new ProfileCommand(store));
+        commands.add(new ProfileCommand());
         return commands;
     }
 
@@ -37,4 +47,13 @@ public class Economy implements Plugin {
     public void onUnload() {
 
     }
+
+    public static PluginDataStore getDataStore() {
+        return store;
+    }
+
+    public static PluginConfig getConfig() {
+        return config;
+    }
+
 }
