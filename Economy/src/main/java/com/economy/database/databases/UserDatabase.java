@@ -10,7 +10,8 @@ import com.openpackagedbot.plugin.PluginDataStore;
 import org.bson.Document;
 
 public class UserDatabase {
-    private static final PluginDataStore dataStore = Economy.getDataStore();;
+    private static final PluginDataStore dataStore = Economy.getDataStore();
+    ;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 
@@ -20,7 +21,13 @@ public class UserDatabase {
         id.addProperty("guildId", guildId);
         Document document = new Document("_id.userId", userId);
         document.append("_id.guildId", guildId);
-        return gson.fromJson(dataStore.getEntry(document).toJson(), EconomyUser.class);
+        final Document result = dataStore.getEntry(document);
+        //Add User if it does not exist
+        if (result == null) {
+            addUser(userId, guildId);
+            return new EconomyUser(userId, guildId);
+        }
+        return gson.fromJson(result.toJson(), EconomyUser.class);
     }
 
     public void addUser(String userId, String guildId) {
@@ -32,7 +39,8 @@ public class UserDatabase {
         object.addProperty("coins", 0);
         dataStore.addEntry(gson.toJson(object));
     }
-    public void updateUser(String userId, String guildId, String key, Object value){
+
+    public void updateUser(String userId, String guildId, String key, Object value) {
         final Document document = new Document("_id.userId", userId);
         document.append("_id.guildId", guildId);
         dataStore.modifyEntry(document, Updates.set(key, value));

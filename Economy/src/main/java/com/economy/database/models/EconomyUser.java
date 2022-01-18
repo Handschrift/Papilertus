@@ -49,6 +49,11 @@ public class EconomyUser {
         return coins;
     }
 
+    public static EconomyUser fetch(String userId, String guildId){
+        final UserDatabase database = new UserDatabase();
+        return database.fetchUser(userId, guildId);
+    }
+
     public void setCoins(double coins) {
         final UserDatabase database = new UserDatabase();
         database.updateUser(getUserId(), getGuildId(), "coins", coins);

@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
@@ -37,7 +38,9 @@ public final class OpenPackagedBot {
 
         //Add Plugin event listeners
         if (loader.getRegisteredEventListeners().size() > 0) {
-            builder.addEventListeners(loader.getRegisteredEventListeners());
+            for (Object listener : loader.getRegisteredEventListeners()) {
+                builder.addEventListeners(listener);
+            }
         }
 
         builder.setStatus(OnlineStatus.ONLINE);

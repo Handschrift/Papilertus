@@ -19,8 +19,6 @@ public class ProfileCommand extends Command {
     protected void execute(SlashCommandEvent slashCommandEvent) {
         final UserDatabase userDatabase = new UserDatabase();
         final EconomyUser user = userDatabase.fetchUser(slashCommandEvent.getUser().getId(), slashCommandEvent.getGuild().getId());
-        user.addCoins(100);
-        System.out.println(user.getCoins());
         slashCommandEvent.reply(Double.toString(user.getCoins())).queue();
     }
 }
