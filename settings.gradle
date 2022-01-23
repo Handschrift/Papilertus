@@ -3,4 +3,5 @@ include 'BestFriendLegacyPlugin'
 include 'RandomUtils'
 include 'MusicPlayer'
 include 'Economy'
+include 'BirthdayPlugin'
 

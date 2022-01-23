@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'war'
+    id "com.github.johnrengelman.shadow"
+}
+
+configurations {
+    provided
+    compile.extendsFrom provided
+}
+
+group 'com.openpackagedbot'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    providedCompile files("../OpenPackagedBot-1.0-all.jar")
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+shadowJar {
+    destinationDirectory.set(file("../plugins/"))
+    configurations = [project.configurations.shadow]
+}
+
+test {
+    useJUnitPlatform()
+}
