@@ -1,7 +1,7 @@
 ![](papilertus.png#center "Papilertus")
 # About this project
 Papilertus is a (high configurable) general purpose bot providing different abilities for basic server management, moderation and entertainment.
-It also provides a plugin interface giving the ability to extend the bot with custom features. [See How to create plugins](#how-to-create-plugins) <br>
+It also provides a plugin interface giving the ability to extend the bot with custom features. <br>
 Currently the bot is in a very early state so feel free to open any issues if there are some.
 # Requirements
 - Java 11
@@ -60,7 +60,7 @@ You have to restart the bot after you have installed a plugin!
 
 ### Attention!
 - Even with the ability to write custom plugins, we are not responsible for any damage done with plugins of third parties
-# Support this project
+# Supporting this project
 You can support this project with:
 - contributing tho the code
 - adding the bot to your server / host your own instance
