@@ -57,59 +57,12 @@ If you want to edit the config just terminate the docker containers with `docker
 On the first start, the bot should have created a folder called "plugins". To install Plugins just download the plugin or build it yourself and put the .jar into the "plugins" folder.
 
 You have to restart the bot after you have installed a plugin!
-## How to create plugins
-### General structure
-- First make sure that you have a working build (a .jar file) of the official Papilertus bot.
-- We assume that you are using gradle as a build system, but you may use any other build system
-- Now create a gradle project and add a `plugin.json`  to your resource directory. (Make sure that it is inside the jar file on build)
-- Now fill the `plugin.jar` with content. You have to provide the name, author, and mainClass attributes
-```json
-{
-  "name": "NAME_OF_YOUR_PLUGIN",
-  "author": "YOUR_NAME",
-  "mainClass": "path.to.your.main.class"
-}
-```
-- Add your build jarfile as a local dependency to your build.gradle
-- Now create your Mainclass and let it implement the Plugin interface and the needed methods
-```java
-public class TestPlugin implements Plugin {
 
-    @Override
-    public void onLoad(PluginData pluginData) {
-    }
-
-    @Override
-    public List<Command> getCommands() {
-        ArrayList<Command> commands = new ArrayList<>();
-        return commands;
-    }
-
-    @Override
-    public List<? extends EventListener> getListeners() {
-       
-    }
-
-    @Override
-    public void onUnload() {
-
-    }
-}
-```
-- Now let's take a look at the onLoad-Method and add a statement to print out "Hello World"
-```java
-  @Override
-    public void onLoad(PluginData pluginData) {
-        System.out.println("Hello World");
-    }
-```
-- Now build your Plugin and put it into the plugin directory of the Papilertus bot
-- That's it, you have created your first plugin!
-### Creating a new command
-- TBD
-### Creating a configuration file
-- TBD
-### Connecting to the mongodb
-- TBD
 ### Attention!
 - Even with the ability to write custom plugins, we are not responsible for any damage done with plugins of third parties
+# Support this project
+You can support this project with:
+- contributing tho the code
+- adding the bot to your server / host your own instance
+- testing
+- donations
