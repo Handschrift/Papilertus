@@ -105,7 +105,7 @@ public class BirthdayCommand extends Command {
             case "channel":
                 final MessageChannel channel = slashCommandEvent.getOption("channel").getAsMessageChannel();
                 final GuildDatabase guildDatabase = new GuildDatabase();
-                guildDatabase.addBirthdayChannel(channel.getId());
+                guildDatabase.addBirthdayChannel(slashCommandEvent.getGuild().getId(), channel.getId());
                 slashCommandEvent.reply("Set!").queue();
                 break;
         }

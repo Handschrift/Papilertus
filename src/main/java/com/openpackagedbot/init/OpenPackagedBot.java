@@ -15,6 +15,8 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import javax.security.auth.login.LoginException;
 
 public final class OpenPackagedBot {
+    private static JDA jda;
+
     public static void main(String[] args) throws LoginException, InterruptedException {
         final Config config = Config.getConfig();
         final PluginLoader loader = new PluginLoader(config.getPluginDir());
@@ -50,5 +52,9 @@ public final class OpenPackagedBot {
         for (Guild g : jda.getGuilds()) {
             g.updateCommands().addCommands(commandClient.getData()).queue();
         }
+    }
+
+    public static JDA getJda() {
+        return jda;
     }
 }

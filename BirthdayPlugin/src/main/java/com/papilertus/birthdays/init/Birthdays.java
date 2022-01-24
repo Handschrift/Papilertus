@@ -33,6 +33,12 @@ public class Birthdays implements Plugin {
             public void run() {
                 for (BirthdayUser user : database.getByDate(LocalDate.now())) {
                     database.updateUser(user.getUserId(), user.getGuildId(), "birthday", user.getBirthdayDate().plusYears(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                    //   final User discordUser = OpenPackagedBot.getJda().getUserById(user.getUserId());
+                    final String channelId = guildDatabase.getBirthdayChannel(user.getGuildId());
+
+                    if (channelId != null) {
+
+                    }
                 }
             }
         }, 0, 10, TimeUnit.SECONDS);
