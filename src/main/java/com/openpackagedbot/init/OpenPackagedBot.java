@@ -5,6 +5,7 @@ import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.commands.core.CommandClient;
 import com.openpackagedbot.commands.core.CommandListener;
 import com.openpackagedbot.listeners.BotJoinListener;
+import com.openpackagedbot.plugin.PluginJDA;
 import com.openpackagedbot.plugin.PluginLoader;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -16,6 +17,9 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import javax.security.auth.login.LoginException;
 
 public final class OpenPackagedBot {
+    private static JDA jda;
+    private static PluginJDA pluginJDA;
+
     public static void main(String[] args) throws LoginException, InterruptedException {
         final Config config = Config.getConfig();
         final PluginLoader loader = new PluginLoader(config.getPluginDir());
@@ -47,11 +51,18 @@ public final class OpenPackagedBot {
 
         builder.disableCache(config.getCacheFlags());
 
-        final JDA jda = builder.build().awaitReady();
-
+        jda = builder.build().awaitReady();
         //register commands on all guilds
         for (Guild g : jda.getGuilds()) {
             g.updateCommands().addCommands(commandClient.getData()).queue();
         }
+    }
+
+    public static PluginJDA getPluginJDA() {
+        if (pluginJDA == null) {
+            pluginJDA = new PluginJDA(jda);
+        }
+
+        return pluginJDA;
     }
 }
