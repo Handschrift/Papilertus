@@ -1,6 +1,7 @@
 package com.papilertus.birthdays.init;
 
 import com.openpackagedbot.commands.core.Command;
+import com.openpackagedbot.init.OpenPackagedBot;
 import com.openpackagedbot.plugin.Plugin;
 import com.openpackagedbot.plugin.PluginData;
 import com.openpackagedbot.plugin.PluginDataStore;
@@ -9,8 +10,11 @@ import com.papilertus.birthdays.commands.WishlistCommand;
 import com.papilertus.birthdays.database.BirthdayUser;
 import com.papilertus.birthdays.database.GuildDatabase;
 import com.papilertus.birthdays.database.UserDatabase;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.hooks.EventListener;
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,16 +32,20 @@ public class Birthdays implements Plugin {
         final UserDatabase database = new UserDatabase();
         final GuildDatabase guildDatabase = new GuildDatabase();
         final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+        final EmbedBuilder notificationBuilder = new EmbedBuilder();
         service.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 for (BirthdayUser user : database.getByDate(LocalDate.now())) {
                     database.updateUser(user.getUserId(), user.getGuildId(), "birthday", user.getBirthdayDate().plusYears(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                    //   final User discordUser = OpenPackagedBot.getJda().getUserById(user.getUserId());
+                    final User discordUser = OpenPackagedBot.getPluginJDA().getUserById(user.getUserId());
                     final String channelId = guildDatabase.getBirthdayChannel(user.getGuildId());
 
                     if (channelId != null) {
-
+                        //To be changed
+                        notificationBuilder.setDescription("Happy birthday to " + discordUser.getName() + " \uD83C\uDF89")
+                                .setColor(Color.CYAN);
+                        OpenPackagedBot.getPluginJDA().getTextChannelById(channelId).sendMessageEmbeds(notificationBuilder.build()).queue();
                     }
                 }
             }

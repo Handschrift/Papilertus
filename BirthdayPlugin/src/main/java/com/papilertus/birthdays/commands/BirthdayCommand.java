@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
@@ -57,9 +58,10 @@ public class BirthdayCommand extends Command {
         switch (slashCommandEvent.getSubcommandName()) {
             case "set":
                 final String birthday = slashCommandEvent.getOption("birthday").getAsString();
+                final LocalDateTime raw = LocalDateTime.from(formatter.parse(birthday));
                 LocalDateTime t;
                 try {
-                    t = LocalDateTime.of(LocalDate.now().getYear(), LocalDateTime.from(formatter.parse(birthday)).getMonth(), LocalDateTime.from(formatter.parse(birthday)).getDayOfMonth(), 0, 0, 0);
+                    t = LocalDateTime.of(LocalDate.now().getYear(), raw.getMonth(), raw.getDayOfMonth(), 0, 0, 0);
 
                     if (LocalDate.now().isAfter(t.toLocalDate())) {
                         t = LocalDateTime.of(t.getYear() + 1, t.getMonth(), t.getDayOfMonth(), 0, 0, 0);
@@ -71,10 +73,11 @@ public class BirthdayCommand extends Command {
                 if (user == null) {
                     database.addUser(slashCommandEvent.getUser().getId(),
                             slashCommandEvent.getGuild().getId(),
-                            t.toLocalDate(), "Europe/Berlin", 0);
+                            t.toLocalDate(), "Europe/Berlin", Period.between(raw.toLocalDate(), LocalDate.now()).getYears());
                     slashCommandEvent.reply("Your birthday was set to " + birthday).queue();
                     return;
                 } else {
+                    //TODO: Add cooldown or restriction
                     user.setBirthday(t.toLocalDate());
                     slashCommandEvent.reply("Your birthday has been updated to " + birthday).queue();
                 }
@@ -84,10 +87,19 @@ public class BirthdayCommand extends Command {
                 slashCommandEvent.reply("Your birthday was removed").queue();
                 break;
             case "list":
-                for (BirthdayUser user1 : database.getAllAfter(slashCommandEvent.getGuild().getId(), LocalDate.now())) {
-                    System.out.println(user1.getBirthday());
+                final EmbedBuilder listBuilder = new EmbedBuilder()
+                        .setTitle("Next birthdays");
+                int i = 0;
+                for (BirthdayUser birthdayUser : database.getAllAfter(slashCommandEvent.getGuild().getId(), LocalDate.now())) {
+                    if (i > 10)
+                        break;
+                    listBuilder.getDescriptionBuilder()
+                            .append(slashCommandEvent.getGuild().getMemberById(birthdayUser.getUserId()).getUser().getAsMention())
+                            .append(" ")
+                            .append(birthdayUser.getBirthday()).append("\n");
+                    i++;
                 }
-                slashCommandEvent.reply("bla").queue();
+                slashCommandEvent.replyEmbeds(listBuilder.build()).queue();
                 break;
             case "info":
                 final EmbedBuilder embedBuilder = new EmbedBuilder();
