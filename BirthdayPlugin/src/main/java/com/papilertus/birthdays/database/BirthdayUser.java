@@ -10,6 +10,7 @@ public class BirthdayUser {
     private int age;
     private String timezone;
     private String birthday;
+    private int tries;
     private final ArrayList<String> wishlist;
 
     public BirthdayUser(String userId, String guildId) {
@@ -75,5 +76,14 @@ public class BirthdayUser {
         this.timezone = timezone;
         final UserDatabase database = new UserDatabase();
         database.updateUser(getUserId(), getGuildId(), "timezone", timezone);
+    }
+
+    public int getTries() {
+        return tries;
+    }
+
+    public void setTries(int tries) {
+        this.tries = tries;
+        final UserDatabase database = new UserDatabase();
     }
 }

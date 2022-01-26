@@ -73,12 +73,17 @@ public class BirthdayCommand extends Command {
                 if (user == null) {
                     database.addUser(slashCommandEvent.getUser().getId(),
                             slashCommandEvent.getGuild().getId(),
-                            t.toLocalDate(), "Europe/Berlin", Period.between(raw.toLocalDate(), LocalDate.now()).getYears());
+                            t.toLocalDate(), "Europe/Berlin", Period.between(raw.toLocalDate(), LocalDate.now()).getYears(), 5);
                     slashCommandEvent.reply("Your birthday was set to " + birthday).queue();
                     return;
                 } else {
                     //TODO: Add cooldown or restriction
+                    if (user.getTries() == 0) {
+                        slashCommandEvent.reply("You cannot set your birthday anymore!").setEphemeral(true).queue();
+                        break;
+                    }
                     user.setBirthday(t.toLocalDate());
+                    user.setTries(user.getTries() - 1);
                     slashCommandEvent.reply("Your birthday has been updated to " + birthday).queue();
                 }
                 break;

@@ -28,7 +28,7 @@ public class UserDatabase {
         return gson.fromJson(result.toJson(), BirthdayUser.class);
     }
 
-    public void addUser(String userId, String guildId, LocalDate date, String timezone, int age) {
+    public void addUser(String userId, String guildId, LocalDate date, String timezone, int age, int tries) {
         JsonObject object = new JsonObject();
         JsonObject id = new JsonObject();
         id.addProperty("userId", userId);
@@ -40,21 +40,16 @@ public class UserDatabase {
         object.add("wishlist", new JsonArray());
         object.addProperty("timezone", timezone);
         object.addProperty("age", age);
+        object.addProperty("tries", tries);
         dataStore.addEntry(gson.toJson(object));
     }
 
     public void addUser(BirthdayUser user) {
-        JsonObject object = new JsonObject();
-        JsonObject id = new JsonObject();
+        final JsonObject object = gson.fromJson(gson.toJson(user), JsonObject.class);
+        final JsonObject id = new JsonObject();
         id.addProperty("userId", user.getUserId());
         id.addProperty("guildId", user.getGuildId());
         object.add("_id", id);
-        object.addProperty("userId", user.getUserId());
-        object.addProperty("guildId", user.getUserId());
-        object.addProperty("birthday", user.getBirthdayDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        object.add("wishlist", new JsonArray());
-        object.addProperty("timezone", user.getTimezone());
-        object.addProperty("age", user.getAge());
         dataStore.addEntry(gson.toJson(object));
     }
 
