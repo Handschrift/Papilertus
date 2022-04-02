@@ -39,7 +39,7 @@ public class GuildMusicManager {
     }
 
     public boolean isTimeOuted() {
-        return (System.currentTimeMillis() - lastUsed) > 10000; //300000; // 5 Minutes
+        return (System.currentTimeMillis() - lastUsed) > 300000; // 5 Minutes
     }
 
     public void close() {

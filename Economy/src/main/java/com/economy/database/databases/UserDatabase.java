@@ -16,27 +16,19 @@ public class UserDatabase {
 
 
     public EconomyUser fetchUser(String userId, String guildId) {
-        JsonObject id = new JsonObject();
-        id.addProperty("userId", userId);
-        id.addProperty("guildId", guildId);
-        Document document = new Document("_id.userId", userId);
+        final Document document = new Document("_id.userId", userId);
         document.append("_id.guildId", guildId);
         final Document result = dataStore.getEntry(document);
         //Add User if it does not exist
         if (result == null) {
-            addUser(userId, guildId);
+            addUser(new EconomyUser(userId, guildId));
             return new EconomyUser(userId, guildId);
         }
         return gson.fromJson(result.toJson(), EconomyUser.class);
     }
 
-    public void addUser(String userId, String guildId) {
-        JsonObject object = new JsonObject();
-        JsonObject id = new JsonObject();
-        id.addProperty("userId", userId);
-        id.addProperty("guildId", guildId);
-        object.add("_id", id);
-        object.addProperty("coins", 0);
+    public void addUser(EconomyUser user) {
+        final JsonObject object = gson.fromJson(gson.toJson(user), JsonObject.class);
         dataStore.addEntry(gson.toJson(object));
     }
 

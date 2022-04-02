@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 public class MessageReceivedListener extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
-        System.out.println(event.getMessage().getContentRaw());
         final EconomyUser user = EconomyUser.fetch(event.getAuthor().getId(), event.getGuild().getId());
         user.addCoins(Economy.getConfig().readInt("coin_on_message_amount"));
 

@@ -7,7 +7,6 @@ import com.openpackagedbot.plugin.Plugin;
 import com.openpackagedbot.plugin.PluginConfig;
 import com.openpackagedbot.plugin.PluginData;
 import com.openpackagedbot.plugin.PluginDataStore;
-import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.hooks.EventListener;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class Economy implements Plugin {
         store = new PluginDataStore(pluginData);
         config = new PluginConfig(pluginData);
         config.addEntry("currency_name", "Boostgems");
-        config.addEntry("currency_icon", "<:boost:843963506217844747>");
+        config.addEntry("currency_icon", ":boost:843963506217844747");
         config.addEntry("coin_on_message_sent", true);
         config.addEntry("coin_message_cooldown", 20);
         config.addEntry("coin_on_voice_activity", true);

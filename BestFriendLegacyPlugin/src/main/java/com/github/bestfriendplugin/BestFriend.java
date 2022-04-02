@@ -1,13 +1,13 @@
 package com.github.bestfriendplugin;
 
 import com.github.bestfriendplugin.commands.*;
+import com.github.bestfriendplugin.listeners.MessageListener;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.plugin.Plugin;
 import com.openpackagedbot.plugin.PluginData;
 import net.dv8tion.jda.api.hooks.EventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class BestFriend implements Plugin {
@@ -30,7 +30,9 @@ public class BestFriend implements Plugin {
 
     @Override
     public List<? extends EventListener> getListeners() {
-        return Collections.emptyList();
+        final ArrayList<EventListener> listeners = new ArrayList<>();
+        listeners.add(new MessageListener());
+        return listeners;
     }
 
     @Override
