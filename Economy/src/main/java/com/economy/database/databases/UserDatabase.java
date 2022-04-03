@@ -11,7 +11,6 @@ import org.bson.Document;
 
 public class UserDatabase {
     private static final PluginDataStore dataStore = Economy.getDataStore();
-    ;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 
