@@ -6,6 +6,8 @@ import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.openpackagedbot.plugin.PluginDataStore;
+import org.bson.codecs.configuration.CodecRegistries;
+import org.bson.codecs.pojo.PojoCodecProvider;
 
 public final class DatabaseConnection {
 
@@ -16,8 +18,10 @@ public final class DatabaseConnection {
         if (client == null) {
             final MongoCredential credential = MongoCredential.createCredential(config.getDatabaseUsername(), "Papilertus", config.getDatabasePassword().toCharArray());
             final MongoClientSettings.Builder settings = MongoClientSettings.builder()
-                    .applyConnectionString(new ConnectionString(config.getDatabaseUrl()));
-            if(!config.getDatabaseUsername().isEmpty() || !config.getDatabasePassword().isEmpty()){
+                    .applyConnectionString(new ConnectionString(config.getDatabaseUrl()))
+                    .codecRegistry(CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry()
+                            , CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())));
+            if (!config.getDatabaseUsername().isEmpty() && !config.getDatabasePassword().isEmpty()) {
                 settings.credential(credential);
             }
             client = MongoClients.create(settings.build());
