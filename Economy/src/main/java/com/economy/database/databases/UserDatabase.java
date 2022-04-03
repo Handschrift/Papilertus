@@ -28,7 +28,7 @@ public class UserDatabase {
 
     public void addUser(EconomyUser user) {
         final JsonObject object = gson.fromJson(gson.toJson(user), JsonObject.class);
-        dataStore.addEntry(gson.toJson(object));
+        dataStore.addEntry(user, EconomyUser.class);
     }
 
     public void updateUser(String userId, String guildId, String key, Object value) {
