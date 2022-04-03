@@ -16,6 +16,11 @@ repositories {
     mavenCentral()
 }
 
+java{
+    sourceCompatibility = 11
+    targetCompatibility = 11
+}
+
 dependencies {
     providedCompile files("../OpenPackagedBot-1.0-all.jar")
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
