@@ -9,6 +9,11 @@ configurations {
     compile.extendsFrom provided
 }
 
+java{
+    sourceCompatibility = 11
+    targetCompatibility = 11
+}
+
 group 'com.openpackagedbot'
 version '1.0'
 

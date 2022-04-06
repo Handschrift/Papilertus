@@ -11,7 +11,6 @@ import org.bson.Document;
 
 public class UserDatabase {
     private static final PluginDataStore dataStore = Economy.getDataStore();
-    ;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 
@@ -29,7 +28,7 @@ public class UserDatabase {
 
     public void addUser(EconomyUser user) {
         final JsonObject object = gson.fromJson(gson.toJson(user), JsonObject.class);
-        dataStore.addEntry(gson.toJson(object));
+        dataStore.addEntry(user, EconomyUser.class);
     }
 
     public void updateUser(String userId, String guildId, String key, Object value) {

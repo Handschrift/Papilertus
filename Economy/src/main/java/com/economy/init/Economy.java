@@ -1,6 +1,8 @@
 package com.economy.init;
 
 import com.economy.commands.ProfileCommand;
+import com.economy.database.databases.UserDatabase;
+import com.economy.database.models.EconomyUser;
 import com.economy.listeners.MessageReceivedListener;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.plugin.Plugin;
@@ -32,6 +34,8 @@ public class Economy implements Plugin {
         config.addEntry("whitelist_mode", false);
         config.addEntry("listed_users", new String[]{});
         config.addEntry("listed_roles", new String[]{});
+        UserDatabase database = new UserDatabase();
+        database.addUser(new EconomyUser("abc", "def"));
     }
 
     @Override
