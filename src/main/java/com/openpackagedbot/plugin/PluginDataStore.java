@@ -44,7 +44,6 @@ public final class PluginDataStore {
         database.getCollection(data.getName(), c).insertOne(t);
     }
 
-    @Deprecated
     public void modifyEntry(Bson filter, Bson update) {
         database.getCollection(data.getName()).updateOne(filter, update);
     }
