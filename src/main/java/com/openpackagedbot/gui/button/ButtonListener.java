@@ -9,7 +9,6 @@ public class ButtonListener extends ListenerAdapter {
     @Override
     public void onButtonClick(@NotNull ButtonClickEvent event) {
         final DiscordButton button = ButtonRegistry.getButtonById(event.getComponentId());
-
         if (!button.getId().isEmpty() && !event.getUser().getId().equals(button.getUserId())) {
             event.reply("You are not authorized to press this button").setEphemeral(true).queue();
             return;
@@ -17,7 +16,6 @@ public class ButtonListener extends ListenerAdapter {
 
         button.getOnClick().onClick(event);
 
-        event.deferEdit().queue();
 
     }
 

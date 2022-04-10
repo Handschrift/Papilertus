@@ -24,11 +24,11 @@ public class UserDatabase {
         user.setAge(age);
         user.setBirthday(date);
         user.setTimezone(timezone);
-        dataStore.addEntry(user, BirthdayUser.class);
+        dataStore.addEntry(user);
     }
 
     public void addUser(BirthdayUser user) {
-        dataStore.addEntry(user, BirthdayUser.class);
+        dataStore.addEntry(user);
     }
 
     public void deleteUser(String userId, String guildId) {

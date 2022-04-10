@@ -1,5 +1,6 @@
 package com.openpackagedbot.plugin;
 
+import com.google.gson.Gson;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCursor;
@@ -40,8 +41,8 @@ public final class PluginDataStore {
         database.getCollection(data.getName()).insertOne(Document.parse(s));
     }
 
-    public <T> void addEntry(T t, Class<T> c) {
-        database.getCollection(data.getName(), c).insertOne(t);
+    public <T> void addEntry(T t) {
+        database.getCollection(data.getName()).insertOne(Document.parse(new Gson().toJson(t)));
     }
 
     public void modifyEntry(Bson filter, Bson update) {
@@ -58,7 +59,8 @@ public final class PluginDataStore {
     }
 
     public <T> T getEntry(Bson filter, Class<T> c) {
-        return database.getCollection(data.getName(), c).find(filter).first();
+        final Document result = database.getCollection(data.getName()).find(filter).first();
+        return result == null ? null : new Gson().fromJson(result.toJson(), c);
     }
 
     @Deprecated

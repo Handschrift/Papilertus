@@ -5,6 +5,7 @@ import com.github.bestfriendplugin.listeners.MessageListener;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.plugin.Plugin;
 import com.openpackagedbot.plugin.PluginData;
+import com.openpackagedbot.plugin.PluginDataStore;
 import net.dv8tion.jda.api.hooks.EventListener;
 
 import java.util.ArrayList;
@@ -12,9 +13,12 @@ import java.util.List;
 
 public class BestFriend implements Plugin {
 
+    private PluginDataStore dataStore;
+
     @Override
     public void onLoad(PluginData pluginData) {
         System.out.println("Hello World!");
+        dataStore = new PluginDataStore(pluginData);
     }
 
     @Override
@@ -25,7 +29,7 @@ public class BestFriend implements Plugin {
         commands.add(new LuckCommand());
         commands.add(new UnluckCommand());
         commands.add(new PickupCommand());
-        commands.add(new SpiritAnimalCommand());
+        commands.add(new SpiritAnimalCommand(dataStore));
         return commands;
     }
 
