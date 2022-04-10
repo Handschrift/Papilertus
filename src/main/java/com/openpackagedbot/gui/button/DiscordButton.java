@@ -13,18 +13,18 @@ public class DiscordButton {
     private final Runnable onClick;
     private Button button;
 
-    public DiscordButton(Runnable onClick, Button button) {
+    public DiscordButton(Runnable onClick, ButtonStyle style, String label) {
 
         this.id = UUID.randomUUID().toString();
         this.onClick = onClick;
-        this.button = button;
+        this.button = Button.of(style, id, label);
     }
 
-    public DiscordButton(String userId, Runnable onClick, Button button) {
+    public DiscordButton(String userId, Runnable onClick, ButtonStyle style, String label) {
         this.id = UUID.randomUUID().toString();
         this.userId = userId;
         this.onClick = onClick;
-        this.button = Button.of(ButtonStyle.PRIMARY, id, "bla");
+        this.button = Button.of(style, id, label);
     }
 
     public String getId() {
