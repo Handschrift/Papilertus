@@ -4,6 +4,7 @@ import com.github.bestfriendplugin.commands.*;
 import com.github.bestfriendplugin.listeners.MessageListener;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.plugin.Plugin;
+import com.openpackagedbot.plugin.PluginConfig;
 import com.openpackagedbot.plugin.PluginData;
 import com.openpackagedbot.plugin.PluginDataStore;
 import net.dv8tion.jda.api.hooks.EventListener;
@@ -14,10 +15,12 @@ import java.util.List;
 public class BestFriend implements Plugin {
 
     private PluginDataStore dataStore;
+    private static PluginConfig config;
 
     @Override
     public void onLoad(PluginData pluginData) {
-        System.out.println("Hello World!");
+        config = new PluginConfig(pluginData);
+        config.addEntry("amount_of_images", 165);
         dataStore = new PluginDataStore(pluginData);
     }
 
@@ -43,5 +46,9 @@ public class BestFriend implements Plugin {
     @Override
     public void onUnload() {
 
+    }
+
+    public static PluginConfig getConfig() {
+        return config;
     }
 }

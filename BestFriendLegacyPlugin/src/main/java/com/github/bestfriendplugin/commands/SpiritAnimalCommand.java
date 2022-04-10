@@ -1,5 +1,6 @@
 package com.github.bestfriendplugin.commands;
 
+import com.github.bestfriendplugin.BestFriend;
 import com.github.bestfriendplugin.buttonevents.FavoriteAdder;
 import com.github.bestfriendplugin.database.SpiritUser;
 import com.mongodb.client.model.Updates;
@@ -38,14 +39,12 @@ public class SpiritAnimalCommand extends Command {
 
         long userId = slashCommandEvent.getUser().getIdLong();
         int sumOfDays = LocalDate.now().getDayOfMonth() + LocalDate.now().getYear() + LocalDate.now().getMonthValue();
-        int random = new Random(userId / sumOfDays).nextInt(165);
+        int random = new Random(userId / sumOfDays).nextInt(BestFriend.getConfig().readInt("amount_of_images"));
         final Document document = new Document("_id.userId", slashCommandEvent.getUser().getId());
         document.append("_id.guildId", slashCommandEvent.getGuild().getId());
         final SpiritUser user = dataStore.getEntry(document, SpiritUser.class);
         switch (slashCommandEvent.getSubcommandName()) {
             case "favorite-show":
-
-
                 if (user == null || user.getFavoriteIds().isEmpty()) {
                     slashCommandEvent.reply("You don't have a favorite animal yet").setEphemeral(true).queue();
                     return;
