@@ -21,7 +21,7 @@ public class SpiritAnimalCommand extends Command {
     protected void execute(SlashCommandEvent slashCommandEvent) {
         long userId = slashCommandEvent.getUser().getIdLong();
         int sumOfDays = LocalDate.now().getDayOfMonth() + LocalDate.now().getYear() + LocalDate.now().getMonthValue();
-        int random = new Random(userId / sumOfDays).nextInt(100);
+        int random = new Random(userId / sumOfDays).nextInt(165);
         final EmbedBuilder builder = new EmbedBuilder().setImage("attachment://" + random + ".png")
                 .setAuthor(slashCommandEvent.getUser().getAsTag(), null, slashCommandEvent.getUser().getEffectiveAvatarUrl())
                 .setDescription("And your today's spirit animal is...")
