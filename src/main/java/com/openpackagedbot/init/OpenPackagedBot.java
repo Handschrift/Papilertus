@@ -4,6 +4,7 @@ import com.openpackagedbot.commands.base.PluginCommand;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.commands.core.CommandClient;
 import com.openpackagedbot.commands.core.CommandListener;
+import com.openpackagedbot.gui.button.ButtonListener;
 import com.openpackagedbot.listeners.BotJoinListener;
 import com.openpackagedbot.plugin.PluginJDA;
 import com.openpackagedbot.plugin.PluginLoader;
@@ -11,7 +12,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
@@ -37,6 +37,9 @@ public final class OpenPackagedBot {
 
         //General listener for the commands
         builder.addEventListeners(new CommandListener(commandClient));
+
+        //General listener for the buttons
+        builder.addEventListeners(new ButtonListener());
 
         builder.addEventListeners(new BotJoinListener(commandClient));
 
