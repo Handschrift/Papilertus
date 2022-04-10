@@ -2,7 +2,6 @@ package com.openpackagedbot.gui.button;
 
 import net.dv8tion.jda.api.interactions.components.Button;
 import net.dv8tion.jda.api.interactions.components.ButtonStyle;
-import net.dv8tion.jda.internal.interactions.ButtonImpl;
 
 import java.util.UUID;
 
