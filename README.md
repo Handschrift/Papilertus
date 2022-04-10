@@ -62,7 +62,7 @@ You have to restart the bot after you have installed a plugin!
 - Even with the ability to write custom plugins, we are not responsible for any damage done with plugins of third parties
 # Supporting this project
 You can support this project with:
-- contributing tho the code
+- contributing to the code
 - adding the bot to your server / host your own instance
 - testing
 - donations
