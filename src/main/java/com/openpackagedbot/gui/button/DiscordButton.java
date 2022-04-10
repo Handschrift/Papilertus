@@ -9,17 +9,17 @@ public class DiscordButton {
 
     private final String id;
     private String userId = "";
-    private final Runnable onClick;
+    private final Pressable onClick;
     private Button button;
 
-    public DiscordButton(Runnable onClick, ButtonStyle style, String label) {
+    public DiscordButton(Pressable onClick, ButtonStyle style, String label) {
 
         this.id = UUID.randomUUID().toString();
         this.onClick = onClick;
         this.button = Button.of(style, id, label);
     }
 
-    public DiscordButton(String userId, Runnable onClick, ButtonStyle style, String label) {
+    public DiscordButton(String userId, Pressable onClick, ButtonStyle style, String label) {
         this.id = UUID.randomUUID().toString();
         this.userId = userId;
         this.onClick = onClick;
@@ -38,7 +38,7 @@ public class DiscordButton {
         this.userId = userId;
     }
 
-    public Runnable getOnClick() {
+    public Pressable getOnClick() {
         return onClick;
     }
 

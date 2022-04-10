@@ -15,7 +15,7 @@ public class ButtonListener extends ListenerAdapter {
             return;
         }
 
-        button.getOnClick().run();
+        button.getOnClick().onClick(event);
 
         event.deferEdit().queue();
 
