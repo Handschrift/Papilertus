@@ -1,8 +1,6 @@
 package com.economy.init;
 
 import com.economy.commands.ProfileCommand;
-import com.economy.database.databases.UserDatabase;
-import com.economy.database.models.EconomyUser;
 import com.economy.listeners.MessageReceivedListener;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.plugin.Plugin;
@@ -23,19 +21,17 @@ public class Economy implements Plugin {
     public void onLoad(PluginData pluginData) {
         store = new PluginDataStore(pluginData);
         config = new PluginConfig(pluginData);
-        config.addEntry("currency_name", "Boostgems");
-        config.addEntry("currency_icon", ":boost:843963506217844747");
+        config.addEntry("currency_name", "Butterflies");
+        config.addEntry("currency_icon", ":papilertus:963118768614150224");
         config.addEntry("coin_on_message_sent", true);
         config.addEntry("coin_message_cooldown", 20);
         config.addEntry("coin_on_voice_activity", true);
-        config.addEntry("coin_on_message_amount", 10);
+        config.addEntry("base_coin_on_message_amount", 10);
         config.addEntry("coin_voice_cooldown", 20);
-        config.addEntry("coin_on_voice_activity_amount", 10);
+        config.addEntry("base_coin_on_voice_activity_amount", 10);
         config.addEntry("whitelist_mode", false);
         config.addEntry("listed_users", new String[]{});
         config.addEntry("listed_roles", new String[]{});
-        UserDatabase database = new UserDatabase();
-        database.addUser(new EconomyUser("abc", "def"));
     }
 
     @Override
