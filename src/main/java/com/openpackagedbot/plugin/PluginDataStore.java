@@ -36,11 +36,6 @@ public final class PluginDataStore {
         database.createCollection(data.getName() + "_" + name);
     }
 
-    @Deprecated
-    public void addEntry(String s) {
-        database.getCollection(data.getName()).insertOne(Document.parse(s));
-    }
-
     public <T> void addEntry(T t) {
         database.getCollection(data.getName()).insertOne(Document.parse(new Gson().toJson(t)));
     }
@@ -49,13 +44,8 @@ public final class PluginDataStore {
         database.getCollection(data.getName()).updateOne(filter, update);
     }
 
-    public <T> void modifyEntry(Bson filter, T t, Class<T> c) {
-        database.getCollection(data.getName(), c).findOneAndReplace(filter, t);
-    }
-
-    @Deprecated
-    public Document getEntry(Bson filter) {
-        return database.getCollection(data.getName()).find(filter).first();
+    public <T> void modifyEntry(Bson filter, T t) {
+        database.getCollection(data.getName()).findOneAndReplace(filter, Document.parse(new Gson().toJson(t)));
     }
 
     public <T> T getEntry(Bson filter, Class<T> c) {
@@ -63,27 +53,12 @@ public final class PluginDataStore {
         return result == null ? null : new Gson().fromJson(result.toJson(), c);
     }
 
-    @Deprecated
-    public void addEntry(String collectionName, String json) {
-        database.getCollection(data.getName() + "_" + collectionName).insertOne(Document.parse(json));
+    public <T> void addEntry(String collectionName, T t) {
+        database.getCollection(data.getName() + "_" + collectionName).insertOne(Document.parse(new Gson().toJson(t)));
     }
 
-    public <T> void addEntry(String collectionName, T t, Class<T> c) {
-        database.getCollection(data.getName() + "_" + collectionName, c).insertOne(t);
-    }
-
-    @Deprecated
-    public void modifyEntry(String collectionName, Bson filter, Bson update) {
-        database.getCollection(data.getName() + "_" + collectionName).updateOne(filter, update);
-    }
-
-    public <T> void modifyEntry(String collectionName, Bson filter, T t, Class<T> c) {
-        database.getCollection(data.getName() + "_" + collectionName, c).findOneAndReplace(filter, t);
-    }
-
-    @Deprecated
-    public Document getEntry(String collectionName, Bson filter) {
-        return database.getCollection(data.getName() + "_" + collectionName).find(filter).first();
+    public <T> void modifyEntry(String collectionName, Bson filter, T t) {
+        database.getCollection(data.getName() + "_" + collectionName).findOneAndReplace(filter, Document.parse(new Gson().toJson(t)));
     }
 
     public <T> T getEntry(String collectionName, Bson filter, Class<T> c) {
