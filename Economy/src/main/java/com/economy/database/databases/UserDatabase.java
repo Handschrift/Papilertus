@@ -34,6 +34,12 @@ public class UserDatabase {
     public static void updateUser(String userId, String guildId, EconomyUser user) {
         final Document document = new Document("_id.userId", userId);
         document.append("_id.guildId", guildId);
-        dataStore.modifyEntry(document, user, EconomyUser.class);
+        dataStore.modifyEntry(document, user);
+    }
+
+    public static void updateUser(EconomyUser user) {
+        final Document document = new Document("_id.userId", user.getUserId());
+        document.append("_id.guildId", user.getGuildId());
+        dataStore.modifyEntry(document, user);
     }
 }

@@ -2,6 +2,7 @@ package com.economy.init;
 
 import com.economy.commands.ProfileCommand;
 import com.economy.listeners.MessageReceivedListener;
+import com.economy.listeners.VoiceJoinListener;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.plugin.Plugin;
 import com.openpackagedbot.plugin.PluginConfig;
@@ -22,7 +23,7 @@ public class Economy implements Plugin {
         store = new PluginDataStore(pluginData);
         config = new PluginConfig(pluginData);
         config.addEntry("currency_name", "Butterflies");
-        config.addEntry("currency_icon", ":papilertus:963118768614150224");
+        config.addEntry("currency_icon", "<:papilertus:963118768614150224>");
         config.addEntry("coin_on_message_sent", true);
         config.addEntry("coin_message_cooldown", 20);
         config.addEntry("coin_on_voice_activity", true);
@@ -45,6 +46,7 @@ public class Economy implements Plugin {
     public List<? extends EventListener> getListeners() {
         final ArrayList<EventListener> listeners = new ArrayList<>();
         listeners.add(new MessageReceivedListener());
+        listeners.add(new VoiceJoinListener());
         return listeners;
     }
 

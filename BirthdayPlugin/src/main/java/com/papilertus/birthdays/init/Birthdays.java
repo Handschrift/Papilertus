@@ -32,7 +32,7 @@ public class Birthdays implements Plugin {
         final UserDatabase database = new UserDatabase();
         final GuildDatabase guildDatabase = new GuildDatabase();
         final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-        final EmbedBuilder notificationBuilder = new EmbedBuilder();
+      /*  final EmbedBuilder notificationBuilder = new EmbedBuilder();
         service.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
@@ -49,7 +49,7 @@ public class Birthdays implements Plugin {
                     }
                 }
             }
-        }, 0, 10, TimeUnit.SECONDS);
+        }, 0, 10, TimeUnit.SECONDS);*/
 
     }
 

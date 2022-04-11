@@ -17,13 +17,15 @@ public class MessageReceivedListener extends ListenerAdapter {
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
         final EconomyUser user = UserDatabase.fetch(event.getAuthor().getId(), event.getGuild().getId());
         if (!cooldowns.containsKey(user.getUserId())) {
-            user.addCoins(Economy.getConfig().readInt("coin_on_message_amount"));
+            user.addCoins(Economy.getConfig().readInt("base_coin_on_message_amount"));
             cooldowns.put(user.getUserId(), System.currentTimeMillis());
+            UserDatabase.updateUser(user);
             return;
         }
 
         if (System.currentTimeMillis() - cooldowns.get(user.getUserId()) > TimeUnit.SECONDS.toMillis(Economy.getConfig().readInt("coin_voice_cooldown"))) {
-            user.addCoins(Economy.getConfig().readInt("coin_on_message_amount"));
+            user.addCoins(Economy.getConfig().readInt("base_coin_on_message_amount"));
+            UserDatabase.updateUser(user);
         }
 
 
