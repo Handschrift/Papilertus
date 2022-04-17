@@ -95,7 +95,7 @@ public final class PluginConfig {
         if (!config.has(name)) {
             final JsonArray array = new JsonArray();
             for (T t : values) {
-                array.add(gson.toJson(t));
+                array.add(JsonParser.parseString(gson.toJson(t)));
             }
             config.add(name, array);
             save(file);
