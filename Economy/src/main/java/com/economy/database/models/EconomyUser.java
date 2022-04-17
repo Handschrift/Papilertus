@@ -1,14 +1,18 @@
 package com.economy.database.models;
 
+import com.economy.game.element.GameUpgrade;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
 
 
 public class EconomyUser {
     @SerializedName(value = "_id")
     private final EconomyUserKey id;
     private double coins = 0;
+    private final HashMap<String, Integer> upgradeCounts = new HashMap<>();
 
     public EconomyUser(String userId, String guildId) {
         this.id = new EconomyUserKey(userId, guildId);
@@ -63,5 +67,9 @@ public class EconomyUser {
         public String getGuildId() {
             return guildId;
         }
+    }
+
+    public HashMap<String, Integer> getUpgradeCounts() {
+        return upgradeCounts;
     }
 }
