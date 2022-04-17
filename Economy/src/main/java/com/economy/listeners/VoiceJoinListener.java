@@ -18,6 +18,9 @@ public class VoiceJoinListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
 
+        if(event.getMember().getUser().isBot())
+            return;
+
         if (voiceTimes.containsKey(event.getMember().getId())) {
             return;
         }
@@ -28,6 +31,10 @@ public class VoiceJoinListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
+
+        if(event.getMember().getUser().isBot())
+            return;
+
         if (!voiceTimes.containsKey(event.getMember().getId())) {
             return;
         }
