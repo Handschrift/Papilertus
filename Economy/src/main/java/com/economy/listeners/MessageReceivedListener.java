@@ -15,6 +15,9 @@ public class MessageReceivedListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
+        if (event.getMember().getUser().isBot())
+            return;
+
         final EconomyUser user = UserDatabase.fetch(event.getAuthor().getId(), event.getGuild().getId());
         if (!cooldowns.containsKey(user.getUserId())) {
             user.addCoins(Economy.getConfig().readInt("base_coin_on_message_amount"));
