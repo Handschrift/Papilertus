@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public final class PluginConfig {
 
@@ -90,6 +91,17 @@ public final class PluginConfig {
         }
     }
 
+    public <T> void addEntry(String name, T[] values) {
+        if (!config.has(name)) {
+            final JsonArray array = new JsonArray();
+            for (T t : values) {
+                array.add(gson.toJson(t));
+            }
+            config.add(name, array);
+            save(file);
+        }
+    }
+
     public String readString(String name) {
         return config.get(name).getAsString();
     }
@@ -102,8 +114,16 @@ public final class PluginConfig {
         return config.get(name).getAsBoolean();
     }
 
-    public JsonArray readArray(String name){
+    public JsonArray readArray(String name) {
         return config.get(name).getAsJsonArray();
+    }
+
+    public <T> ArrayList<T> readType(String name, Class<T> c) {
+        final ArrayList<T> elements = new ArrayList<>();
+        for (JsonElement element : config.get(name).getAsJsonArray()) {
+            elements.add(gson.fromJson(element.toString(), c));
+        }
+        return elements;
     }
 
     @Override
