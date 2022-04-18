@@ -5,6 +5,7 @@ import com.economy.commands.ShopCommand;
 import com.economy.commands.WorkCommand;
 import com.economy.game.element.GameUpgrade;
 import com.economy.game.element.IncrementType;
+import com.economy.listeners.BumpListener;
 import com.economy.listeners.MessageReceivedListener;
 import com.economy.listeners.VoiceJoinListener;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
@@ -70,6 +71,7 @@ public class Economy implements Plugin {
         final ArrayList<EventListener> listeners = new ArrayList<>();
         listeners.add(new MessageReceivedListener());
         listeners.add(new VoiceJoinListener());
+        listeners.add(new BumpListener());
         listeners.add(waiter);
         return listeners;
     }
