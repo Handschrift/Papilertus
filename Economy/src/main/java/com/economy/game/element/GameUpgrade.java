@@ -6,13 +6,15 @@ public class GameUpgrade {
     final IncrementType incrementType;
     final String icon;
     final float incrementScale;
+    final float basePrice;
 
-    public GameUpgrade(String name, String description, IncrementType incrementType, String icon, float incrementScale) {
+    public GameUpgrade(String name, String description, IncrementType incrementType, String icon, float incrementScale, float basePrice) {
         this.name = name;
         this.description = description;
         this.incrementType = incrementType;
         this.icon = icon;
         this.incrementScale = incrementScale;
+        this.basePrice = basePrice;
     }
 
 
@@ -30,5 +32,9 @@ public class GameUpgrade {
 
     public String getIcon() {
         return icon;
+    }
+
+    public float getBasePrice() {
+        return basePrice;
     }
 }
