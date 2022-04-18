@@ -1,6 +1,7 @@
 package com.economy.init;
 
 import com.economy.commands.ProfileCommand;
+import com.economy.commands.SellCommand;
 import com.economy.commands.ShopCommand;
 import com.economy.commands.WorkCommand;
 import com.economy.game.element.GameUpgrade;
@@ -37,9 +38,9 @@ public class Economy implements Plugin {
         config.addEntry("coin_on_message_sent", true);
         config.addEntry("coin_message_cooldown", 20);
         config.addEntry("coin_on_voice_activity", true);
-        config.addEntry("base_coin_on_message_amount", 10);
+        config.addEntry("base_coin_on_message_amount", 1);
         config.addEntry("coin_voice_cooldown", 20);
-        config.addEntry("base_coin_on_voice_activity_amount", 10);
+        config.addEntry("base_coin_on_voice_activity_amount", 1);
         config.addEntry("whitelist_mode", false);
         config.addEntry("listed_users", new String[]{});
         config.addEntry("listed_roles", new String[]{});
@@ -47,6 +48,8 @@ public class Economy implements Plugin {
         config.addEntry("work_cooldown", 60);
         config.addEntry("base_work_gain", 20);
         config.addEntry("convert_command_name", "plant");
+        config.addEntry("base_collectables_on_bump_gain", 100);
+        config.addEntry("collectable_to_currency_conversion", 3);
         config.addEntry("upgrades", new GameUpgrade[]{
                 new GameUpgrade("Monarch Butterfly", "Upgrades seed gain by voice", IncrementType.VOICE, ":butterfly:", 1.2F, 1.1F),
                 new GameUpgrade("Periander Metalmark", "Upgrades seed gain by message", IncrementType.MESSAGE, ":butterfly:", 1.2F, 1.1F),
@@ -63,6 +66,7 @@ public class Economy implements Plugin {
         commands.add(new ProfileCommand());
         commands.add(new WorkCommand(waiter));
         commands.add(new ShopCommand());
+        commands.add(new SellCommand());
         return commands;
     }
 
