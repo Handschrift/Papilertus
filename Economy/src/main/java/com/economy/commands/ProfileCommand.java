@@ -21,7 +21,13 @@ public class ProfileCommand extends Command {
     protected void execute(SlashCommandEvent slashCommandEvent) {
         final EconomyUser user = UserDatabase.fetch(slashCommandEvent.getUser().getId(), slashCommandEvent.getGuild().getId());
         final EmbedBuilder builder = new EmbedBuilder()
-                .addField("Butterflies", user.getCoins() + " " + Economy.getConfig().readString("currency_icon"), true);
+                .setAuthor(slashCommandEvent.getUser().getName(), null, slashCommandEvent.getUser().getEffectiveAvatarUrl())
+                .setFooter(slashCommandEvent.getUser().getAsTag())
+                .setThumbnail(slashCommandEvent.getUser().getEffectiveAvatarUrl());
+        builder.getDescriptionBuilder().append(Economy.getConfig().readString("collectable_name"))
+                .append(": ").append(Economy.getConfig().readString("collectable_icon")).append(user.getCollectables()).append("\n")
+                .append(Economy.getConfig().readString("currency_name"))
+                .append(": ").append(Economy.getConfig().readString("currency_icon")).append(user.getCoins());
         slashCommandEvent.replyEmbeds(builder.build()).queue();
     }
 }
