@@ -1,16 +1,27 @@
 package com.economy.database.models;
 
+import com.economy.game.element.GameUpgrade;
+import com.economy.game.element.ShopButton;
+import com.economy.init.Economy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import com.openpackagedbot.gui.button.DiscordButton;
+import com.openpackagedbot.gui.generator.PapilertusMessageBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.interactions.components.ButtonStyle;
+
+import java.util.concurrent.TimeUnit;
 
 
 public class EconomyUser {
     @SerializedName(value = "_id")
     private final EconomyUserKey id;
     private double coins = 0;
+    private double collectables = 0;
     private final JsonObject upgradeCounts = new JsonObject();
+    private long lastWorkCooldown = 0;
 
     public EconomyUser(String userId, String guildId) {
         this.id = new EconomyUserKey(userId, guildId);
@@ -71,11 +82,57 @@ public class EconomyUser {
         return upgradeCounts;
     }
 
+    public int getUpgradeLevel(String name) {
+        return getUpgradeCounts().get(name) == null ? 1 : getUpgradeCounts().get(name).getAsInt();
+    }
+
     public void addUpgrades(String name) {
         if (upgradeCounts.has(name))
             upgradeCounts.addProperty(name, upgradeCounts.get(name).getAsInt() + 1);
         else
-            upgradeCounts.addProperty(name, 1);
+            upgradeCounts.addProperty(name, 2); // implicit 1, so set to 2 if it gets upgraded the first time
 
+    }
+
+    public long getLastWorkCooldown() {
+        return lastWorkCooldown;
+    }
+
+    public boolean canWork() {
+        return lastWorkCooldown == 0 || (System.currentTimeMillis() - lastWorkCooldown > TimeUnit.MINUTES.toMillis(Economy.getConfig().readInt("work_cooldown")));
+    }
+
+    public void setLastWorkCooldown(long lastWorkCooldown) {
+        this.lastWorkCooldown = lastWorkCooldown;
+    }
+
+    public double getCollectables() {
+        return collectables;
+    }
+
+    public void addCollectables(double collectables) {
+        this.collectables += collectables;
+    }
+
+    public PapilertusMessageBuilder getShopMessageBuilder() {
+        final EmbedBuilder shopBuilder = new EmbedBuilder();
+        final PapilertusMessageBuilder messageBuilder = new PapilertusMessageBuilder();
+        for (GameUpgrade upgrade : Economy.getConfig().readType("upgrades", GameUpgrade.class)) {
+            final int upgradeLevel = getUpgradeLevel(upgrade.getName());
+            messageBuilder.addButtons(new DiscordButton(getUserId(), new ShopButton(upgrade.getName(), this), ButtonStyle.PRIMARY, upgrade.getName()));
+            shopBuilder.addField(upgrade.getIcon() + " " + upgrade.getName()
+                    + " (Level: " + upgradeLevel + ")" + " | " + upgrade.getBasePrice() * (int) Math.sqrt(upgradeLevel) + " "
+                    + Economy.getConfig().readString("currency_icon"), upgrade.getDescription(), false);
+        }
+        messageBuilder.setEmbeds(shopBuilder.build());
+        return messageBuilder;
+    }
+
+    public void removeCollectables(double collectables) {
+        this.collectables -= collectables;
+    }
+
+    public void setCollectables(double collectables) {
+        this.collectables = collectables;
     }
 }
