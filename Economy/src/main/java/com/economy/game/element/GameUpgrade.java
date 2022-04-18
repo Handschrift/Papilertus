@@ -1,12 +1,15 @@
 package com.economy.game.element;
 
+import com.economy.database.models.EconomyUser;
+import com.economy.init.Economy;
+
 public class GameUpgrade {
-    final String name;
-    final String description;
-    final IncrementType incrementType;
-    final String icon;
-    final float incrementScale;
-    final float basePrice;
+    private final String name;
+    private final String description;
+    private final IncrementType incrementType;
+    private final String icon;
+    private final float incrementScale;
+    private final float basePrice;
 
     public GameUpgrade(String name, String description, IncrementType incrementType, String icon, float incrementScale, float basePrice) {
         this.name = name;
@@ -36,5 +39,19 @@ public class GameUpgrade {
 
     public float getBasePrice() {
         return basePrice;
+    }
+
+    public float getIncrementScale() {
+        return incrementScale;
+    }
+
+    public static float getAggregatedUpgradeCoefficient(EconomyUser user, IncrementType type) {
+        float coefficient = 1;
+        for (GameUpgrade upgrade : Economy.getConfig().readType("upgrades", GameUpgrade.class)) {
+            if (upgrade.getIncrementType().equals(type)) {
+                coefficient += (upgrade.getIncrementScale() * user.getUpgradeLevel(upgrade.getName()));
+            }
+        }
+        return Math.round(coefficient * 100) / 100F; //rounding to two decimal places
     }
 }
