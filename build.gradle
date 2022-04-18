@@ -18,7 +18,7 @@ repositories {
         name 'm2-dv8tion'
         url 'https://m2.dv8tion.net/releases'
     }
-    maven { url = uri("https://m2.chew.pro/releases") }
+
 }
 
 jar {
@@ -35,7 +35,7 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
     implementation group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.32'
-    implementation group: 'pw.chew', name: 'jda-chewtils-commons', version: '1.24.1'
+
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
