@@ -31,5 +31,6 @@ public class ShopButton implements Pressable {
         user.removeCoins(upgrade.getBasePrice() * (int) Math.sqrt(upgradeLevel));
         UserDatabase.updateUser(user);
         buttonClickEvent.getMessage().editMessage(user.getShopMessageBuilder().build()).queue();
+        buttonClickEvent.deferEdit().queue();
     }
 }
