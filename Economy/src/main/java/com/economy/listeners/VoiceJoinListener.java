@@ -18,7 +18,7 @@ public class VoiceJoinListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
 
-        if(event.getMember().getUser().isBot())
+        if (event.getMember().getUser().isBot())
             return;
 
         if (voiceTimes.containsKey(event.getMember().getId())) {
@@ -32,7 +32,7 @@ public class VoiceJoinListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
 
-        if(event.getMember().getUser().isBot())
+        if (event.getMember().getUser().isBot())
             return;
 
         if (!voiceTimes.containsKey(event.getMember().getId())) {
@@ -46,8 +46,8 @@ public class VoiceJoinListener extends ListenerAdapter {
         }
 
         final EconomyUser user = UserDatabase.fetch(event.getMember().getId(), event.getGuild().getId());
-        double addedCoins = TimeUnit.MILLISECONDS.toMinutes(timeDiff) * Economy.getConfig().readInt("base_coin_on_voice_activity_amount");
-        user.addCoins(addedCoins);
+        double addedCollectables = TimeUnit.MILLISECONDS.toMinutes(timeDiff) * Economy.getConfig().readInt("base_coin_on_voice_activity_amount");
+        user.addCollectables(addedCollectables);
         UserDatabase.updateUser(user);
 
     }
