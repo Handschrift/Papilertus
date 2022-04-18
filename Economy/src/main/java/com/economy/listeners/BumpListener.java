@@ -1,5 +1,10 @@
 package com.economy.listeners;
 
+import com.economy.database.databases.UserDatabase;
+import com.economy.database.models.EconomyUser;
+import com.economy.game.element.GameUpgrade;
+import com.economy.game.element.IncrementType;
+import com.economy.init.Economy;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -16,7 +21,11 @@ public class BumpListener extends ListenerAdapter {
                 && bumpInteraction.getName().equals("bump")) {
             //I don't know if this is needed, but it is an extra verification step for a successful bump
             if (event.getMessage().getEmbeds().get(0).getImage().getUrl().equals("https://disboard.org/images/bot-command-image-bump.png")) {
-                event.getChannel().sendMessage(bumpInteraction.getUser().getAsMention() + " bumped!").queue();
+                final EconomyUser user = UserDatabase.fetch(event.getAuthor().getId(), event.getGuild().getId());
+                user.addCoins(Economy.getConfig().readInt("base_collectables_on_bump_gain") * GameUpgrade.getAggregatedUpgradeCoefficient(user, IncrementType.BUMP));
+                UserDatabase.updateUser(user);
+                event.getChannel().sendMessage(bumpInteraction.getUser().getAsMention() + " bumped the server and got "
+                        + Economy.getConfig().readInt("base_collectables_on_bump_gain") + Economy.getConfig().readInt("collectable_name") + "!").queue();
             }
         }
 

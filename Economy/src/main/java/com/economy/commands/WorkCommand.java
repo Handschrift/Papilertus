@@ -2,6 +2,8 @@ package com.economy.commands;
 
 import com.economy.database.databases.UserDatabase;
 import com.economy.database.models.EconomyUser;
+import com.economy.game.element.GameUpgrade;
+import com.economy.game.element.IncrementType;
 import com.economy.init.Economy;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.openpackagedbot.commands.core.Command;
@@ -23,16 +25,22 @@ public class WorkCommand extends Command {
     protected void execute(SlashCommandEvent slashCommandEvent) {
         final EconomyUser user = UserDatabase.fetch(slashCommandEvent.getUser().getId(), slashCommandEvent.getGuild().getId());
         if (!user.canWork()) {
-            slashCommandEvent.reply("Sorry, but you have to wait!").setEphemeral(true).queue();
+            /* final long future = Economy.getConfig().readInt("work_cooldown") - TimeUnit.MILLISECONDS.toMinutes(
+                    user.getLastWorkCooldown()
+            ); */
+            //<t:future:R>
+            slashCommandEvent.reply("Sorry, but you have to wait for one hour")
+                    .setEphemeral(true).queue();
             return;
         }
         if (Economy.getConfig().readBoolean("enable_work_minigame")) {
             //Minigame
         } else {
-            user.addCoins(Economy.getConfig().readInt("base_work_gain"));
+            float coins = Economy.getConfig().readInt("base_work_gain") * GameUpgrade.getAggregatedUpgradeCoefficient(user, IncrementType.WORK);
+            user.addCoins(coins);
             user.setLastWorkCooldown(System.currentTimeMillis());
             UserDatabase.updateUser(user);
-            slashCommandEvent.reply("You got some money to love!").queue();
+            slashCommandEvent.reply("You are living a lot greener! You got " + coins + " " + Economy.getConfig().readString("collectable_name")).queue();
         }
 
 

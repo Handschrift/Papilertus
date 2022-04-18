@@ -2,6 +2,8 @@ package com.economy.listeners;
 
 import com.economy.database.databases.UserDatabase;
 import com.economy.database.models.EconomyUser;
+import com.economy.game.element.GameUpgrade;
+import com.economy.game.element.IncrementType;
 import com.economy.init.Economy;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -19,15 +21,16 @@ public class MessageReceivedListener extends ListenerAdapter {
             return;
 
         final EconomyUser user = UserDatabase.fetch(event.getAuthor().getId(), event.getGuild().getId());
+        final float coins = Economy.getConfig().readInt("base_coin_on_message_amount") * GameUpgrade.getAggregatedUpgradeCoefficient(user, IncrementType.MESSAGE);
         if (!cooldowns.containsKey(user.getUserId())) {
-            user.addCollectables(Economy.getConfig().readInt("base_coin_on_message_amount"));
+            user.addCollectables(coins);
             cooldowns.put(user.getUserId(), System.currentTimeMillis());
             UserDatabase.updateUser(user);
             return;
         }
 
         if (System.currentTimeMillis() - cooldowns.get(user.getUserId()) > TimeUnit.SECONDS.toMillis(Economy.getConfig().readInt("coin_voice_cooldown"))) {
-            user.addCollectables(Economy.getConfig().readInt("base_coin_on_message_amount"));
+            user.addCollectables(coins);
             UserDatabase.updateUser(user);
         }
 

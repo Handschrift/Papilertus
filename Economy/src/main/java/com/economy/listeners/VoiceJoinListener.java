@@ -2,6 +2,8 @@ package com.economy.listeners;
 
 import com.economy.database.databases.UserDatabase;
 import com.economy.database.models.EconomyUser;
+import com.economy.game.element.GameUpgrade;
+import com.economy.game.element.IncrementType;
 import com.economy.init.Economy;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
@@ -46,7 +48,8 @@ public class VoiceJoinListener extends ListenerAdapter {
         }
 
         final EconomyUser user = UserDatabase.fetch(event.getMember().getId(), event.getGuild().getId());
-        double addedCollectables = TimeUnit.MILLISECONDS.toMinutes(timeDiff) * Economy.getConfig().readInt("base_coin_on_voice_activity_amount");
+        double addedCollectables = TimeUnit.MILLISECONDS.toMinutes(timeDiff) * Economy.getConfig().readInt("base_coin_on_voice_activity_amount")
+                * GameUpgrade.getAggregatedUpgradeCoefficient(user, IncrementType.VOICE);
         user.addCollectables(addedCollectables);
         UserDatabase.updateUser(user);
 
