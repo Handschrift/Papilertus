@@ -1,6 +1,7 @@
 package com.economy.database.models;
 
 import com.economy.game.element.GameUpgrade;
+import com.economy.game.element.IncrementType;
 import com.economy.game.element.ShopButton;
 import com.economy.init.Economy;
 import com.google.gson.Gson;
@@ -121,9 +122,14 @@ public class EconomyUser {
             final int upgradeLevel = getUpgradeLevel(upgrade.getName());
             messageBuilder.addButtons(new DiscordButton(getUserId(), new ShopButton(upgrade.getName(), this), ButtonStyle.PRIMARY, upgrade.getName()));
             shopBuilder.addField(upgrade.getIcon() + " " + upgrade.getName()
-                    + " (Level: " + upgradeLevel + ")" + " | " + upgrade.getBasePrice() * (int) Math.sqrt(upgradeLevel) + " "
+                    + " (Level: " + upgradeLevel + ")" + " | " + upgrade.getBasePrice() * Math.sqrt(upgradeLevel) + " "
                     + Economy.getConfig().readString("currency_icon"), upgrade.getDescription(), false);
         }
+        shopBuilder.getDescriptionBuilder().append("Your stats:").append("\n")
+                .append("Leaves per Bump: ").append(GameUpgrade.getAggregatedUpgradeCoefficient(this, IncrementType.BUMP)).append("\n")
+                .append("Leaves per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeCoefficient(this, IncrementType.VOICE)).append("\n")
+                .append("Leaves per message: ").append(GameUpgrade.getAggregatedUpgradeCoefficient(this, IncrementType.MESSAGE)).append("\n")
+                .append("Leaves per work: ").append(GameUpgrade.getAggregatedUpgradeCoefficient(this, IncrementType.WORK));
         messageBuilder.setEmbeds(shopBuilder.build());
         return messageBuilder;
     }
