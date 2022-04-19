@@ -127,10 +127,10 @@ public class EconomyUser {
                     + Economy.getConfig().readString("currency_icon"), upgrade.getDescription(), false);
         }
         shopBuilder.getDescriptionBuilder().append("Your stats:").append("\n")
-                .append("Leaves per Bump: ").append(GameUpgrade.getAggregatedUpgradeCoefficient(this, IncrementType.BUMP)).append("\n")
-                .append("Leaves per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeCoefficient(this, IncrementType.VOICE)).append("\n")
-                .append("Leaves per message: ").append(GameUpgrade.getAggregatedUpgradeCoefficient(this, IncrementType.MESSAGE)).append("\n")
-                .append("Leaves per work: ").append(GameUpgrade.getAggregatedUpgradeCoefficient(this, IncrementType.WORK));
+                .append("Leafs per Bump: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_collectables_on_bump_gain"), this, IncrementType.BUMP)).append("\n")
+                .append("Leafs per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_voice_activity_amount"), this, IncrementType.VOICE)).append("\n")
+                .append("Leafs per message: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_message_amount"), this, IncrementType.MESSAGE)).append("\n")
+                .append("Leafs per work: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_work_gain"), this, IncrementType.WORK));
         messageBuilder.setEmbeds(shopBuilder.build());
         return messageBuilder;
     }
