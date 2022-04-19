@@ -5,7 +5,6 @@ import com.economy.database.models.EconomyUser;
 import com.economy.game.element.GameUpgrade;
 import com.economy.game.element.IncrementType;
 import com.economy.init.Economy;
-import com.economy.util.MathUtils;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.openpackagedbot.commands.core.Command;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -36,7 +35,7 @@ public class WorkCommand extends Command {
         if (Economy.getConfig().readBoolean("enable_work_minigame")) {
             //Minigame
         } else {
-            float coins = MathUtils.round(Economy.getConfig().readInt("base_work_gain") * GameUpgrade.getAggregatedUpgradeCoefficient(user, IncrementType.WORK));
+            float coins = GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_work_gain"), user, IncrementType.WORK);
             user.addCoins(coins);
             user.setLastWorkCooldown(System.currentTimeMillis());
             UserDatabase.updateUser(user);

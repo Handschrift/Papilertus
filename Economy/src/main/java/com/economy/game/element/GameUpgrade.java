@@ -56,6 +56,11 @@ public class GameUpgrade {
         return MathUtils.round(coefficient); //rounding to two decimal places
     }
 
+    public static float getAggregatedUpgradeValue(float baseValue, EconomyUser user, IncrementType type) {
+        float coefficient = baseValue * getAggregatedUpgradeCoefficient(user, type);
+        return MathUtils.round(coefficient); //rounding to two decimal places
+    }
+
     public float getUpgradeCoefficient(EconomyUser user) {
         final float coefficient = (float) (getBasePrice() * Math.sqrt(user.getUpgradeLevel(getName())));
         return MathUtils.round(coefficient);

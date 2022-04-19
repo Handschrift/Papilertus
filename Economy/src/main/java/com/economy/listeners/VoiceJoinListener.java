@@ -48,8 +48,8 @@ public class VoiceJoinListener extends ListenerAdapter {
         }
 
         final EconomyUser user = UserDatabase.fetch(event.getMember().getId(), event.getGuild().getId());
-        double addedCollectables = TimeUnit.MILLISECONDS.toMinutes(timeDiff) * Economy.getConfig().readInt("base_coin_on_voice_activity_amount")
-                * GameUpgrade.getAggregatedUpgradeCoefficient(user, IncrementType.VOICE);
+        double addedCollectables = TimeUnit.MILLISECONDS.toMinutes(timeDiff) * GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_voice_activity_amount")
+                , user, IncrementType.VOICE);
         user.addCollectables(addedCollectables);
         UserDatabase.updateUser(user);
 
