@@ -50,6 +50,7 @@ public class Economy implements Plugin {
         config.addEntry("convert_command_name", "plant");
         config.addEntry("base_collectables_on_bump_gain", 100);
         config.addEntry("collectable_to_currency_conversion", 3);
+        config.addEntry("decimals", 0);
         config.addEntry("upgrades", new GameUpgrade[]{
                 new GameUpgrade("Monarch Butterfly", "Upgrades seed gain by voice", IncrementType.VOICE, ":butterfly:", 1.2F, 12.0F),
                 new GameUpgrade("Periander Metalmark", "Upgrades seed gain by message", IncrementType.MESSAGE, ":butterfly:", 1.2F, 9.1F),
