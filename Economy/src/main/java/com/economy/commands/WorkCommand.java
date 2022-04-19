@@ -5,10 +5,13 @@ import com.economy.database.models.EconomyUser;
 import com.economy.game.element.GameUpgrade;
 import com.economy.game.element.IncrementType;
 import com.economy.init.Economy;
+import com.economy.util.MathUtils;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.openpackagedbot.commands.core.Command;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+
+import java.util.concurrent.TimeUnit;
 
 public class WorkCommand extends Command {
 
@@ -25,22 +28,19 @@ public class WorkCommand extends Command {
     protected void execute(SlashCommandEvent slashCommandEvent) {
         final EconomyUser user = UserDatabase.fetch(slashCommandEvent.getUser().getId(), slashCommandEvent.getGuild().getId());
         if (!user.canWork()) {
-            /* final long future = Economy.getConfig().readInt("work_cooldown") - TimeUnit.MILLISECONDS.toMinutes(
-                    user.getLastWorkCooldown()
-            ); */
-            //<t:future:R>
-            slashCommandEvent.reply("Sorry, but you have to wait for one hour")
+            final long future = TimeUnit.MILLISECONDS.toSeconds(TimeUnit.MINUTES.toMillis(Economy.getConfig().readInt("work_cooldown")) + user.getLastWorkCooldown());
+            slashCommandEvent.reply("Sorry, but you have to wait for <t:" + future + ":R>")
                     .setEphemeral(true).queue();
             return;
         }
         if (Economy.getConfig().readBoolean("enable_work_minigame")) {
             //Minigame
         } else {
-            float coins = Economy.getConfig().readInt("base_work_gain") * GameUpgrade.getAggregatedUpgradeCoefficient(user, IncrementType.WORK);
+            float coins = MathUtils.round(Economy.getConfig().readInt("base_work_gain") * GameUpgrade.getAggregatedUpgradeCoefficient(user, IncrementType.WORK));
             user.addCoins(coins);
             user.setLastWorkCooldown(System.currentTimeMillis());
             UserDatabase.updateUser(user);
-            slashCommandEvent.reply("You are living a lot greener! You got " + coins + " " + Economy.getConfig().readString("collectable_name")).queue();
+            slashCommandEvent.reply("You are living a lot greener! You got " + coins + " " + Economy.getConfig().readString("currency_name")).queue();
         }
 
 
