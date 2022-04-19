@@ -51,11 +51,11 @@ public class Economy implements Plugin {
         config.addEntry("base_collectables_on_bump_gain", 100);
         config.addEntry("collectable_to_currency_conversion", 3);
         config.addEntry("upgrades", new GameUpgrade[]{
-                new GameUpgrade("Monarch Butterfly", "Upgrades seed gain by voice", IncrementType.VOICE, ":butterfly:", 1.2F, 1.1F),
-                new GameUpgrade("Periander Metalmark", "Upgrades seed gain by message", IncrementType.MESSAGE, ":butterfly:", 1.2F, 1.1F),
-                new GameUpgrade("Mountain Apollo", "Upgrades seed gain by work", IncrementType.WORK, ":butterfly:", 1.2F, 1.1F),
-                new GameUpgrade("Great Purple Hairsteak", "Upgrades seed gain by bump", IncrementType.BUMP, ":butterfly:", 1.2F, 1.1F),
-                new GameUpgrade("Southern Dogface", "Upgrades seed gain by treasure", IncrementType.TREASURE, ":butterfly:", 1.2F, 1.1F)
+                new GameUpgrade("Monarch Butterfly", "Upgrades seed gain by voice", IncrementType.VOICE, ":butterfly:", 1.2F, 12.0F),
+                new GameUpgrade("Periander Metalmark", "Upgrades seed gain by message", IncrementType.MESSAGE, ":butterfly:", 1.2F, 9.1F),
+                new GameUpgrade("Mountain Apollo", "Upgrades seed gain by work", IncrementType.WORK, ":butterfly:", 1.2F, 8.3F),
+                new GameUpgrade("Great Purple Hairsteak", "Upgrades seed gain by bump", IncrementType.BUMP, ":butterfly:", 1.5F, 16.4F),
+                new GameUpgrade("Southern Dogface", "Upgrades seed gain by treasure", IncrementType.TREASURE, ":butterfly:", 1.1F, 5.2F)
         });
     }
 

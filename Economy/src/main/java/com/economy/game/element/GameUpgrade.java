@@ -2,6 +2,7 @@ package com.economy.game.element;
 
 import com.economy.database.models.EconomyUser;
 import com.economy.init.Economy;
+import com.economy.util.MathUtils;
 
 public class GameUpgrade {
     private final String name;
@@ -52,6 +53,11 @@ public class GameUpgrade {
                 coefficient += (upgrade.getIncrementScale() * user.getUpgradeLevel(upgrade.getName()));
             }
         }
-        return Math.round(coefficient * 100) / 100F; //rounding to two decimal places
+        return MathUtils.round(coefficient); //rounding to two decimal places
+    }
+
+    public float getUpgradeCoefficient(EconomyUser user) {
+        final float coefficient = (float) (getBasePrice() * Math.sqrt(user.getUpgradeLevel(getName())));
+        return MathUtils.round(coefficient);
     }
 }

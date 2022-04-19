@@ -4,6 +4,7 @@ import com.economy.game.element.GameUpgrade;
 import com.economy.game.element.IncrementType;
 import com.economy.game.element.ShopButton;
 import com.economy.init.Economy;
+import com.economy.util.MathUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -41,19 +42,19 @@ public class EconomyUser {
     }
 
     public double getCoins() {
-        return coins;
+        return MathUtils.round(coins);
     }
 
-    public void setCoins(double coins) {
+    public void setCoins(float coins) {
         this.coins = coins;
     }
 
     public void addCoins(double coins) {
-        this.coins += coins;
+        this.coins += MathUtils.round(coins);
     }
 
     public void removeCoins(double coins) {
-        this.coins -= coins;
+        this.coins -= MathUtils.round(coins);
     }
 
     public String toJson() {
@@ -108,11 +109,11 @@ public class EconomyUser {
     }
 
     public double getCollectables() {
-        return collectables;
+        return MathUtils.round(collectables);
     }
 
     public void addCollectables(double collectables) {
-        this.collectables += collectables;
+        this.collectables += MathUtils.round(collectables);
     }
 
     public PapilertusMessageBuilder getShopMessageBuilder() {
@@ -122,7 +123,7 @@ public class EconomyUser {
             final int upgradeLevel = getUpgradeLevel(upgrade.getName());
             messageBuilder.addButtons(new DiscordButton(getUserId(), new ShopButton(upgrade.getName(), this), ButtonStyle.PRIMARY, upgrade.getName()));
             shopBuilder.addField(upgrade.getIcon() + " " + upgrade.getName()
-                    + " (Level: " + upgradeLevel + ")" + " | " + upgrade.getBasePrice() * Math.sqrt(upgradeLevel) + " "
+                    + " (Level: " + upgradeLevel + ")" + " | " + upgrade.getUpgradeCoefficient(this) + " "
                     + Economy.getConfig().readString("currency_icon"), upgrade.getDescription(), false);
         }
         shopBuilder.getDescriptionBuilder().append("Your stats:").append("\n")
@@ -135,10 +136,10 @@ public class EconomyUser {
     }
 
     public void removeCollectables(double collectables) {
-        this.collectables -= collectables;
+        this.collectables -= MathUtils.round(collectables);
     }
 
-    public void setCollectables(double collectables) {
+    public void setCollectables(float collectables) {
         this.collectables = collectables;
     }
 }

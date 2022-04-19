@@ -3,6 +3,7 @@ package com.economy.commands;
 import com.economy.database.databases.UserDatabase;
 import com.economy.database.models.EconomyUser;
 import com.economy.init.Economy;
+import com.economy.util.MathUtils;
 import com.openpackagedbot.commands.core.Command;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -21,7 +22,7 @@ public class SellCommand extends Command {
     protected void execute(SlashCommandEvent slashCommandEvent) {
         final EconomyUser user = UserDatabase.fetch(slashCommandEvent.getUser().getId(), slashCommandEvent.getGuild().getId());
         final double collectables = slashCommandEvent.getOption("amount") == null ? user.getCollectables() : slashCommandEvent.getOption("amount").getAsDouble();
-        final double coins = collectables * Economy.getConfig().readInt("collectable_to_currency_conversion");
+        final double coins = MathUtils.round(collectables * Economy.getConfig().readInt("collectable_to_currency_conversion"));
         user.removeCollectables(collectables);
         user.addCoins(coins);
         UserDatabase.updateUser(user);
