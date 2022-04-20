@@ -39,24 +39,23 @@ public class Economy implements Plugin {
         config.addEntry("coin_message_cooldown", 20);
         config.addEntry("coin_on_voice_activity", true);
         config.addEntry("base_coin_on_message_amount", 1);
-        config.addEntry("coin_voice_cooldown", 20);
         config.addEntry("base_coin_on_voice_activity_amount", 1);
         config.addEntry("whitelist_mode", false);
         config.addEntry("listed_users", new String[]{});
         config.addEntry("listed_roles", new String[]{});
         config.addEntry("enable_work_minigame", true);
         config.addEntry("work_cooldown", 60);
-        config.addEntry("base_work_gain", 20);
+        config.addEntry("base_work_gain", 10);
         config.addEntry("convert_command_name", "plant");
-        config.addEntry("base_collectables_on_bump_gain", 100);
+        config.addEntry("base_collectables_on_bump_gain", 110);
         config.addEntry("collectable_to_currency_conversion", 3);
         config.addEntry("decimals", 0);
         config.addEntry("upgrades", new GameUpgrade[]{
-                new GameUpgrade("Monarch Butterfly", "Upgrades seed gain by voice", IncrementType.VOICE, ":butterfly:", 1.2F, 12.0F),
-                new GameUpgrade("Periander Metalmark", "Upgrades seed gain by message", IncrementType.MESSAGE, ":butterfly:", 1.2F, 9.1F),
-                new GameUpgrade("Mountain Apollo", "Upgrades seed gain by work", IncrementType.WORK, ":butterfly:", 1.2F, 8.3F),
-                new GameUpgrade("Great Purple Hairstreak", "Upgrades seed gain by bump", IncrementType.BUMP, ":butterfly:", 1.5F, 16.4F),
-                new GameUpgrade("Southern Dogface", "Upgrades seed gain by treasure", IncrementType.TREASURE, ":butterfly:", 1.1F, 5.2F)
+                new GameUpgrade("Monarch Butterfly", "Upgrades seed gain by voice", IncrementType.VOICE, ":butterfly:", 0.3F, 36.0F),
+                new GameUpgrade("Periander Metalmark", "Upgrades seed gain by message", IncrementType.MESSAGE, ":butterfly:", 0.5F, 18.2F),
+                new GameUpgrade("Mountain Apollo", "Upgrades seed gain by work", IncrementType.WORK, ":butterfly:", 0.8F, 51.3F),
+                new GameUpgrade("Great Purple Hairstreak", "Upgrades seed gain by bump", IncrementType.BUMP, ":butterfly:", 1.1F, 100.4F),
+                new GameUpgrade("Southern Dogface", "Upgrades seed gain by treasure", IncrementType.TREASURE, ":butterfly:", 1.0F, 30.2F)
         });
     }
 
