@@ -123,10 +123,11 @@ public class EconomyUser {
             final int upgradeLevel = getUpgradeLevel(upgrade.getName());
             messageBuilder.addButtons(new DiscordButton(getUserId(), new ShopButton(upgrade.getName(), this), ButtonStyle.PRIMARY, upgrade.getName()));
             shopBuilder.addField(upgrade.getIcon() + " " + upgrade.getName()
-                    + " (Level: " + upgradeLevel + ")" + " | " + upgrade.getUpgradeCoefficient(this) + " "
+                    + " (Level: " + upgradeLevel + ")" + " | " + upgrade.getUpgradePrice(this) + " "
                     + Economy.getConfig().readString("currency_icon"), upgrade.getDescription(), false);
         }
         shopBuilder.getDescriptionBuilder().append("Your stats:").append("\n")
+                .append("Your ").append(Economy.getConfig().readString("currency_name")).append(": ").append(getCoins()).append(Economy.getConfig().readString("currency_icon")).append("\n")
                 .append("Leafs per Bump: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_collectables_on_bump_gain"), this, IncrementType.BUMP)).append("\n")
                 .append("Leafs per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_voice_activity_amount"), this, IncrementType.VOICE)).append("\n")
                 .append("Leafs per message: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_message_amount"), this, IncrementType.MESSAGE)).append("\n")
