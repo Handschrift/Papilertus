@@ -29,7 +29,7 @@ public class MessageReceivedListener extends ListenerAdapter {
             return;
         }
 
-        if (System.currentTimeMillis() - cooldowns.get(user.getUserId()) > TimeUnit.SECONDS.toMillis(Economy.getConfig().readInt("coin_voice_cooldown"))) {
+        if (System.currentTimeMillis() - cooldowns.get(user.getUserId()) > TimeUnit.SECONDS.toMillis(Economy.getConfig().readInt("coin_message_cooldown"))) {
             user.addCollectables(coins);
             UserDatabase.updateUser(user);
         }
