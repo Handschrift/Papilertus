@@ -2,14 +2,21 @@ package com.economy.commands;
 
 import com.economy.database.databases.UserDatabase;
 import com.economy.database.models.EconomyUser;
+import com.economy.game.element.AnswerButton;
 import com.economy.game.element.GameUpgrade;
 import com.economy.game.element.IncrementType;
 import com.economy.init.Economy;
+import com.economy.minigames.Quiz;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.openpackagedbot.commands.core.Command;
+import com.openpackagedbot.gui.button.DiscordButton;
+import com.openpackagedbot.gui.generator.PapilertusMessageBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.components.ButtonStyle;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class WorkCommand extends Command {
@@ -33,7 +40,21 @@ public class WorkCommand extends Command {
             return;
         }
         if (Economy.getConfig().readBoolean("enable_work_minigame")) {
-            //Minigame
+            try {
+                final Quiz quiz = new Quiz();
+                final EmbedBuilder questionBuilder = new EmbedBuilder();
+                questionBuilder.setDescription(quiz.getQuestion());
+
+                final PapilertusMessageBuilder messageBuilder = new PapilertusMessageBuilder();
+                messageBuilder.setEmbeds(questionBuilder.build());
+                messageBuilder
+                        .addButtons(new DiscordButton(slashCommandEvent.getUser().getId(), new AnswerButton(true, quiz.getCorrectAnswer()), ButtonStyle.PRIMARY, "true"))
+                        .addButtons(new DiscordButton(slashCommandEvent.getUser().getId(), new AnswerButton(false, quiz.getCorrectAnswer()), ButtonStyle.PRIMARY, "false"));
+
+                slashCommandEvent.reply(messageBuilder.build()).queue();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
             float coins = GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_work_gain"), user, IncrementType.WORK);
             user.addCoins(coins);

@@ -1,0 +1,32 @@
+package com.economy.game.element;
+
+import com.economy.database.databases.UserDatabase;
+import com.economy.database.models.EconomyUser;
+import com.economy.init.Economy;
+import com.openpackagedbot.gui.button.Pressable;
+import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
+
+public class AnswerButton implements Pressable {
+
+    private final boolean answer, trueAnswer;
+
+    public AnswerButton(boolean answer, boolean trueAnswer) {
+        this.answer = answer;
+        this.trueAnswer = trueAnswer;
+    }
+
+    @Override
+    public void onClick(ButtonClickEvent buttonClickEvent) {
+        final EconomyUser user = UserDatabase.fetch(buttonClickEvent.getUser().getId(), buttonClickEvent.getGuild().getId());
+        if (answer == trueAnswer) {
+            final float coins = GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_work_gain"), user, IncrementType.WORK);
+            user.addCoins(coins);
+            buttonClickEvent.reply("You picked " + answer + " and that's right! You got " + coins + " " + Economy.getConfig().readString("currency_name")).queue();
+        } else {
+            buttonClickEvent.reply("You picked " + answer + " and that's wrong...").queue();
+        }
+        user.setLastWorkCooldown(System.currentTimeMillis());
+        UserDatabase.updateUser(user);
+        buttonClickEvent.getMessage().editMessageComponents().queue();
+    }
+}
