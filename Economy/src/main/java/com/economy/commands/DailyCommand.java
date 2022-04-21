@@ -1,0 +1,38 @@
+package com.economy.commands;
+
+import com.economy.database.databases.UserDatabase;
+import com.economy.database.models.EconomyUser;
+import com.economy.game.element.GameUpgrade;
+import com.economy.game.element.IncrementType;
+import com.economy.init.Economy;
+import com.openpackagedbot.commands.core.Command;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+
+import java.util.concurrent.TimeUnit;
+
+public class DailyCommand extends Command {
+
+    public DailyCommand() {
+        setName("daily");
+        setDescription("Get your daily reward");
+    }
+
+    @Override
+    protected void execute(SlashCommandEvent slashCommandEvent) {
+        final EconomyUser user = UserDatabase.fetch(slashCommandEvent.getUser().getId(), slashCommandEvent.getGuild().getId());
+
+        if (!user.canGetDaily()) {
+            final long future = TimeUnit.MILLISECONDS.toSeconds(TimeUnit.HOURS.toMillis(24) + user.getLastDaily());
+            slashCommandEvent.reply("Sorry, but you have to wait for <t:" + future + ":R>")
+                    .setEphemeral(true).queue();
+            return;
+        }
+
+        final float seeds = GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_daily_gain"), user, IncrementType.DAILY);
+        user.addCollectables(seeds);
+        user.setLastDaily(System.currentTimeMillis());
+        UserDatabase.updateUser(user);
+        slashCommandEvent.reply("You got " + seeds + " " + Economy.getConfig().readString("collectable_name") + " as a daily reward, come back next day!").setEphemeral(true).queue();
+
+    }
+}
