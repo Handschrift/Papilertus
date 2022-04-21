@@ -7,6 +7,7 @@ import com.economy.game.element.IncrementType;
 import com.economy.init.Economy;
 import com.openpackagedbot.commands.core.Command;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,6 +16,7 @@ public class DailyCommand extends Command {
     public DailyCommand() {
         setName("daily");
         setDescription("Get your daily reward");
+        setData(new CommandData(getName(), getDescription()));
     }
 
     @Override
