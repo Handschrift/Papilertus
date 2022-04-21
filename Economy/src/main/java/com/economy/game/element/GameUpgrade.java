@@ -53,15 +53,15 @@ public class GameUpgrade {
                 coefficient += (upgrade.getIncrementScale() * user.getUpgradeLevel(upgrade.getName()));
             }
         }
-        return MathUtils.round(coefficient); //rounding to two decimal places
+        return MathUtils.round(coefficient);
     }
 
     public static float getAggregatedUpgradeValue(float baseValue, EconomyUser user, IncrementType type) {
         float coefficient = baseValue * getAggregatedUpgradeCoefficient(user, type);
-        return MathUtils.round(coefficient); //rounding to two decimal places
+        return MathUtils.round(coefficient);
     }
 
-    public float getUpgradeCoefficient(EconomyUser user) {
+    public float getUpgradePrice(EconomyUser user) {
         final float coefficient = (float) (getBasePrice() * Math.sqrt(user.getUpgradeLevel(getName())));
         return MathUtils.round(coefficient);
     }
