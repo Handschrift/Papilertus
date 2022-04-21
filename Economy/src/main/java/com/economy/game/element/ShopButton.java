@@ -22,13 +22,12 @@ public class ShopButton implements Pressable {
     public void onClick(ButtonClickEvent buttonClickEvent) {
         final GameUpgrade upgrade = Economy.getConfig().readType("upgrades", GameUpgrade.class)
                 .stream().filter(gameUpgrade -> gameUpgrade.getName().equals(upgradeName)).collect(Collectors.toList()).get(0);
-        final int upgradeLevel = user.getUpgradeLevel(upgrade.getName());
-        if (upgrade.getBasePrice() * (int) Math.sqrt(upgradeLevel) > user.getCoins()) {
+        if (upgrade.getUpgradePrice(user) > user.getCoins()) {
             buttonClickEvent.reply("You don't have enough money to do that!").setEphemeral(true).queue();
             return;
         }
         user.addUpgrades(upgradeName);
-        user.removeCoins(upgrade.getBasePrice() * (int) Math.sqrt(upgradeLevel));
+        user.removeCoins(upgrade.getUpgradePrice(user));
         UserDatabase.updateUser(user);
         buttonClickEvent.getMessage().editMessage(user.getShopMessageBuilder().build()).queue();
         buttonClickEvent.deferEdit().queue();
