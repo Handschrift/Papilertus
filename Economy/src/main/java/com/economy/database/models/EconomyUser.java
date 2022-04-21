@@ -25,6 +25,8 @@ public class EconomyUser {
     private final JsonObject upgradeCounts = new JsonObject();
     private long lastWorkCooldown = 0;
 
+    private long lastDaily = 0;
+
     public EconomyUser(String userId, String guildId) {
         this.id = new EconomyUserKey(userId, guildId);
     }
@@ -128,9 +130,10 @@ public class EconomyUser {
         }
         shopBuilder.getDescriptionBuilder().append("Your stats:").append("\n")
                 .append("Your ").append(Economy.getConfig().readString("currency_name")).append(": ").append(getCoins()).append(Economy.getConfig().readString("currency_icon")).append("\n")
-                .append("Leafs per Bump: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_collectables_on_bump_gain"), this, IncrementType.BUMP)).append("\n")
-                .append("Leafs per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_voice_activity_amount"), this, IncrementType.VOICE)).append("\n")
-                .append("Leafs per message: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_message_amount"), this, IncrementType.MESSAGE)).append("\n")
+                .append("Seeds per Bump: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_collectables_on_bump_gain"), this, IncrementType.BUMP)).append("\n")
+                .append("Seeds per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_voice_activity_amount"), this, IncrementType.VOICE)).append("\n")
+                .append("Seeds per message: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_message_amount"), this, IncrementType.MESSAGE)).append("\n")
+                .append("Seeds per daily: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_daily_gain"), this, IncrementType.DAILY)).append("\n")
                 .append("Plants per work: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_work_gain"), this, IncrementType.WORK));
         messageBuilder.setEmbeds(shopBuilder.build());
         return messageBuilder;
@@ -143,4 +146,17 @@ public class EconomyUser {
     public void setCollectables(float collectables) {
         this.collectables = collectables;
     }
+
+    public long getLastDaily() {
+        return lastDaily;
+    }
+
+    public void setLastDaily(long lastDaily) {
+        this.lastDaily = lastDaily;
+    }
+
+    public boolean canGetDaily() {
+        return lastDaily == 0 || (System.currentTimeMillis() - getLastDaily()) > TimeUnit.HOURS.toMillis(24);
+    }
+
 }
