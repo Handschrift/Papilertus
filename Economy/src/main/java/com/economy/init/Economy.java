@@ -1,9 +1,6 @@
 package com.economy.init;
 
-import com.economy.commands.ProfileCommand;
-import com.economy.commands.SellCommand;
-import com.economy.commands.ShopCommand;
-import com.economy.commands.WorkCommand;
+import com.economy.commands.*;
 import com.economy.game.element.GameUpgrade;
 import com.economy.game.element.IncrementType;
 import com.economy.listeners.BumpListener;
@@ -45,17 +42,19 @@ public class Economy implements Plugin {
         config.addEntry("listed_roles", new String[]{});
         config.addEntry("enable_work_minigame", true);
         config.addEntry("work_cooldown", 60);
-        config.addEntry("base_work_gain", 10);
+        config.addEntry("base_work_gain", 3);
         config.addEntry("convert_command_name", "plant");
         config.addEntry("base_collectables_on_bump_gain", 110);
-        config.addEntry("collectable_to_currency_conversion", 3);
+        config.addEntry("collectable_to_currency_conversion", 2);
         config.addEntry("decimals", 0);
+        config.addEntry("base_daily_gain", 50);
         config.addEntry("upgrades", new GameUpgrade[]{
-                new GameUpgrade("Monarch Butterfly", "Upgrades seed gain by voice", IncrementType.VOICE, ":butterfly:", 0.3F, 36.0F),
-                new GameUpgrade("Periander Metalmark", "Upgrades seed gain by message", IncrementType.MESSAGE, ":butterfly:", 0.5F, 18.2F),
-                new GameUpgrade("Mountain Apollo", "Upgrades seed gain by work", IncrementType.WORK, ":butterfly:", 0.8F, 51.3F),
-                new GameUpgrade("Great Purple Hairstreak", "Upgrades seed gain by bump", IncrementType.BUMP, ":butterfly:", 1.1F, 100.4F),
-                new GameUpgrade("Southern Dogface", "Upgrades seed gain by treasure", IncrementType.TREASURE, ":butterfly:", 1.0F, 30.2F)
+                new GameUpgrade("Monarch Butterfly", "Upgrades seed gain by voice", IncrementType.VOICE, ":butterfly:", 1.1F, 36.0F),
+                new GameUpgrade("Periander Metalmark", "Upgrades seed gain by message", IncrementType.MESSAGE, ":butterfly:", 1.1F, 18.2F),
+                new GameUpgrade("Mountain Apollo", "Upgrades seed gain by work", IncrementType.WORK, ":butterfly:", 1.1F, 51.3F),
+                new GameUpgrade("Great Purple Hairstreak", "Upgrades seed gain by bump", IncrementType.BUMP, ":butterfly:", 1.8F, 100.4F),
+                new GameUpgrade("Southern Dogface", "Upgrades seed gain by treasure", IncrementType.TREASURE, ":butterfly:", 1.5F, 30.2F),
+                new GameUpgrade("Test Daily", "Upgrades seed gain per daily", IncrementType.DAILY, ":butterfly:", 1.1f, 35.0f)
         });
     }
 
@@ -67,6 +66,7 @@ public class Economy implements Plugin {
         commands.add(new WorkCommand(waiter));
         commands.add(new ShopCommand());
         commands.add(new SellCommand());
+        commands.add(new DailyCommand());
         return commands;
     }
 
