@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.components.ButtonStyle;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -43,7 +44,11 @@ public class WorkCommand extends Command {
             try {
                 final Quiz quiz = new Quiz();
                 final EmbedBuilder questionBuilder = new EmbedBuilder();
-                questionBuilder.setDescription(quiz.getQuestion());
+                questionBuilder.setDescription("`" + quiz.getQuestion() + "`")
+                        .setTitle("In order to get some Plants you have to say if the statement is true or false")
+                        .setColor(Color.CYAN)
+                        .setAuthor(slashCommandEvent.getUser().getName(), null, slashCommandEvent.getUser().getEffectiveAvatarUrl())
+                        .setFooter("This question is provided by the Open Trivia Database", "https://opentdb.com/images/logo.png");
 
                 final PapilertusMessageBuilder messageBuilder = new PapilertusMessageBuilder();
                 messageBuilder.setEmbeds(questionBuilder.build());
