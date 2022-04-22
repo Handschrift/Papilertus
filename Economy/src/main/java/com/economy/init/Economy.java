@@ -54,7 +54,7 @@ public class Economy implements Plugin {
                 new GameUpgrade("Mountain Apollo", "Upgrades seed gain by work", IncrementType.WORK, ":butterfly:", 1.1F, 51.3F),
                 new GameUpgrade("Great Purple Hairstreak", "Upgrades seed gain by bump", IncrementType.BUMP, ":butterfly:", 1.8F, 100.4F),
                 new GameUpgrade("Southern Dogface", "Upgrades seed gain by treasure", IncrementType.TREASURE, ":butterfly:", 1.5F, 30.2F),
-                new GameUpgrade("Test Daily", "Upgrades seed gain per daily", IncrementType.DAILY, ":butterfly:", 1.1f, 35.0f)
+                new GameUpgrade("Essex Skipper", "Upgrades seed gain per daily", IncrementType.DAILY, ":butterfly:", 1.1f, 35.0f)
         });
     }
 
