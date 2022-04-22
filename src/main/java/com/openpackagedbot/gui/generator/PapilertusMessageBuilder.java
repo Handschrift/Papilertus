@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PapilertusMessageBuilder {
     final ArrayList<DiscordButton> buttons = new ArrayList<>();
@@ -20,7 +21,20 @@ public class PapilertusMessageBuilder {
 
     public PapilertusMessageBuilder addButtons(DiscordButton... buttons) {
         this.buttons.addAll(List.of(buttons));
-        builder.setActionRows(ActionRow.of(this.buttons.stream().map(DiscordButton::getButton).collect(Collectors.toList())));
+        if (this.buttons.size() <= 5) {
+            builder.setActionRows(ActionRow.of(this.buttons.stream().map(DiscordButton::getButton).collect(Collectors.toList())));
+            return this;
+        }
+        final ArrayList<ActionRow> actionRows = new ArrayList<>();
+        //Using an intstream to get a "pagination" of the discord buttons
+        //Stackoverflow link: https://stackoverflow.com/questions/43057690/java-stream-collect-every-n-elements
+        IntStream.range(0, (this.buttons.size() + 5 - 1) / 5).mapToObj(i -> this.buttons.subList(i * 5, Math.min(5 * (i + 1), this.buttons.size()))).forEach(
+                discordButtons -> {
+                    actionRows.add(ActionRow.of(discordButtons.stream().map(DiscordButton::getButton).collect(Collectors.toList())));
+                }
+        );
+        builder.setActionRows(actionRows);
+
         return this;
     }
 
@@ -39,8 +53,8 @@ public class PapilertusMessageBuilder {
         for (DiscordButton button : buttons) {
             ButtonRegistry.registerButton(button.getId(), button);
 
-            //quite unsure if this is save
-            ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+            //quite unsure if this is safe
+            final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
             executorService.schedule(new Runnable() {
                 @Override
                 public void run() {
