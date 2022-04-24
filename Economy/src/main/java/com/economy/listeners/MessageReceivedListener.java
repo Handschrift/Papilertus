@@ -17,6 +17,8 @@ public class MessageReceivedListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
+        if (event.getMember() == null)
+            return;
         if (event.getMember().getUser().isBot())
             return;
 

@@ -121,6 +121,9 @@ public class EconomyUser {
     public PapilertusMessageBuilder getShopMessageBuilder() {
         final EmbedBuilder shopBuilder = new EmbedBuilder();
         final PapilertusMessageBuilder messageBuilder = new PapilertusMessageBuilder();
+        final String collectableName = Economy.getConfig().readString("collectable_name");
+        final String currencyName = Economy.getConfig().readString("currency_name");
+
         for (GameUpgrade upgrade : Economy.getConfig().readType("upgrades", GameUpgrade.class)) {
             final int upgradeLevel = getUpgradeLevel(upgrade.getName());
             messageBuilder.addButtons(new DiscordButton(getUserId(), new ShopButton(upgrade.getName(), this), ButtonStyle.PRIMARY, upgrade.getName()));
@@ -129,12 +132,12 @@ public class EconomyUser {
                     + Economy.getConfig().readString("currency_icon"), upgrade.getDescription(), false);
         }
         shopBuilder.getDescriptionBuilder().append("Your stats:").append("\n")
-                .append("Your ").append(Economy.getConfig().readString("currency_name")).append(": ").append(getCoins()).append(Economy.getConfig().readString("currency_icon")).append("\n")
-                .append("Seeds per Bump: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_collectables_on_bump_gain"), this, IncrementType.BUMP)).append("\n")
-                .append("Seeds per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_voice_activity_amount"), this, IncrementType.VOICE)).append("\n")
-                .append("Seeds per message: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_message_amount"), this, IncrementType.MESSAGE)).append("\n")
-                .append("Seeds per daily: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_daily_gain"), this, IncrementType.DAILY)).append("\n")
-                .append("Plants per work: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_work_gain"), this, IncrementType.WORK));
+                .append("Your ").append(currencyName).append(": ").append(getCoins()).append(Economy.getConfig().readString("currency_icon")).append("\n")
+                .append(collectableName).append(" per bump: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_collectables_on_bump_gain"), this, IncrementType.BUMP)).append("\n")
+                .append(collectableName).append(" per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_voice_activity_amount"), this, IncrementType.VOICE)).append("\n")
+                .append(collectableName).append(" per message: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_message_amount"), this, IncrementType.MESSAGE)).append("\n")
+                .append(collectableName).append(" per daily: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_daily_gain"), this, IncrementType.DAILY)).append("\n")
+                .append(currencyName).append(" per work: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_work_gain"), this, IncrementType.WORK));
         messageBuilder.setEmbeds(shopBuilder.build());
         return messageBuilder;
     }
