@@ -25,6 +25,11 @@ public class EconomyUser {
     private final JsonObject upgradeCounts = new JsonObject();
     private long lastWorkCooldown = 0;
 
+    private float receivedToday = 0;
+    private float sentToday = 0;
+
+    private long lastReceived = 0;
+    private long lastSent = 0;
     private long lastDaily = 0;
 
     public EconomyUser(String userId, String guildId) {
@@ -63,6 +68,7 @@ public class EconomyUser {
         final Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }
+
 
     private static final class EconomyUserKey {
         private final String userId;
@@ -162,4 +168,71 @@ public class EconomyUser {
         return lastDaily == 0 || (System.currentTimeMillis() - getLastDaily()) > TimeUnit.HOURS.toMillis(24);
     }
 
+    public void giveToUser(EconomyUser user, float coins) {
+        this.removeCoins(coins);
+        user.addCoins(coins);
+
+        this.addSentToday(coins);
+        user.addReceivedToday(coins);
+
+        this.setLastSent(System.currentTimeMillis());
+        user.setLastReceived(System.currentTimeMillis());
+    }
+
+    public void addReceivedToday(float coins) {
+        setReceivedToday(getReceivedToday() + coins);
+    }
+
+    public void addSentToday(float coins) {
+        setReceivedToday(getSentToday() + coins);
+    }
+
+
+    public float getReceivedToday() {
+        if (System.currentTimeMillis() - lastReceived > TimeUnit.HOURS.toMillis(24)) {
+            setReceivedToday(0);
+            return 0;
+        }
+        return receivedToday;
+    }
+
+    public void setReceivedToday(float receivedToday) {
+        this.receivedToday = receivedToday;
+    }
+
+    public float getSentToday() {
+        if (System.currentTimeMillis() - lastSent > TimeUnit.HOURS.toMillis(24)) {
+            setSentToday(0);
+            return 0;
+        }
+        return sentToday;
+    }
+
+    public void setSentToday(float sentToday) {
+        this.sentToday = sentToday;
+    }
+
+    public long getLastReceived() {
+        return lastReceived;
+    }
+
+    public void setLastReceived(long lastReceived) {
+        this.lastReceived = lastReceived;
+    }
+
+    public long getLastSent() {
+        return lastSent;
+    }
+
+    public void setLastSent(long lastSent) {
+        this.lastSent = lastSent;
+    }
+
+    public boolean canSend(float amount) {
+        return getSentToday() + amount < 1000;
+    }
+
+    public boolean canReceive(float amount) {
+        return getReceivedToday() + amount < 1000;
+    }
 }
