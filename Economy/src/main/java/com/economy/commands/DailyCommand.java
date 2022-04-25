@@ -34,7 +34,7 @@ public class DailyCommand extends Command {
         user.addCollectables(seeds);
         user.setLastDaily(System.currentTimeMillis());
         UserDatabase.updateUser(user);
-        slashCommandEvent.reply("You got " + seeds + " " + Economy.getConfig().readString("collectable_name") + " as a daily reward, come back next day!").setEphemeral(true).queue();
+        slashCommandEvent.reply("You got " + seeds + " " + Economy.getConfig().readString("collectable_name") + " as a daily reward, come back next day!").queue();
 
     }
 }
