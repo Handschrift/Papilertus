@@ -2,9 +2,14 @@ package com.economy.database.databases;
 
 import com.economy.database.models.EconomyUser;
 import com.economy.init.Economy;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoIterable;
+import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
 import com.openpackagedbot.plugin.PluginDataStore;
 import org.bson.Document;
+
+import java.util.ArrayList;
 
 public class UserDatabase {
     private static final PluginDataStore dataStore = Economy.getDataStore();
@@ -41,5 +46,10 @@ public class UserDatabase {
         final Document document = new Document("_id.userId", user.getUserId());
         document.append("_id.guildId", user.getGuildId());
         dataStore.modifyEntry(document, user);
+    }
+
+    public static ArrayList<EconomyUser> getUsers(String guildId) {
+        final Document filter = new Document("_id.guildId", guildId);
+        return dataStore.getEntries(filter, EconomyUser.class, 10, Sorts.ascending("coins"));
     }
 }
