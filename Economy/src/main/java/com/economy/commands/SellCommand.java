@@ -27,6 +27,6 @@ public class SellCommand extends Command {
         user.addCoins(coins);
         UserDatabase.updateUser(user);
         slashCommandEvent.reply("You gave " + collectables + " " + Economy.getConfig().readString("collectable_name")
-                + " for " + coins + " " + Economy.getConfig().readString("currency_name")).setEphemeral(true).queue();
+                + " for " + coins + " " + Economy.getConfig().readString("currency_name")).queue();
     }
 }
