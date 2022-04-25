@@ -9,6 +9,7 @@ import com.openpackagedbot.init.DatabaseConnection;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 
 public final class PluginDataStore {
@@ -76,8 +77,14 @@ public final class PluginDataStore {
         return entries;
     }
 
-    public <T> FindIterable<T> getEntries(Bson filter, Class<T> c) {
-        return database.getCollection(data.getName(), c).find();
+    public <T> ArrayList<T> getEntries(Bson filter, Class<T> c, int limit, Bson sort) {
+        final ArrayList<T> entries = new ArrayList<>();
+        final FindIterable<Document> results = database.getCollection(data.getName()).find(filter).limit(limit).sort(sort);
+        final MongoCursor<Document> cursor = results.cursor();
+        while (cursor.hasNext()) {
+            entries.add(new Gson().fromJson(cursor.next().toJson(), c));
+        }
+        return entries;
     }
 
     public void deleteEntry(Bson filter) {
