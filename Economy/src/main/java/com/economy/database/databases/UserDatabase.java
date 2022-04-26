@@ -50,6 +50,6 @@ public class UserDatabase {
 
     public static ArrayList<EconomyUser> getUsers(String guildId) {
         final Document filter = new Document("_id.guildId", guildId);
-        return dataStore.getEntries(filter, EconomyUser.class, 10, Sorts.ascending("coins"));
+        return dataStore.getEntries(filter, EconomyUser.class, 10, Sorts.descending("coins"));
     }
 }
