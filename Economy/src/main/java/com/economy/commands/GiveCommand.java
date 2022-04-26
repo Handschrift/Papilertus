@@ -45,6 +45,8 @@ public class GiveCommand extends Command {
 
         sender.giveToUser(receiver, amount);
 
+        UserDatabase.updateUser(sender);
+        UserDatabase.updateUser(receiver);
         slashCommandEvent.reply("You gave " + amount + " " + Economy.getConfig().readString("currency_name")).queue();
     }
 }
