@@ -14,7 +14,7 @@ public class ButtonListener extends ListenerAdapter {
             event.reply("This button expired! Please execute the command again.").setEphemeral(true).queue();
             return;
         }
-        if (!button.getId().isEmpty() && !event.getUser().getId().equals(button.getUserId())) {
+        if (!button.getUserId().isEmpty() && !event.getUser().getId().equals(button.getUserId())) {
             event.reply("You are not authorized to press this button").setEphemeral(true).queue();
             return;
         }
