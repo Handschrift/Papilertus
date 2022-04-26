@@ -5,28 +5,28 @@ import com.economy.database.models.EconomyUser;
 import com.economy.init.Economy;
 import com.economy.util.MathUtils;
 import com.openpackagedbot.commands.core.Command;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 public class SellCommand extends Command {
 
     public SellCommand() {
         setName(Economy.getConfig().readString("convert_command_name"));
         setDescription("Sell or convert your collectables to currency");
-        setData(new CommandData(getName(), getDescription())
+        setData(Commands.slash(getName(), getDescription())
                 .addOption(OptionType.NUMBER, "amount", "amount", false));
     }
 
     @Override
-    protected void execute(SlashCommandEvent slashCommandEvent) {
-        final EconomyUser user = UserDatabase.fetch(slashCommandEvent.getUser().getId(), slashCommandEvent.getGuild().getId());
-        final double collectables = slashCommandEvent.getOption("amount") == null ? user.getCollectables() : slashCommandEvent.getOption("amount").getAsDouble();
+    protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
+        final EconomyUser user = UserDatabase.fetch(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
+        final double collectables = slashCommandInteractionEvent.getOption("amount") == null ? user.getCollectables() : slashCommandInteractionEvent.getOption("amount").getAsDouble();
         final double coins = MathUtils.round(collectables * Economy.getConfig().readInt("collectable_to_currency_conversion"));
         user.removeCollectables(collectables);
         user.addCoins(coins);
         UserDatabase.updateUser(user);
-        slashCommandEvent.reply("You gave " + collectables + " " + Economy.getConfig().readString("collectable_name")
+        slashCommandInteractionEvent.reply("You gave " + collectables + " " + Economy.getConfig().readString("collectable_name")
                 + " for " + coins + " " + Economy.getConfig().readString("currency_name")).queue();
     }
 }

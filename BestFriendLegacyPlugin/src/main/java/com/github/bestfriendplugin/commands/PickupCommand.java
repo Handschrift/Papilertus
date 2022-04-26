@@ -1,8 +1,8 @@
 package com.github.bestfriendplugin.commands;
 
 import com.openpackagedbot.commands.core.Command;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -16,14 +16,14 @@ public class PickupCommand extends Command {
     public PickupCommand() {
         setName("pickup");
         setDescription("Du bekommst einen Anmachspruch...viel Glück");
-        setData(new CommandData(getName(), getDescription()));
+        setData(Commands.slash(getName(), getDescription()));
     }
 
     @Override
-    protected void execute(SlashCommandEvent slashCommandEvent) {
+    protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
         try {
             List<String> lines = FileUtils.readLines(new File("pickup.txt"), StandardCharsets.UTF_8);
-            slashCommandEvent.reply(lines.get(new Random().nextInt(lines.size()))).queue();
+            slashCommandInteractionEvent.reply(lines.get(new Random().nextInt(lines.size()))).queue();
 
         } catch (IOException e) {
             e.printStackTrace();

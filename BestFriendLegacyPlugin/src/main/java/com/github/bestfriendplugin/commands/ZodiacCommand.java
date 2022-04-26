@@ -2,9 +2,9 @@ package com.github.bestfriendplugin.commands;
 
 import com.openpackagedbot.commands.core.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,7 +18,7 @@ public class ZodiacCommand extends Command {
     public ZodiacCommand() {
         setName("horoskop");
         setDescription("Zeigt dir dein Horoskop an");
-        setData(new CommandData(getName(), getDescription()).addOptions(new OptionData(OptionType.STRING, "sternzeichen", "Sternzeichen", true)
+        setData(Commands.slash(getName(), getDescription()).addOptions(new OptionData(OptionType.STRING, "sternzeichen", "Sternzeichen", true)
                 .addChoice("Widder", "widder")
                 .addChoice("Stier", "stier")
                 .addChoice("Zwillinge", "zwillinge")
@@ -34,9 +34,9 @@ public class ZodiacCommand extends Command {
     }
 
     @Override
-    protected void execute(SlashCommandEvent slashCommandEvent) {
+    protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
         try {
-            String zodiac = slashCommandEvent.getOption("sternzeichen").getAsString();
+            String zodiac = slashCommandInteractionEvent.getOption("sternzeichen").getAsString();
 
             Document document = Jsoup.connect("https://astrowoche.wunderweib.de/tageshoroskop/heute/" + zodiac).get();
 
@@ -46,7 +46,7 @@ public class ZodiacCommand extends Command {
 
             EmbedBuilder builder = new EmbedBuilder();
             builder.setTitle(zodiac);
-            builder.setAuthor(slashCommandEvent.getMember().getUser().getName(), null, slashCommandEvent.getMember().getEffectiveAvatarUrl());
+            builder.setAuthor(slashCommandInteractionEvent.getMember().getUser().getName(), null, slashCommandInteractionEvent.getMember().getEffectiveAvatarUrl());
 
             StringBuilder stringBuilder = builder.getDescriptionBuilder();
 
@@ -56,9 +56,9 @@ public class ZodiacCommand extends Command {
                 }
             }
 
-            slashCommandEvent.replyEmbeds(builder.build()).queue();
+            slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();
         } catch (IOException e) {
-            slashCommandEvent.reply("Es ist ein Fehler aufgetreten!").setEphemeral(true).queue();
+            slashCommandInteractionEvent.reply("Es ist ein Fehler aufgetreten!").setEphemeral(true).queue();
         }
     }
 }

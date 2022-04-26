@@ -5,7 +5,7 @@ import com.economy.database.models.EconomyUser;
 import com.economy.game.element.GameUpgrade;
 import com.economy.game.element.IncrementType;
 import com.economy.init.Economy;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +16,7 @@ public class MessageReceivedListener extends ListenerAdapter {
     private final HashMap<String, Long> cooldowns = new HashMap<>();
 
     @Override
-    public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
+    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (event.getMember() == null)
             return;
         if (event.getMember().getUser().isBot())

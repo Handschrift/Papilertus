@@ -8,10 +8,10 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.managers.AudioManager;
 
 import java.awt.*;
@@ -23,25 +23,25 @@ public class PlayCommand extends MusicCommand {
         setName("play");
         setDescription("Plays a track");
         setManagerMap(managers);
-        setData(new CommandData(getName(), getDescription()).addOption(OptionType.STRING, "name", "name or url", true));
+        setData(Commands.slash(getName(), getDescription()).addOption(OptionType.STRING, "name", "name or url", true));
     }
 
     @Override
-    protected void execute(SlashCommandEvent slashCommandEvent) {
+    protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
 
-        if (slashCommandEvent.getGuild() == null) {
-            slashCommandEvent.reply("This command can only be executed in a server").setEphemeral(true).queue();
+        if (slashCommandInteractionEvent.getGuild() == null) {
+            slashCommandInteractionEvent.reply("This command can only be executed in a server").setEphemeral(true).queue();
             return;
         }
 
-        final String name = slashCommandEvent.getOption("name").getAsString();
-        final Member executor = slashCommandEvent.getMember();
-        final AudioManager manager = slashCommandEvent.getGuild().getAudioManager();
-        final GuildMusicManager guildManager = getGuildAudioPlayer(slashCommandEvent.getGuild());
+        final String name = slashCommandInteractionEvent.getOption("name").getAsString();
+        final Member executor = slashCommandInteractionEvent.getMember();
+        final AudioManager manager = slashCommandInteractionEvent.getGuild().getAudioManager();
+        final GuildMusicManager guildManager = getGuildAudioPlayer(slashCommandInteractionEvent.getGuild());
 
 
-        if (!executor.getVoiceState().inVoiceChannel()) {
-            slashCommandEvent.reply("You have to be in a voice channel!").setEphemeral(true).queue();
+        if (!executor.getVoiceState().inAudioChannel()) {
+            slashCommandInteractionEvent.reply("You have to be in a voice channel!").setEphemeral(true).queue();
             return;
         }
 
@@ -49,11 +49,11 @@ public class PlayCommand extends MusicCommand {
             try {
                 manager.openAudioConnection(executor.getVoiceState().getChannel());
             } catch (InsufficientPermissionException exception) {
-                slashCommandEvent.reply("I don't have the permission to join the channel!").setEphemeral(true).queue();
+                slashCommandInteractionEvent.reply("I don't have the permission to join the channel!").setEphemeral(true).queue();
                 return;
             }
         } else if (!executor.getVoiceState().getChannel().getId().equals(manager.getConnectedChannel().getId())) { //Check if member is NOT in the same channel
-            slashCommandEvent.reply("You have to be in the same voice channel!").setEphemeral(true).queue();
+            slashCommandInteractionEvent.reply("You have to be in the same voice channel!").setEphemeral(true).queue();
             return;
         }
 
@@ -68,25 +68,25 @@ public class PlayCommand extends MusicCommand {
                 } else {
                     builder.setDescription("Now playing: " + track.getInfo().title);
                 }
-                slashCommandEvent.replyEmbeds(builder.build()).queue();
+                slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();
             }
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
                 builder.setDescription("Loading playlists is currently not supported!");
-                slashCommandEvent.replyEmbeds(builder.build()).queue();
+                slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();
             }
 
             @Override
             public void noMatches() {
                 builder.setDescription("There were no songs found with this identifier");
-                slashCommandEvent.replyEmbeds(builder.build()).queue();
+                slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();
             }
 
             @Override
             public void loadFailed(FriendlyException exception) {
                 builder.setDescription("An error occurred while queueing the track");
-                slashCommandEvent.replyEmbeds(builder.build()).queue();
+                slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();
             }
         });
     }

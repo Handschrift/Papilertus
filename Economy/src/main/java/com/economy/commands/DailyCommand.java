@@ -6,8 +6,8 @@ import com.economy.game.element.GameUpgrade;
 import com.economy.game.element.IncrementType;
 import com.economy.init.Economy;
 import com.openpackagedbot.commands.core.Command;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,16 +16,16 @@ public class DailyCommand extends Command {
     public DailyCommand() {
         setName("daily");
         setDescription("Get your daily reward");
-        setData(new CommandData(getName(), getDescription()));
+        setData(Commands.slash(getName(), getDescription()));
     }
 
     @Override
-    protected void execute(SlashCommandEvent slashCommandEvent) {
-        final EconomyUser user = UserDatabase.fetch(slashCommandEvent.getUser().getId(), slashCommandEvent.getGuild().getId());
+    protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
+        final EconomyUser user = UserDatabase.fetch(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
 
         if (!user.canGetDaily()) {
             final long future = TimeUnit.MILLISECONDS.toSeconds(TimeUnit.HOURS.toMillis(24) + user.getLastDaily());
-            slashCommandEvent.reply("Sorry, but you have to wait for <t:" + future + ":R>")
+            slashCommandInteractionEvent.reply("Sorry, but you have to wait for <t:" + future + ":R>")
                     .setEphemeral(true).queue();
             return;
         }
@@ -34,7 +34,7 @@ public class DailyCommand extends Command {
         user.addCollectables(seeds);
         user.setLastDaily(System.currentTimeMillis());
         UserDatabase.updateUser(user);
-        slashCommandEvent.reply("You got " + seeds + " " + Economy.getConfig().readString("collectable_name") + " as a daily reward, come back next day!").queue();
+        slashCommandInteractionEvent.reply("You got " + seeds + " " + Economy.getConfig().readString("collectable_name") + " as a daily reward, come back next day!").queue();
 
     }
 }

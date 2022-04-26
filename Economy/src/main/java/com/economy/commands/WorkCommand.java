@@ -12,9 +12,9 @@ import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.gui.button.DiscordButton;
 import com.openpackagedbot.gui.generator.PapilertusMessageBuilder;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.dv8tion.jda.api.interactions.components.ButtonStyle;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 import java.awt.*;
 import java.io.IOException;
@@ -27,16 +27,16 @@ public class WorkCommand extends Command {
     public WorkCommand(EventWaiter waiter) {
         setName("work");
         setDescription("Getting Plants!");
-        setData(new CommandData(getName(), getDescription()));
+        setData(Commands.slash(getName(), getDescription()));
         this.waiter = waiter;
     }
 
     @Override
-    protected void execute(SlashCommandEvent slashCommandEvent) {
-        final EconomyUser user = UserDatabase.fetch(slashCommandEvent.getUser().getId(), slashCommandEvent.getGuild().getId());
+    protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
+        final EconomyUser user = UserDatabase.fetch(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
         if (!user.canWork()) {
             final long future = TimeUnit.MILLISECONDS.toSeconds(TimeUnit.MINUTES.toMillis(Economy.getConfig().readInt("work_cooldown")) + user.getLastWorkCooldown());
-            slashCommandEvent.reply("Sorry, but you have to wait for <t:" + future + ":R>")
+            slashCommandInteractionEvent.reply("Sorry, but you have to wait for <t:" + future + ":R>")
                     .setEphemeral(true).queue();
             return;
         }
@@ -47,16 +47,16 @@ public class WorkCommand extends Command {
                 questionBuilder.setDescription("`" + quiz.getQuestion() + "`")
                         .setTitle("In order to get some Plants you have to say if the statement is true or false")
                         .setColor(Color.CYAN)
-                        .setAuthor(slashCommandEvent.getUser().getName(), null, slashCommandEvent.getUser().getEffectiveAvatarUrl())
+                        .setAuthor(slashCommandInteractionEvent.getUser().getName(), null, slashCommandInteractionEvent.getUser().getEffectiveAvatarUrl())
                         .setFooter("This question is provided by the Open Trivia Database", "https://opentdb.com/images/logo.png");
 
                 final PapilertusMessageBuilder messageBuilder = new PapilertusMessageBuilder();
                 messageBuilder.setEmbeds(questionBuilder.build());
                 messageBuilder
-                        .addButtons(new DiscordButton(slashCommandEvent.getUser().getId(), new AnswerButton(true, quiz.getCorrectAnswer()), ButtonStyle.PRIMARY, "true"))
-                        .addButtons(new DiscordButton(slashCommandEvent.getUser().getId(), new AnswerButton(false, quiz.getCorrectAnswer()), ButtonStyle.PRIMARY, "false"));
+                        .addButtons(new DiscordButton(slashCommandInteractionEvent.getUser().getId(), new AnswerButton(true, quiz.getCorrectAnswer()), ButtonStyle.PRIMARY, "true"))
+                        .addButtons(new DiscordButton(slashCommandInteractionEvent.getUser().getId(), new AnswerButton(false, quiz.getCorrectAnswer()), ButtonStyle.PRIMARY, "false"));
 
-                slashCommandEvent.reply(messageBuilder.build()).queue();
+                slashCommandInteractionEvent.reply(messageBuilder.build()).queue();
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -65,7 +65,7 @@ public class WorkCommand extends Command {
             user.addCoins(coins);
             user.setLastWorkCooldown(System.currentTimeMillis());
             UserDatabase.updateUser(user);
-            slashCommandEvent.reply("You are living a lot greener! You got " + coins + " " + Economy.getConfig().readString("currency_name")).queue();
+            slashCommandInteractionEvent.reply("You are living a lot greener! You got " + coins + " " + Economy.getConfig().readString("currency_name")).queue();
         }
 
 

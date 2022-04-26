@@ -4,7 +4,7 @@ import com.economy.database.databases.UserDatabase;
 import com.economy.database.models.EconomyUser;
 import com.economy.init.Economy;
 import com.openpackagedbot.gui.button.Pressable;
-import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 
 import java.util.stream.Collectors;
 
@@ -19,7 +19,7 @@ public class ShopButton implements Pressable {
     }
 
     @Override
-    public void onClick(ButtonClickEvent buttonClickEvent) {
+    public void onClick(ButtonInteractionEvent buttonClickEvent) {
         final GameUpgrade upgrade = Economy.getConfig().readType("upgrades", GameUpgrade.class)
                 .stream().filter(gameUpgrade -> gameUpgrade.getName().equals(upgradeName)).collect(Collectors.toList()).get(0);
         if (upgrade.getUpgradePrice(user) > user.getCoins()) {

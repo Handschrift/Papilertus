@@ -6,40 +6,40 @@ import com.economy.init.Economy;
 import com.economy.util.MathUtils;
 import com.openpackagedbot.commands.core.Command;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 public class GiveCommand extends Command {
 
     public GiveCommand() {
         setName("give");
         setDescription("gives a specific amount of currency");
-        setData(new CommandData(getName(), getDescription())
+        setData(Commands.slash(getName(), getDescription())
                 .addOption(OptionType.USER, "user", "receiving user", true)
                 .addOption(OptionType.NUMBER, "amount", "amount of currency", true));
     }
 
     @Override
-    protected void execute(SlashCommandEvent slashCommandEvent) {
-        final User receiverUser = slashCommandEvent.getOption("user").getAsUser();
-        final float amount = (float) MathUtils.round(slashCommandEvent.getOption("amount").getAsDouble());
+    protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
+        final User receiverUser = slashCommandInteractionEvent.getOption("user").getAsUser();
+        final float amount = (float) MathUtils.round(slashCommandInteractionEvent.getOption("amount").getAsDouble());
 
-        final EconomyUser sender = UserDatabase.fetch(slashCommandEvent.getUser().getId(), slashCommandEvent.getGuild().getId());
-        final EconomyUser receiver = UserDatabase.fetch(receiverUser.getId(), slashCommandEvent.getGuild().getId());
+        final EconomyUser sender = UserDatabase.fetch(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
+        final EconomyUser receiver = UserDatabase.fetch(receiverUser.getId(), slashCommandInteractionEvent.getGuild().getId());
 
         if (amount > sender.getCoins()) {
-            slashCommandEvent.reply("You don't have enough money!").setEphemeral(true).queue();
+            slashCommandInteractionEvent.reply("You don't have enough money!").setEphemeral(true).queue();
             return;
         }
 
         if (!sender.canSend(amount)) {
-            slashCommandEvent.reply("You already sent too much today!").setEphemeral(true).queue();
+            slashCommandInteractionEvent.reply("You already sent too much today!").setEphemeral(true).queue();
             return;
         }
 
         if (!receiver.canReceive(amount)) {
-            slashCommandEvent.reply("This user already received too much today!").setEphemeral(true).queue();
+            slashCommandInteractionEvent.reply("This user already received too much today!").setEphemeral(true).queue();
             return;
         }
 
@@ -47,6 +47,6 @@ public class GiveCommand extends Command {
 
         UserDatabase.updateUser(sender);
         UserDatabase.updateUser(receiver);
-        slashCommandEvent.reply("You gave " + amount + " " + Economy.getConfig().readString("currency_name")).queue();
+        slashCommandInteractionEvent.reply("You gave " + amount + " " + Economy.getConfig().readString("currency_name")).queue();
     }
 }

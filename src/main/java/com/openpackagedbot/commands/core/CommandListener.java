@@ -1,7 +1,7 @@
 package com.openpackagedbot.commands.core;
 
 import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,8 +13,9 @@ public final class CommandListener extends ListenerAdapter {
         this.commandClient = commandClient;
     }
 
+
     @Override
-    public void onSlashCommand(@NotNull SlashCommandEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (event.getChannel().getType() == ChannelType.PRIVATE) {
             if (commandClient.getCommand(event.getName()).isPrivateCommand()) {
                 commandClient.getCommand(event.getName()).execute(event);

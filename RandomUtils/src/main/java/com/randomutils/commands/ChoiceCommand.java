@@ -2,9 +2,9 @@ package com.randomutils.commands;
 
 import com.openpackagedbot.commands.core.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 import java.awt.*;
 import java.time.LocalDateTime;
@@ -15,22 +15,22 @@ public class ChoiceCommand extends Command {
     public ChoiceCommand() {
         setName("choice");
         setDescription("Returns a random choice based on a given list. Separate the Elements with a ';'");
-        setData(new CommandData(getName(), getDescription())
+        setData(Commands.slash(getName(), getDescription())
                 .addOption(OptionType.STRING, "list", "List of elements, separated by a ';'", true)
         );
     }
 
     @Override
-    protected void execute(SlashCommandEvent slashCommandEvent) {
-        final String[] elements = slashCommandEvent.getOption("list").getAsString().split(";");
+    protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
+        final String[] elements = slashCommandInteractionEvent.getOption("list").getAsString().split(";");
         final String choice = elements[new Random().nextInt(elements.length)];
 
         final EmbedBuilder builder = new EmbedBuilder()
                 .setColor(Color.BLUE)
-                .setAuthor(slashCommandEvent.getUser().getAsTag(), null, slashCommandEvent.getUser().getEffectiveAvatarUrl())
+                .setAuthor(slashCommandInteractionEvent.getUser().getAsTag(), null, slashCommandInteractionEvent.getUser().getEffectiveAvatarUrl())
                 .addField("Result", "My choice is: " + choice, true)
                 .setTimestamp(LocalDateTime.now());
 
-        slashCommandEvent.replyEmbeds(builder.build()).queue();
+        slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();
     }
 }

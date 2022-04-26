@@ -3,8 +3,8 @@ package com.openpackagedbot.commands.base;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.plugin.PluginData;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 import java.util.ArrayList;
 
@@ -16,11 +16,11 @@ public class PluginCommand extends Command {
         this.data = data;
         setName("plugins");
         setDescription("Lists all installed Plugins");
-        setData(new CommandData(getName(), getDescription()));
+        setData(Commands.slash(getName(), getDescription()));
     }
 
     @Override
-    protected void execute(SlashCommandEvent event) {
+    protected void execute(SlashCommandInteractionEvent event) {
         final EmbedBuilder builder = new EmbedBuilder();
         for (PluginData currentData : data) {
             builder.addField(currentData.getName(), "Made by: " + currentData.getAuthor(), true);

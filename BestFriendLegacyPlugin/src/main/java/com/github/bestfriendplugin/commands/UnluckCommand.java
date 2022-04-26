@@ -1,8 +1,8 @@
 package com.github.bestfriendplugin.commands;
 
 import com.openpackagedbot.commands.core.Command;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -16,16 +16,16 @@ public class UnluckCommand extends Command {
     public UnluckCommand() {
         setName("pech");
         setDescription("Gibt dir einen Pechkeks");
-        setData(new CommandData(getName(), getDescription()));
+        setData(Commands.slash(getName(), getDescription()));
     }
 
     @Override
-    protected void execute(SlashCommandEvent slashCommandEvent) {
+    protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
         Random r = new Random();
         try {
             List<String> lines = FileUtils.readLines(new File("unluck.txt"), StandardCharsets.UTF_8);
             int size = lines.size();
-            slashCommandEvent.reply(lines.get(r.nextInt(size))).queue();
+            slashCommandInteractionEvent.reply(lines.get(r.nextInt(size))).queue();
         } catch (IOException e) {
             e.printStackTrace();
         }

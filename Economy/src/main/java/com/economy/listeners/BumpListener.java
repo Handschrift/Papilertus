@@ -6,14 +6,14 @@ import com.economy.game.element.GameUpgrade;
 import com.economy.game.element.IncrementType;
 import com.economy.init.Economy;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 public class BumpListener extends ListenerAdapter {
 
     @Override
-    public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
+    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (event.getMessage().getInteraction() == null) return;
         final Message.Interaction bumpInteraction = event.getMessage().getInteraction();
         //check if it is the disboard bot and if the command executed was a bump command
@@ -28,6 +28,5 @@ public class BumpListener extends ListenerAdapter {
                         + Economy.getConfig().readInt("base_collectables_on_bump_gain") + Economy.getConfig().readString("collectable_name") + "!").queue();
             }
         }
-
     }
 }

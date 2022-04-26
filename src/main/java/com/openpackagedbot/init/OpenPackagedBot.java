@@ -1,6 +1,6 @@
 package com.openpackagedbot.init;
 
-import com.openpackagedbot.commands.base.PluginCommand;
+import com.openpackagedbot.commands.base.FeedbackCommand;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.commands.core.CommandClient;
 import com.openpackagedbot.commands.core.CommandListener;
@@ -31,7 +31,7 @@ public final class OpenPackagedBot {
         commandClient.addCommands(loader.getRegisteredCommands().toArray(new Command[0]));
 
         //adding inbuild commands
-        commandClient.addCommands(new PluginCommand(loader.getLoadedPlugins()));
+        commandClient.addCommands(new FeedbackCommand());
 
         final JDABuilder builder = JDABuilder.create(config.getToken(), GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS));
 

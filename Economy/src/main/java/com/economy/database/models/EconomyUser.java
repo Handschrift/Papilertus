@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
 import com.openpackagedbot.gui.button.DiscordButton;
 import com.openpackagedbot.gui.generator.PapilertusMessageBuilder;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.interactions.components.ButtonStyle;
+import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 import java.util.concurrent.TimeUnit;
 

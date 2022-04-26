@@ -4,7 +4,7 @@ import com.github.bestfriendplugin.database.SpiritUser;
 import com.mongodb.client.model.Updates;
 import com.openpackagedbot.gui.button.Pressable;
 import com.openpackagedbot.plugin.PluginDataStore;
-import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class FavoriteAdder implements Pressable {
     }
 
     @Override
-    public void onClick(ButtonClickEvent buttonClickEvent) {
+    public void onClick(ButtonInteractionEvent buttonClickEvent) {
         final String url = buttonClickEvent.getMessage().getEmbeds().get(0).getImage().getUrl();
         int id = Integer.parseInt(url.substring(url.lastIndexOf("/") + 1).replace(".png", ""));
         final Document filter = new Document("_id.userId", buttonClickEvent.getUser().getId());

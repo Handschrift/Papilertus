@@ -2,16 +2,16 @@ package com.github.bestfriendplugin.commands;
 
 import com.openpackagedbot.commands.core.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class PollCommand extends Command {
     public PollCommand() {
         setName("poll");
         setDescription("Erstellt eine Umfrage");
-        setData(new CommandData(getName(), getDescription()).addOptions(
+        setData(Commands.slash(getName(), getDescription()).addOptions(
 
                 new OptionData(OptionType.STRING, "question", "Die Frage", true),
                 new OptionData(OptionType.STRING, "answer0", "Antwort", true),
@@ -29,7 +29,7 @@ public class PollCommand extends Command {
     }
 
     @Override
-    protected void execute(SlashCommandEvent slashCommandEvent) {
+    protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
         final String[] numberToEmote = {
                 "\u0031\u20E3",
                 "\u0032\u20E3",
@@ -42,19 +42,19 @@ public class PollCommand extends Command {
                 "\u0039\u20E3",
                 "\uD83D\uDD1F"
         };
-        String question = slashCommandEvent.getOption("question").getAsString();
+        String question = slashCommandInteractionEvent.getOption("question").getAsString();
         EmbedBuilder builder = new EmbedBuilder();
         StringBuilder stringBuilder = builder.getDescriptionBuilder();
         builder.setTitle(question);
         for (int i = 0; i < 10; i++) {
-            if (slashCommandEvent.getOption("answer" + i) != null) {
-                stringBuilder.append(numberToEmote[i]).append(slashCommandEvent.getOption("answer" + i).getAsString()).append("\n");
+            if (slashCommandInteractionEvent.getOption("answer" + i) != null) {
+                stringBuilder.append(numberToEmote[i]).append(slashCommandInteractionEvent.getOption("answer" + i).getAsString()).append("\n");
             }
         }
-        slashCommandEvent.replyEmbeds(builder.build()).queue(interactionHook -> {
+        slashCommandInteractionEvent.replyEmbeds(builder.build()).queue(interactionHook -> {
             interactionHook.retrieveOriginal().queue(message -> {
                 for (int i = 0; i < 10; i++) {
-                    if (slashCommandEvent.getOption("answer" + i) != null) {
+                    if (slashCommandInteractionEvent.getOption("answer" + i) != null) {
                         message.addReaction(numberToEmote[i]).queue();
                     }
                 }

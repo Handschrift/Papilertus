@@ -1,7 +1,8 @@
 package com.openpackagedbot.commands.core;
 
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
 public abstract class Command {
     private String name;
@@ -9,9 +10,9 @@ public abstract class Command {
     private boolean privateCommand = false;
     private boolean enabled = true;
     private String help;
-    private CommandData data;
+    private SlashCommandData data;
 
-    protected abstract void execute(SlashCommandEvent event);
+    protected abstract void execute(SlashCommandInteractionEvent event);
 
     public String getName() {
         return name;
@@ -41,7 +42,7 @@ public abstract class Command {
         return data;
     }
 
-    protected void setData(CommandData data) {
+    protected void setData(SlashCommandData data) {
         this.data = data;
     }
 

@@ -4,7 +4,7 @@ import com.economy.database.databases.UserDatabase;
 import com.economy.database.models.EconomyUser;
 import com.economy.init.Economy;
 import com.openpackagedbot.gui.button.Pressable;
-import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 
 public class AnswerButton implements Pressable {
 
@@ -16,7 +16,7 @@ public class AnswerButton implements Pressable {
     }
 
     @Override
-    public void onClick(ButtonClickEvent buttonClickEvent) {
+    public void onClick(ButtonInteractionEvent buttonClickEvent) {
         final EconomyUser user = UserDatabase.fetch(buttonClickEvent.getUser().getId(), buttonClickEvent.getGuild().getId());
         if (answer == trueAnswer) {
             final float coins = GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_work_gain"), user, IncrementType.WORK);
