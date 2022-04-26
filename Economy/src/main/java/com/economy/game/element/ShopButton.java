@@ -26,8 +26,8 @@ public class ShopButton implements Pressable {
             buttonClickEvent.reply("You don't have enough money to do that!").setEphemeral(true).queue();
             return;
         }
-        user.addUpgrades(upgradeName);
         user.removeCoins(upgrade.getUpgradePrice(user));
+        user.addUpgrades(upgradeName);
         UserDatabase.updateUser(user);
         buttonClickEvent.getMessage().editMessage(user.getShopMessageBuilder().build()).queue();
         buttonClickEvent.deferEdit().queue();
