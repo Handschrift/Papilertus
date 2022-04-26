@@ -26,6 +26,8 @@ public final class Config {
         }
     };
 
+    private String feedbackRecipientId = "";
+
     static Config getConfig() {
         config = config.read();
         return config;
@@ -87,5 +89,9 @@ public final class Config {
 
     ArrayList<CacheFlag> getCacheFlags() {
         return cacheFlags;
+    }
+
+    String getFeedbackRecipientId() {
+        return feedbackRecipientId;
     }
 }
