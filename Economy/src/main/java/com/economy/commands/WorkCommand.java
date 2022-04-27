@@ -7,7 +7,6 @@ import com.economy.game.element.GameUpgrade;
 import com.economy.game.element.IncrementType;
 import com.economy.init.Economy;
 import com.economy.minigames.Quiz;
-import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.gui.button.DiscordButton;
 import com.openpackagedbot.gui.generator.PapilertusMessageBuilder;
@@ -22,13 +21,11 @@ import java.util.concurrent.TimeUnit;
 
 public class WorkCommand extends Command {
 
-    private final EventWaiter waiter;
 
-    public WorkCommand(EventWaiter waiter) {
+    public WorkCommand() {
         setName("work");
         setDescription("Getting Plants!");
         setData(Commands.slash(getName(), getDescription()));
-        this.waiter = waiter;
     }
 
     @Override
