@@ -6,7 +6,6 @@ import com.economy.game.element.IncrementType;
 import com.economy.listeners.BumpListener;
 import com.economy.listeners.MessageReceivedListener;
 import com.economy.listeners.VoiceJoinListener;
-import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.plugin.Plugin;
 import com.openpackagedbot.plugin.PluginConfig;
@@ -21,7 +20,6 @@ public class Economy implements Plugin {
     //singleton for database
     private static PluginDataStore store;
     private static PluginConfig config;
-    private final EventWaiter waiter = new EventWaiter();
 
     @Override
     public void onLoad(PluginData pluginData) {
@@ -63,12 +61,13 @@ public class Economy implements Plugin {
 
         final ArrayList<Command> commands = new ArrayList<>();
         commands.add(new ProfileCommand());
-        commands.add(new WorkCommand(waiter));
+        commands.add(new WorkCommand());
         commands.add(new ShopCommand());
         commands.add(new SellCommand());
         commands.add(new DailyCommand());
         commands.add(new LeaderboardCommand());
         commands.add(new GiveCommand());
+        commands.add(new ForecastCommand());
         return commands;
     }
 
@@ -78,7 +77,6 @@ public class Economy implements Plugin {
         listeners.add(new MessageReceivedListener());
         listeners.add(new VoiceJoinListener());
         listeners.add(new BumpListener());
-        listeners.add(waiter);
         return listeners;
     }
 
