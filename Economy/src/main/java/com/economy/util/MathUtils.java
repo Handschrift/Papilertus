@@ -10,4 +10,8 @@ public class MathUtils {
     public static double round(double f) {
         return Math.round(f * Math.pow(10, Economy.getConfig().readInt("decimals"))) / Math.pow(10, Economy.getConfig().readInt("decimals"));
     }
+
+    public static double round(double f, int decimals) {
+        return Math.round(f * Math.pow(10, decimals)) / Math.pow(10, decimals);
+    }
 }
