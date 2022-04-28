@@ -20,7 +20,7 @@ public class ForecastCommand extends Command {
     @Override
     protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
         final EmbedBuilder builder = new EmbedBuilder();
-        final Forecast forecast = new Forecast(7);
+        final Forecast forecast = Forecast.getForecast();
         int i = 0;
         for (double value : forecast.getData()) {
             builder.addField(LocalDate.now().plusDays(i).toString(), "1 " + Economy.getConfig().readString("collectable_name") + " = " + value + " " + Economy.getConfig().readString("currency_name"), false);
