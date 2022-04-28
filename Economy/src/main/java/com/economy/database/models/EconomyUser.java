@@ -32,6 +32,8 @@ public class EconomyUser {
     private long lastSent = 0;
     private long lastDaily = 0;
 
+    private final EconomyUserInventory inventory = new EconomyUserInventory();
+
     public EconomyUser(String userId, String guildId) {
         this.id = new EconomyUserKey(userId, guildId);
     }
@@ -234,5 +236,9 @@ public class EconomyUser {
 
     public boolean canReceive(float amount) {
         return getReceivedToday() + amount < 1000;
+    }
+
+    public EconomyUserInventory getInventory() {
+        return inventory;
     }
 }
