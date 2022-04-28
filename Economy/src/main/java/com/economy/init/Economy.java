@@ -68,6 +68,8 @@ public class Economy implements Plugin {
         commands.add(new LeaderboardCommand());
         commands.add(new GiveCommand());
         commands.add(new ForecastCommand());
+        commands.add(new InventoryCommand());
+        commands.add(new CollectCommand());
         return commands;
     }
 
