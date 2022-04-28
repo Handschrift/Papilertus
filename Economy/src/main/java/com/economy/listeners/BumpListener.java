@@ -25,7 +25,7 @@ public class BumpListener extends ListenerAdapter {
                 user.addCoins(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_collectables_on_bump_gain"), user, IncrementType.BUMP));
                 UserDatabase.updateUser(user);
                 event.getChannel().sendMessage(bumpInteraction.getUser().getAsMention() + " bumped the server and got "
-                        + Economy.getConfig().readInt("base_collectables_on_bump_gain") + Economy.getConfig().readString("collectable_name") + "!").queue();
+                        + GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_collectables_on_bump_gain"), user, IncrementType.BUMP) + " " + Economy.getConfig().readString("collectable_name") + "!").queue();
             }
         }
     }
