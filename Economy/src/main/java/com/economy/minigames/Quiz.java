@@ -20,7 +20,7 @@ public class Quiz {
         final HttpClient client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
 
         final HttpRequest request = HttpRequest.newBuilder()
-                .GET().uri(URI.create("https://opentdb.com/api.php?amount=1&category=27&type=boolean&encode=base64")).build();
+                .GET().uri(URI.create("https://opentdb.com/api.php?amount=1&type=boolean&encode=base64")).build();
 
         final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
