@@ -23,7 +23,7 @@ public class AnswerButton implements Pressable {
             user.addCoins(coins);
             buttonClickEvent.reply("You picked " + answer + " and that's right! You got " + coins + " " + Economy.getConfig().readString("currency_name")).queue();
         } else {
-            buttonClickEvent.reply("You picked " + answer + " and that's wrong...").queue();
+            buttonClickEvent.reply("You picked " + answer + " and that's incorrect... but you gained new knowledge!").queue();
         }
         user.setLastWorkCooldown(System.currentTimeMillis());
         UserDatabase.updateUser(user);
