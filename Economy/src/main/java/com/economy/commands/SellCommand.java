@@ -2,8 +2,8 @@ package com.economy.commands;
 
 import com.economy.database.databases.UserDatabase;
 import com.economy.database.models.EconomyUser;
+import com.economy.database.models.EconomyUserInventoryEntry;
 import com.economy.init.Economy;
-import com.economy.util.MathUtils;
 import com.openpackagedbot.commands.core.Command;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -22,11 +22,21 @@ public class SellCommand extends Command {
     protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
         final EconomyUser user = UserDatabase.fetch(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
         final double collectables = slashCommandInteractionEvent.getOption("amount") == null ? user.getCollectables() : slashCommandInteractionEvent.getOption("amount").getAsDouble();
-        final double coins = MathUtils.round(collectables * Economy.getConfig().readInt("collectable_to_currency_conversion"));
+
+        if (user.getCollectables() < collectables) {
+            slashCommandInteractionEvent.reply("You don't have enough " + Economy.getConfig().readString("collectable_name")).setEphemeral(true).queue();
+            return;
+        }
+
+        if (collectables <= 0) {
+            slashCommandInteractionEvent.reply("Please enter a valid value").setEphemeral(true).queue();
+            return;
+        }
+
         user.removeCollectables(collectables);
-        user.addCoins(coins);
+        user.getInventory().addEntry(new EconomyUserInventoryEntry((float) collectables, System.currentTimeMillis()));
         UserDatabase.updateUser(user);
-        slashCommandInteractionEvent.reply("You gave " + collectables + " " + Economy.getConfig().readString("collectable_name")
-                + " for " + coins + " " + Economy.getConfig().readString("currency_name")).queue();
+        slashCommandInteractionEvent.reply("You added " + collectables + " " + Economy.getConfig().readString("collectable_name")
+                + " to your farm!").queue();
     }
 }
