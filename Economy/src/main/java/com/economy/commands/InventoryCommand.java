@@ -32,8 +32,11 @@ public class InventoryCommand extends Command {
         }
 
         for (EconomyUserInventoryEntry entry : inventory.getEntries()) {
-            builder.addField(entry.getName() + "(" + entry.getCount() + ")", "Added: " + Instant.ofEpochMilli(entry.getTimeAdded()).atZone(ZoneId.systemDefault()).toLocalDate(), false);
+            builder.addField(entry.getName() + " (" + entry.getCount() + ")", "Added: " + Instant.ofEpochMilli(entry.getTimeAdded()).atZone(ZoneId.systemDefault()).toLocalDate(), false);
         }
+
+        builder.setFooter("You need to wait for 3 days for the seeds to grow. After 8 days the plants will rot.");
+
         slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();
     }
 }
