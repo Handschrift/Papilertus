@@ -44,6 +44,10 @@ public final class PluginDataStore {
         database.getCollection(data.getName()).updateOne(filter, update);
     }
 
+    public void modifyEntries(Bson filter, Bson update){
+        database.getCollection(data.getName()).updateMany(filter, update);
+    }
+
     public <T> void modifyEntry(Bson filter, T t) {
         database.getCollection(data.getName()).findOneAndReplace(filter, Document.parse(new Gson().toJson(t)));
     }
