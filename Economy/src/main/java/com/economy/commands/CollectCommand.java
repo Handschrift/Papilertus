@@ -33,7 +33,7 @@ public class CollectCommand extends Command {
         while (iterator.hasNext()){
             EconomyUserInventoryEntry entry = iterator.next();
             if (entry.isMature()) {
-                coins += forecast.getData()[0] * entry.getCount();
+                coins += forecast.getData()[0].getValue() * entry.getCount();
                 iterator.remove();
             } else if (entry.isDead()) {
                 iterator.remove();

@@ -22,8 +22,8 @@ public class ForecastCommand extends Command {
         final EmbedBuilder builder = new EmbedBuilder();
         final Forecast forecast = Forecast.getForecast();
         int i = 0;
-        for (double value : forecast.getData()) {
-            builder.addField(LocalDate.now().plusDays(i).toString(), "1 " + Economy.getConfig().readString("collectable_name") + " = " + value + " " + Economy.getConfig().readString("currency_name"), false);
+        for (Forecast.ForecastEntry entry : forecast.getData()) {
+            builder.addField(LocalDate.now().plusDays(i) + " " + entry.getName(), "1 " + Economy.getConfig().readString("collectable_name") + " = " + entry.getValue() + " " + Economy.getConfig().readString("currency_name"), false);
             i++;
         }
         slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();
