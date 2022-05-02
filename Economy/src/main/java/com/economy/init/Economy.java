@@ -6,15 +6,22 @@ import com.economy.game.element.IncrementType;
 import com.economy.listeners.BumpListener;
 import com.economy.listeners.MessageReceivedListener;
 import com.economy.listeners.VoiceJoinListener;
+import com.mongodb.client.model.Updates;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.plugin.Plugin;
 import com.openpackagedbot.plugin.PluginConfig;
 import com.openpackagedbot.plugin.PluginData;
 import com.openpackagedbot.plugin.PluginDataStore;
 import net.dv8tion.jda.api.hooks.EventListener;
+import org.bson.Document;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Economy implements Plugin {
     //singleton for database
@@ -54,6 +61,21 @@ public class Economy implements Plugin {
                 new GameUpgrade("Southern Dogface", "Upgrades seed gain by treasure", IncrementType.TREASURE, ":butterfly:", 1.5F, 30.2F),
                 new GameUpgrade("Essex Skipper", "Upgrades seed gain per daily", IncrementType.DAILY, ":butterfly:", 1.1f, 35.0f)
         });
+
+        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+        service.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                final LocalDate today = LocalDate.now();
+
+                if (!today.getDayOfWeek().equals(DayOfWeek.MONDAY)) {
+                    return;
+                }
+
+                store.modifyEntries(new Document(), Updates.set("weeklyCurrency", 0));
+            }
+        }, 24, 24, TimeUnit.HOURS);
+
     }
 
     @Override
