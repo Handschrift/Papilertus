@@ -32,6 +32,8 @@ public class EconomyUser {
     private long lastSent = 0;
     private long lastDaily = 0;
 
+    private float weeklyCurrency = 0;
+
     private final EconomyUserInventory inventory = new EconomyUserInventory();
 
     public EconomyUser(String userId, String guildId) {
@@ -59,6 +61,7 @@ public class EconomyUser {
     }
 
     public void addCoins(double coins) {
+        this.weeklyCurrency += MathUtils.round(coins);
         this.coins += MathUtils.round(coins);
     }
 
@@ -240,5 +243,9 @@ public class EconomyUser {
 
     public EconomyUserInventory getInventory() {
         return inventory;
+    }
+
+    public float getWeeklyCurrency() {
+        return weeklyCurrency;
     }
 }
