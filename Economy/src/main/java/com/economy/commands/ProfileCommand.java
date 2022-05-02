@@ -32,7 +32,8 @@ public class ProfileCommand extends Command {
         builder.getDescriptionBuilder().append(Economy.getConfig().readString("collectable_name"))
                 .append(": ").append(Economy.getConfig().readString("collectable_icon")).append(user.getCollectables()).append("\n")
                 .append(Economy.getConfig().readString("currency_name"))
-                .append(": ").append(Economy.getConfig().readString("currency_icon")).append(user.getCoins())
+                .append(": ").append(Economy.getConfig().readString("currency_icon")).append(user.getCoins()).append("\n")
+                .append("Weekly: ").append(user.getWeeklyCurrency()).append("\n\n")
 
                 .append("Your stats:").append("\n")
                 .append(collectableName).append(" per bump: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_collectables_on_bump_gain"), user, IncrementType.BUMP)).append("\n")
