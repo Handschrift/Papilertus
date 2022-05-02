@@ -35,15 +35,15 @@ public class EconomyUserInventoryEntry {
     }
 
     public boolean isGrowing() {
-        return System.currentTimeMillis() - timeAdded < TimeUnit.HOURS.toMillis(1);
+        return System.currentTimeMillis() - timeAdded < TimeUnit.DAYS.toMillis(1);
     }
 
     public boolean isMature() {
-        return System.currentTimeMillis() - timeAdded > TimeUnit.HOURS.toMillis(1)
-                && System.currentTimeMillis() - timeAdded < TimeUnit.HOURS.toMillis(3);
+        return System.currentTimeMillis() - timeAdded > TimeUnit.DAYS.toMillis(1)
+                && System.currentTimeMillis() - timeAdded < TimeUnit.DAYS.toMillis(3);
     }
 
     public boolean isDead() {
-        return System.currentTimeMillis() - timeAdded > TimeUnit.HOURS.toMillis(3);
+        return System.currentTimeMillis() - timeAdded > TimeUnit.DAYS.toMillis(3);
     }
 }
