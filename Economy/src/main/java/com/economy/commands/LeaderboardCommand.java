@@ -26,7 +26,7 @@ public class LeaderboardCommand extends Command {
         int i = 1;
         for (EconomyUser user : users) {
             builder.addField(i + ") " + slashCommandInteractionEvent.getGuild().getMemberById(user.getUserId()).getEffectiveName(),
-                    user.getCoins() + " " + Economy.getConfig().readString("currency_name"), false);
+                    user.getCoins() + " " + Economy.getConfig().readString("currency_name")  + "\t" + user.getWeeklyCurrency() + " " + Economy.getConfig().readString("currency_name") + " Weekly", false);
             i++;
         }
         slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();
