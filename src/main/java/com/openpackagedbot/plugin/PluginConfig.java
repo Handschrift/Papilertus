@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 public final class PluginConfig {
 
-    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private final JsonObject config;
-    private PluginData data;
-    private File file;
+    private transient final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private transient JsonObject config;
+    private transient PluginData data;
+    private transient File file;
 
     public PluginConfig(PluginData data) {
         this.data = data;
@@ -50,6 +50,17 @@ public final class PluginConfig {
     @Deprecated
     public PluginConfig() {
         config = new JsonObject();
+    }
+
+    public void fromObject(Object object) {
+        if (config.entrySet().size() == 0) {
+            config = JsonParser.parseString(gson.toJson(object)).getAsJsonObject();
+            save(file);
+        }
+    }
+
+    public <T> T toObject(Class<T> c) {
+        return gson.fromJson(config, c);
     }
 
     public void addEntry(String name, String value) {
