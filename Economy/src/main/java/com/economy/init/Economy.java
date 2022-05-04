@@ -1,11 +1,18 @@
 package com.economy.init;
 
 import com.economy.commands.*;
+import com.economy.database.databases.UserDatabase;
+import com.economy.database.models.EconomyUser;
+import com.economy.database.models.EconomyUserInventoryEntry;
+import com.economy.game.element.Forecast;
 import com.economy.game.element.GameUpgrade;
 import com.economy.game.element.IncrementType;
 import com.economy.listeners.BumpListener;
 import com.economy.listeners.MessageReceivedListener;
 import com.economy.listeners.VoiceJoinListener;
+import com.google.gson.Gson;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import com.openpackagedbot.commands.core.Command;
 import com.openpackagedbot.plugin.Plugin;
@@ -19,6 +26,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -28,12 +36,15 @@ public class Economy implements Plugin {
     private static PluginDataStore store;
     private static PluginConfig config;
 
+    private static EconomyConfig economyConfig;
+
     @Override
     public void onLoad(PluginData pluginData) {
         store = new PluginDataStore(pluginData);
         config = new PluginConfig(pluginData);
         //<:papilertus:963118768614150224>
-        config.addEntry("currency_name", "Plants");
+
+      /*  config.addEntry("currency_name", "Plants");
         config.addEntry("currency_icon", ":deciduous_tree:");
         config.addEntry("collectable_name", "Seeds");
         config.addEntry("collectable_icon", ":seedling:");
@@ -60,7 +71,10 @@ public class Economy implements Plugin {
                 new GameUpgrade("Great Purple Hairstreak", "Upgrades seed gain by bump", IncrementType.BUMP, ":butterfly:", 1.8F, 100.4F),
                 new GameUpgrade("Southern Dogface", "Upgrades seed gain by treasure", IncrementType.TREASURE, ":butterfly:", 1.5F, 30.2F),
                 new GameUpgrade("Essex Skipper", "Upgrades seed gain per daily", IncrementType.DAILY, ":butterfly:", 1.1f, 35.0f)
-        });
+        });*/
+
+        config.fromObject(new EconomyConfig());
+        economyConfig = config.toObject(EconomyConfig.class);
 
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
         service.scheduleAtFixedRate(new Runnable() {
@@ -75,6 +89,34 @@ public class Economy implements Plugin {
                 store.modifyEntries(new Document(), Updates.set("weeklyCurrency", 0));
             }
         }, 24, 24, TimeUnit.HOURS);
+
+        //This code is quite messy because of the performance
+        service.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                final FindIterable<Document> results = store.getIterableList(Filters.empty());
+
+                for (Document current : results) {
+
+                    final EconomyUser user = new Gson().fromJson(current.toJson(), EconomyUser.class);
+                    boolean modified = false;
+                    final ListIterator<EconomyUserInventoryEntry> iterator = user.getInventory().getEntries().listIterator();
+
+                    while (iterator.hasNext()) {
+                        final EconomyUserInventoryEntry entry = iterator.next();
+                        if (entry.isMature()) {
+                            iterator.remove();
+                            double coins = Forecast.getForecast().getData()[0].getValue() * entry.getCount();
+                            user.addCoins(coins);
+                            modified = true;
+                        }
+                    }
+                    if (modified) {
+                        UserDatabase.updateUser(user);
+                    }
+                }
+            }
+        }, 0, 1, TimeUnit.HOURS);
 
     }
 
@@ -113,8 +155,13 @@ public class Economy implements Plugin {
         return store;
     }
 
+    @Deprecated
     public static PluginConfig getConfig() {
         return config;
+    }
+
+    public static EconomyConfig getEconomyConfig() {
+        return economyConfig;
     }
 
 }
