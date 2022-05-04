@@ -8,19 +8,22 @@ public class EconomyUserInventoryEntry {
     private final float count;
     private final long timeAdded;
 
+    private final long timeFinished;
+
     public EconomyUserInventoryEntry(float count, long timeAdded) {
         this.count = count;
         this.timeAdded = timeAdded;
+        this.timeFinished = timeAdded + TimeUnit.DAYS.toMillis(1);
     }
 
     public String getName() {
-        if(isGrowing()){
+        if (isGrowing()) {
             return Economy.getConfig().readString("collectable_name");
         }
-        if(isMature()){
+        if (isMature()) {
             return Economy.getConfig().readString("currency_name");
         }
-        if(isDead()){
+        if (isDead()) {
             return "Dead";
         }
         return "UNKNOWN";
@@ -41,6 +44,10 @@ public class EconomyUserInventoryEntry {
     public boolean isMature() {
         return System.currentTimeMillis() - timeAdded > TimeUnit.DAYS.toMillis(1)
                 && System.currentTimeMillis() - timeAdded < TimeUnit.DAYS.toMillis(3);
+    }
+
+    public long getTimeFinished() {
+        return timeFinished;
     }
 
     public boolean isDead() {
