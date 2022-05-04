@@ -44,7 +44,7 @@ public final class PluginDataStore {
         database.getCollection(data.getName()).updateOne(filter, update);
     }
 
-    public void modifyEntries(Bson filter, Bson update){
+    public void modifyEntries(Bson filter, Bson update) {
         database.getCollection(data.getName()).updateMany(filter, update);
     }
 
@@ -98,6 +98,10 @@ public final class PluginDataStore {
             entries.add(new Gson().fromJson(cursor.next().toJson(), c));
         }
         return entries;
+    }
+
+    public FindIterable<Document> getIterableList(Bson filter) {
+        return database.getCollection(data.getName()).find(filter);
     }
 
     public void deleteEntry(Bson filter) {
