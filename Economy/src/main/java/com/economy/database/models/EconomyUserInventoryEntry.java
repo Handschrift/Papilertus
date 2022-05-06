@@ -13,15 +13,15 @@ public class EconomyUserInventoryEntry {
     public EconomyUserInventoryEntry(float count, long timeAdded) {
         this.count = count;
         this.timeAdded = timeAdded;
-        this.timeFinished = timeAdded + TimeUnit.DAYS.toMillis(1);
+        this.timeFinished = timeAdded + TimeUnit.valueOf(Economy.getEconomyConfig().getTimeToGrowUnit()).toMillis(Economy.getEconomyConfig().getTimeToGrowDuration());
     }
 
     public String getName() {
         if (isGrowing()) {
-            return Economy.getConfig().readString("collectable_name");
+            return Economy.getEconomyConfig().getCollectableName();
         }
         if (isMature()) {
-            return Economy.getConfig().readString("currency_name");
+            return Economy.getEconomyConfig().getCurrencyName();
         }
         if (isDead()) {
             return "Dead";
@@ -38,12 +38,12 @@ public class EconomyUserInventoryEntry {
     }
 
     public boolean isGrowing() {
-        return System.currentTimeMillis() - timeAdded < TimeUnit.DAYS.toMillis(1);
+        return System.currentTimeMillis() - timeAdded < TimeUnit.valueOf(Economy.getEconomyConfig().getTimeToGrowUnit()).toMillis(Economy.getEconomyConfig().getTimeToGrowDuration());
     }
 
     public boolean isMature() {
-        return System.currentTimeMillis() - timeAdded > TimeUnit.DAYS.toMillis(1)
-                && System.currentTimeMillis() - timeAdded < TimeUnit.DAYS.toMillis(3);
+        return System.currentTimeMillis() - timeAdded > TimeUnit.valueOf(Economy.getEconomyConfig().getTimeToGrowUnit()).toMillis(Economy.getEconomyConfig().getTimeToGrowDuration())
+                && System.currentTimeMillis() - timeAdded < TimeUnit.valueOf(Economy.getEconomyConfig().getTimeDieUnit()).toMillis(Economy.getEconomyConfig().getTimeToDieDuration());
     }
 
     public long getTimeFinished() {
@@ -51,6 +51,6 @@ public class EconomyUserInventoryEntry {
     }
 
     public boolean isDead() {
-        return System.currentTimeMillis() - timeAdded > TimeUnit.DAYS.toMillis(3);
+        return System.currentTimeMillis() - timeAdded > TimeUnit.valueOf(Economy.getEconomyConfig().getTimeDieUnit()).toMillis(Economy.getEconomyConfig().getTimeToDieDuration());
     }
 }

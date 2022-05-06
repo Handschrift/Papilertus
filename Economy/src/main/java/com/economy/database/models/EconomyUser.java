@@ -114,7 +114,7 @@ public class EconomyUser {
     }
 
     public boolean canWork() {
-        return lastWorkCooldown == 0 || (System.currentTimeMillis() - lastWorkCooldown > TimeUnit.MINUTES.toMillis(Economy.getConfig().readInt("work_cooldown")));
+        return lastWorkCooldown == 0 || (System.currentTimeMillis() - lastWorkCooldown > TimeUnit.MINUTES.toMillis(Economy.getEconomyConfig().getWorkCooldown()));
     }
 
     public void setLastWorkCooldown(long lastWorkCooldown) {
@@ -132,23 +132,23 @@ public class EconomyUser {
     public PapilertusMessageBuilder getShopMessageBuilder() {
         final EmbedBuilder shopBuilder = new EmbedBuilder();
         final PapilertusMessageBuilder messageBuilder = new PapilertusMessageBuilder();
-        final String collectableName = Economy.getConfig().readString("collectable_name");
-        final String currencyName = Economy.getConfig().readString("currency_name");
+        final String collectableName = Economy.getEconomyConfig().getCollectableName();
+        final String currencyName = Economy.getEconomyConfig().getCurrencyName();
 
-        for (GameUpgrade upgrade : Economy.getConfig().readType("upgrades", GameUpgrade.class)) {
+        for (GameUpgrade upgrade : Economy.getEconomyConfig().getUpgrades()) {
             final int upgradeLevel = getUpgradeLevel(upgrade.getName());
             messageBuilder.addButtons(new DiscordButton(getUserId(), new ShopButton(upgrade.getName(), this), ButtonStyle.PRIMARY, upgrade.getName()));
             shopBuilder.addField(upgrade.getIcon() + " " + upgrade.getName()
                     + " (Level: " + upgradeLevel + ")" + " | " + upgrade.getUpgradePrice(this) + " "
-                    + Economy.getConfig().readString("currency_icon"), upgrade.getDescription(), false);
+                    + Economy.getEconomyConfig().getCurrencyIcon(), upgrade.getDescription(), false);
         }
         shopBuilder.getDescriptionBuilder().append("Your stats:").append("\n")
-                .append("Your ").append(currencyName).append(": ").append(getCoins()).append(Economy.getConfig().readString("currency_icon")).append("\n")
-                .append(collectableName).append(" per bump: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_collectables_on_bump_gain"), this, IncrementType.BUMP)).append("\n")
-                .append(collectableName).append(" per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_voice_activity_amount"), this, IncrementType.VOICE)).append("\n")
-                .append(collectableName).append(" per message: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_message_amount"), this, IncrementType.MESSAGE)).append("\n")
-                .append(collectableName).append(" per daily: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_daily_gain"), this, IncrementType.DAILY)).append("\n")
-                .append(currencyName).append(" per work: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_work_gain"), this, IncrementType.WORK));
+                .append("Your ").append(currencyName).append(": ").append(getCoins()).append(Economy.getEconomyConfig().getCurrencyIcon()).append("\n")
+                .append(collectableName).append(" per bump: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCollectablesOnBumpGain(), this, IncrementType.BUMP)).append("\n")
+                .append(collectableName).append(" per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCoinOnVoiceActivityAmount(), this, IncrementType.VOICE)).append("\n")
+                .append(collectableName).append(" per message: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCoinOnMessageAmount(), this, IncrementType.MESSAGE)).append("\n")
+                .append(collectableName).append(" per daily: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseDailyGain(), this, IncrementType.DAILY)).append("\n")
+                .append(currencyName).append(" per work: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseWorkGain(), this, IncrementType.WORK));
         messageBuilder.setEmbeds(shopBuilder.build());
         return messageBuilder;
     }

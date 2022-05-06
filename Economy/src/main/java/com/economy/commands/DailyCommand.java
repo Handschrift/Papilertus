@@ -30,11 +30,11 @@ public class DailyCommand extends Command {
             return;
         }
 
-        final float seeds = GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_daily_gain"), user, IncrementType.DAILY);
+        final float seeds = GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseDailyGain(), user, IncrementType.DAILY);
         user.addCollectables(seeds);
         user.setLastDaily(System.currentTimeMillis());
         UserDatabase.updateUser(user);
-        slashCommandInteractionEvent.reply("You got " + seeds + " " + Economy.getConfig().readString("collectable_name") + " as a daily reward, come back next day!").queue();
+        slashCommandInteractionEvent.reply("You got " + seeds + " " + Economy.getEconomyConfig().getCollectableName() + " as a daily reward, come back next day!").queue();
 
     }
 }

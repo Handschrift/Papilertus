@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 public class SellCommand extends Command {
 
     public SellCommand() {
-        setName(Economy.getConfig().readString("convert_command_name"));
+        setName(Economy.getEconomyConfig().getConvertCommandName());
         setDescription("Sell or convert your collectables to currency");
         setData(Commands.slash(getName(), getDescription())
                 .addOption(OptionType.NUMBER, "amount", "amount", false));
@@ -24,7 +24,7 @@ public class SellCommand extends Command {
         final double collectables = slashCommandInteractionEvent.getOption("amount") == null ? user.getCollectables() : slashCommandInteractionEvent.getOption("amount").getAsDouble();
 
         if (user.getCollectables() < collectables) {
-            slashCommandInteractionEvent.reply("You don't have enough " + Economy.getConfig().readString("collectable_name")).setEphemeral(true).queue();
+            slashCommandInteractionEvent.reply("You don't have enough " + Economy.getEconomyConfig().getCollectableName()).setEphemeral(true).queue();
             return;
         }
 
@@ -36,7 +36,7 @@ public class SellCommand extends Command {
         user.removeCollectables(collectables);
         user.getInventory().addEntry(new EconomyUserInventoryEntry((float) collectables, System.currentTimeMillis()));
         UserDatabase.updateUser(user);
-        slashCommandInteractionEvent.reply("You added " + collectables + " " + Economy.getConfig().readString("collectable_name")
+        slashCommandInteractionEvent.reply("You added " + collectables + " " + Economy.getEconomyConfig().getCollectableName()
                 + " to your farm!").queue();
     }
 }

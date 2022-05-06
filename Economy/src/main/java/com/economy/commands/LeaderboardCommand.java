@@ -5,6 +5,7 @@ import com.economy.database.models.EconomyUser;
 import com.economy.init.Economy;
 import com.openpackagedbot.commands.core.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
@@ -25,8 +26,10 @@ public class LeaderboardCommand extends Command {
         final ArrayList<EconomyUser> users = UserDatabase.getUsers(slashCommandInteractionEvent.getGuild().getId());
         int i = 1;
         for (EconomyUser user : users) {
-            builder.addField(i + ") " + slashCommandInteractionEvent.getGuild().getMemberById(user.getUserId()).getEffectiveName(),
-                    user.getCoins() + " " + Economy.getConfig().readString("currency_name")  + "\t" + user.getWeeklyCurrency() + " " + Economy.getConfig().readString("currency_name") + " Weekly", false);
+            final Member member = slashCommandInteractionEvent.getGuild().getMemberById(user.getUserId());
+            final String name = member != null ? member.getEffectiveName() : user.getUserId();
+            builder.addField(i + ") " + name,
+                    user.getCoins() + " " + Economy.getEconomyConfig().getCurrencyName() + "\t" + user.getWeeklyCurrency() + " " + Economy.getEconomyConfig().getCurrencyName() + " Weekly", false);
             i++;
         }
         slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();

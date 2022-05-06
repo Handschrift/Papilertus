@@ -50,6 +50,6 @@ public class CollectCommand extends Command {
         user.addCoins(coins);
         UserDatabase.updateUser(user);
 
-        slashCommandInteractionEvent.reply("You got " + coins + " " + Economy.getConfig().readString("currency_name")).queue();
+        slashCommandInteractionEvent.reply("You got " + coins + " " + Economy.getEconomyConfig().getCurrencyName()).queue();
     }
 }

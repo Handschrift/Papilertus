@@ -20,7 +20,7 @@ public class ShopButton implements Pressable {
 
     @Override
     public void onClick(ButtonInteractionEvent buttonClickEvent) {
-        final GameUpgrade upgrade = Economy.getConfig().readType("upgrades", GameUpgrade.class)
+        final GameUpgrade upgrade = Economy.getEconomyConfig().getUpgrades()
                 .stream().filter(gameUpgrade -> gameUpgrade.getName().equals(upgradeName)).collect(Collectors.toList()).get(0);
         if (upgrade.getUpgradePrice(user) > user.getCoins()) {
             buttonClickEvent.reply("You don't have enough money to do that!").setEphemeral(true).queue();

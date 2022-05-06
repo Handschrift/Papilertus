@@ -35,6 +35,25 @@ public class EconomyConfig {
         }
     };
 
+    private boolean autoCollect = false;
+
+    private int timeToGrowDuration = 1;
+    private String timeToGrowUnit = "DAYS";
+    private int timeToDieDuration = 3;
+    private String timeDieUnit = "DAYS";
+
+    private ArrayList<String> forecastNames = new ArrayList<>() {
+        {
+            add(":fire: Dry");
+            add(":sunny: Sunny");
+            add(":cloud_rain: Heavy rain");
+        }
+    };
+
+    public EconomyConfig() {
+
+    }
+
     public String getCurrencyName() {
         return currencyName;
     }
@@ -105,5 +124,29 @@ public class EconomyConfig {
 
     public ArrayList<GameUpgrade> getUpgrades() {
         return upgrades;
+    }
+
+    public boolean isAutoCollect() {
+        return autoCollect;
+    }
+
+    public int getTimeToGrowDuration() {
+        return timeToGrowDuration;
+    }
+
+    public String getTimeToGrowUnit() {
+        return timeToGrowUnit;
+    }
+
+    public int getTimeToDieDuration() {
+        return timeToDieDuration;
+    }
+
+    public String getTimeDieUnit() {
+        return timeDieUnit;
+    }
+
+    public ArrayList<String> getForecastNames() {
+        return forecastNames;
     }
 }

@@ -26,21 +26,21 @@ public class ProfileCommand extends Command {
                 .setAuthor(slashCommandInteractionEvent.getUser().getName(), null, slashCommandInteractionEvent.getUser().getEffectiveAvatarUrl())
                 .setFooter(slashCommandInteractionEvent.getUser().getAsTag())
                 .setThumbnail(slashCommandInteractionEvent.getUser().getEffectiveAvatarUrl());
-        final String collectableName = Economy.getConfig().readString("collectable_name");
-        final String currencyName = Economy.getConfig().readString("currency_name");
+        final String collectableName = Economy.getEconomyConfig().getCollectableName();
+        final String currencyName = Economy.getEconomyConfig().getCurrencyName();
 
-        builder.getDescriptionBuilder().append(Economy.getConfig().readString("collectable_name"))
-                .append(": ").append(Economy.getConfig().readString("collectable_icon")).append(user.getCollectables()).append("\n")
-                .append(Economy.getConfig().readString("currency_name"))
-                .append(": ").append(Economy.getConfig().readString("currency_icon")).append(user.getCoins()).append("\n")
+        builder.getDescriptionBuilder().append(Economy.getEconomyConfig().getCollectableName())
+                .append(": ").append(Economy.getEconomyConfig().getCollectableIcon()).append(user.getCollectables()).append("\n")
+                .append(Economy.getEconomyConfig().getCurrencyName())
+                .append(": ").append(Economy.getEconomyConfig().getCurrencyIcon()).append(user.getCoins()).append("\n")
                 .append("Weekly: ").append(user.getWeeklyCurrency()).append("\n\n")
 
                 .append("Your stats:").append("\n")
-                .append(collectableName).append(" per bump: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_collectables_on_bump_gain"), user, IncrementType.BUMP)).append("\n")
-                .append(collectableName).append(" per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_voice_activity_amount"), user, IncrementType.VOICE)).append("\n")
-                .append(collectableName).append(" per message: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_message_amount"), user, IncrementType.MESSAGE)).append("\n")
-                .append(collectableName).append(" per daily: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_daily_gain"), user, IncrementType.DAILY)).append("\n")
-                .append(currencyName).append(" per work: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_work_gain"), user, IncrementType.WORK));
+                .append(collectableName).append(" per bump: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCollectablesOnBumpGain(), user, IncrementType.BUMP)).append("\n")
+                .append(collectableName).append(" per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCoinOnVoiceActivityAmount(), user, IncrementType.VOICE)).append("\n")
+                .append(collectableName).append(" per message: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCoinOnMessageAmount(), user, IncrementType.MESSAGE)).append("\n")
+                .append(collectableName).append(" per daily: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseDailyGain(), user, IncrementType.DAILY)).append("\n")
+                .append(currencyName).append(" per work: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseWorkGain(), user, IncrementType.WORK));
         slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();
     }
 }

@@ -48,7 +48,7 @@ public class GameUpgrade {
 
     public static float getAggregatedUpgradeCoefficient(EconomyUser user, IncrementType type) {
         float coefficient = 1;
-        for (GameUpgrade upgrade : Economy.getConfig().readType("upgrades", GameUpgrade.class)) {
+        for (GameUpgrade upgrade : Economy.getEconomyConfig().getUpgrades()) {
             if (upgrade.getIncrementType().equals(type)) {
                 coefficient += (upgrade.getIncrementScale() * user.getUpgradeLevel(upgrade.getName()));
             }

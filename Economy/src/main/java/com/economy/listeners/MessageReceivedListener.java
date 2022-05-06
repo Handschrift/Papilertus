@@ -23,7 +23,7 @@ public class MessageReceivedListener extends ListenerAdapter {
             return;
 
         final EconomyUser user = UserDatabase.fetch(event.getAuthor().getId(), event.getGuild().getId());
-        final float coins = GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_coin_on_message_amount"), user, IncrementType.MESSAGE);
+        final float coins = GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCoinOnMessageAmount(), user, IncrementType.MESSAGE);
         if (!cooldowns.containsKey(user.getUserId())) {
             user.addCollectables(coins);
             cooldowns.put(user.getUserId(), System.currentTimeMillis());
@@ -31,7 +31,7 @@ public class MessageReceivedListener extends ListenerAdapter {
             return;
         }
 
-        if (System.currentTimeMillis() - cooldowns.get(user.getUserId()) > TimeUnit.SECONDS.toMillis(Economy.getConfig().readInt("coin_message_cooldown"))) {
+        if (System.currentTimeMillis() - cooldowns.get(user.getUserId()) > TimeUnit.SECONDS.toMillis(Economy.getEconomyConfig().getCoinMessageCooldown())) {
             user.addCollectables(coins);
             UserDatabase.updateUser(user);
         }

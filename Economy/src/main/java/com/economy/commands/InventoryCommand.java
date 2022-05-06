@@ -34,12 +34,13 @@ public class InventoryCommand extends Command {
         }
 
         for (EconomyUserInventoryEntry entry : inventory.getEntries()) {
-            final long future = TimeUnit.MILLISECONDS.toSeconds(TimeUnit.DAYS.toMillis(1) + entry.getTimeAdded());
             builder.addField(entry.getName() + " (" + entry.getCount() + ")", "Added: " + Instant.ofEpochMilli(entry.getTimeAdded()).atZone(ZoneId.systemDefault()).toLocalDate() + "\n"
-                    + "Will grow: <t:" + future + ":R>", false);
+                    + "Will grow: <t:" + TimeUnit.MILLISECONDS.toSeconds(entry.getTimeFinished()) + ":R>", false);
         }
 
-        builder.setFooter("You need to wait for 1 day for the seeds to grow. After 3 days the plants will rot.");
+
+        builder.setFooter("You have to wait for " + Economy.getEconomyConfig().getTimeToGrowDuration() + " " + Economy.getEconomyConfig().getTimeToGrowUnit().toLowerCase()
+                + " for the seeds to grow. After " + Economy.getEconomyConfig().getTimeToDieDuration() + " " + Economy.getEconomyConfig().getTimeDieUnit().toLowerCase() + " the plants will rot.");
 
         slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();
     }

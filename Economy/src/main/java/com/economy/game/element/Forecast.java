@@ -1,5 +1,6 @@
 package com.economy.game.element;
 
+import com.economy.init.Economy;
 import com.economy.util.MathUtils;
 
 import java.lang.management.ManagementFactory;
@@ -22,12 +23,14 @@ public class Forecast {
         long startTime = rb.getStartTime();
         data = new ForecastEntry[days];
 
-        textMapping.put(1.0, ":fire: Dry");
-        textMapping.put(2.0, ":sunny: Sunny");
-        textMapping.put(3.0, ":cloud_rain: Heavy rain");
+        textMapping.put(1.0, Economy.getEconomyConfig().getForecastNames().get(0));
+        textMapping.put(2.0, Economy.getEconomyConfig().getForecastNames().get(1));
+        textMapping.put(3.0, Economy.getEconomyConfig().getForecastNames().get(2));
+        System.out.println(ZoneId.systemDefault());
+        System.out.println(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toEpochSecond());
 
         for (int i = 0; i < days; i++) {
-            final Random random = new Random(startTime * LocalDate.now().plusDays(i).atStartOfDay(ZoneId.systemDefault()).toEpochSecond());
+            final Random random = new Random(LocalDate.now().plusDays(i).atStartOfDay(ZoneId.systemDefault()).toEpochSecond());
             data[i] = new ForecastEntry(MathUtils.round(random.nextDouble() * 3, 1));
         }
     }
@@ -37,6 +40,7 @@ public class Forecast {
     }
 
     public static Forecast getForecast() {
+        //create a new instance every time!
         return forecast;
     }
 
@@ -54,7 +58,7 @@ public class Forecast {
 
         public String getName() {
             for (double d : textMapping.keySet()) {
-                if (value < d) {
+                if (value <= d) {
                     return textMapping.get(d);
                 }
             }
