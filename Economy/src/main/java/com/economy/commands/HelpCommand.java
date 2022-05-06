@@ -14,6 +14,6 @@ public class HelpCommand extends Command {
 
     @Override
     protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
-
+        slashCommandInteractionEvent.reply("Here is the link: https://github.com/Handschrift/Papilertus/blob/master/Economy/README.MD").setEphemeral(true).queue();
     }
 }
