@@ -15,6 +15,8 @@ public class Quiz {
     private final boolean correctAnswer;
     private final String question;
 
+    private final String category;
+
     public Quiz() throws IOException, InterruptedException {
         final Base64.Decoder decoder = Base64.getDecoder();
         final HttpClient client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
@@ -30,6 +32,8 @@ public class Quiz {
 
         question = new String(decoder.decode(questionObject.get("question").getAsString()));
 
+        category = new String(decoder.decode(questionObject.get("category").getAsString()));
+
 
     }
 
@@ -39,5 +43,9 @@ public class Quiz {
 
     public String getQuestion() {
         return question;
+    }
+
+    public String getCategory() {
+        return category;
     }
 }
