@@ -21,11 +21,11 @@ public class BumpListener extends ListenerAdapter {
                 && bumpInteraction.getName().equals("bump")) {
             //I don't know if this is needed, but it is an extra verification step for a successful bump
             if (event.getMessage().getEmbeds().get(0).getImage().getUrl().equals("https://disboard.org/images/bot-command-image-bump.png")) {
-                final EconomyUser user = UserDatabase.fetch(event.getAuthor().getId(), event.getGuild().getId());
-                user.addCoins(GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_collectables_on_bump_gain"), user, IncrementType.BUMP));
+                final EconomyUser user = UserDatabase.fetch(bumpInteraction.getUser().getId(), event.getGuild().getId());
+                user.addCoins(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCollectablesOnBumpGain(), user, IncrementType.BUMP));
                 UserDatabase.updateUser(user);
                 event.getChannel().sendMessage(bumpInteraction.getUser().getAsMention() + " bumped the server and got "
-                        + GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_collectables_on_bump_gain"), user, IncrementType.BUMP) + " " + Economy.getConfig().readString("collectable_name") + "!").queue();
+                        + GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCollectablesOnBumpGain(), user, IncrementType.BUMP) + " " + Economy.getEconomyConfig().getCollectableName() + "!").queue();
             }
         }
     }
