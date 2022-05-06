@@ -12,8 +12,8 @@ import com.openpackagedbot.plugin.PluginLoader;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
 import javax.security.auth.login.LoginException;
 
@@ -58,9 +58,8 @@ public final class OpenPackagedBot {
 
         jda = builder.build().awaitReady();
         //register commands on all guilds
-        for (Guild g : jda.getGuilds()) {
-            g.updateCommands().addCommands(commandClient.getData()).queue();
-        }
+        final CommandListUpdateAction action = jda.updateCommands();
+        action.addCommands(commandClient.getData()).queue();
     }
 
     public static PluginJDA getPluginJDA() {
