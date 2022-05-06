@@ -32,16 +32,16 @@ public class WorkCommand extends Command {
     protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
         final EconomyUser user = UserDatabase.fetch(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
         if (!user.canWork()) {
-            final long future = TimeUnit.MILLISECONDS.toSeconds(TimeUnit.MINUTES.toMillis(Economy.getConfig().readInt("work_cooldown")) + user.getLastWorkCooldown());
+            final long future = TimeUnit.MILLISECONDS.toSeconds(TimeUnit.MINUTES.toMillis(Economy.getEconomyConfig().getWorkCooldown()) + user.getLastWorkCooldown());
             slashCommandInteractionEvent.reply("Sorry, but you have to wait for <t:" + future + ":R>")
                     .setEphemeral(true).queue();
             return;
         }
-        if (Economy.getConfig().readBoolean("enable_work_minigame")) {
+        if (Economy.getEconomyConfig().isEnableWorkMinigame()) {
             try {
                 final Quiz quiz = new Quiz();
                 final EmbedBuilder questionBuilder = new EmbedBuilder();
-                questionBuilder.setDescription("`" + quiz.getQuestion() + "`")
+                questionBuilder.setDescription("Category: **" + quiz.getCategory() + "**\n\n`" + quiz.getQuestion() + "`")
                         .setTitle("In order to get some Plants you have to say if the statement is true or false")
                         .setColor(Color.CYAN)
                         .setAuthor(slashCommandInteractionEvent.getUser().getName(), null, slashCommandInteractionEvent.getUser().getEffectiveAvatarUrl())
@@ -54,15 +54,17 @@ public class WorkCommand extends Command {
                         .addButtons(new DiscordButton(slashCommandInteractionEvent.getUser().getId(), new AnswerButton(false, quiz.getCorrectAnswer()), ButtonStyle.PRIMARY, "false"));
 
                 slashCommandInteractionEvent.reply(messageBuilder.build()).queue();
+                user.setLastWorkCooldown(System.currentTimeMillis());
+                UserDatabase.updateUser(user);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         } else {
-            float coins = GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_work_gain"), user, IncrementType.WORK);
+            float coins = GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseWorkGain(), user, IncrementType.WORK);
             user.addCoins(coins);
             user.setLastWorkCooldown(System.currentTimeMillis());
             UserDatabase.updateUser(user);
-            slashCommandInteractionEvent.reply("You are living a lot greener! You got " + coins + " " + Economy.getConfig().readString("currency_name")).queue();
+            slashCommandInteractionEvent.reply("You are living a lot greener! You got " + coins + " " + Economy.getEconomyConfig().getCurrencyName()).queue();
         }
 
 

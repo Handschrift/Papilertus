@@ -19,13 +19,12 @@ public class AnswerButton implements Pressable {
     public void onClick(ButtonInteractionEvent buttonClickEvent) {
         final EconomyUser user = UserDatabase.fetch(buttonClickEvent.getUser().getId(), buttonClickEvent.getGuild().getId());
         if (answer == trueAnswer) {
-            final float coins = GameUpgrade.getAggregatedUpgradeValue(Economy.getConfig().readInt("base_work_gain"), user, IncrementType.WORK);
+            final float coins = GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseWorkGain(), user, IncrementType.WORK);
             user.addCoins(coins);
-            buttonClickEvent.reply("You picked " + answer + " and that's right! You got " + coins + " " + Economy.getConfig().readString("currency_name")).queue();
+            buttonClickEvent.reply("You picked " + answer + " and that's right! You got " + coins + " " + Economy.getEconomyConfig().getCurrencyName()).queue();
         } else {
             buttonClickEvent.reply("You picked " + answer + " and that's incorrect... but you gained new knowledge!").queue();
         }
-        user.setLastWorkCooldown(System.currentTimeMillis());
         UserDatabase.updateUser(user);
         buttonClickEvent.getMessage().editMessageComponents().queue();
     }
