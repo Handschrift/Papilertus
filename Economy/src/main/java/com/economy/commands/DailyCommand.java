@@ -5,7 +5,7 @@ import com.economy.database.models.EconomyUser;
 import com.economy.game.element.GameUpgrade;
 import com.economy.game.element.IncrementType;
 import com.economy.init.Economy;
-import com.openpackagedbot.commands.core.Command;
+import com.papilertus.commands.core.Command;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 

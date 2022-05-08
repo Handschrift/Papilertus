@@ -4,9 +4,9 @@ import com.musicplayer.audio.GuildMusicManager;
 import com.musicplayer.commands.PlayCommand;
 import com.musicplayer.commands.SkipCommand;
 import com.musicplayer.commands.StopCommand;
-import com.openpackagedbot.commands.core.Command;
-import com.openpackagedbot.plugin.Plugin;
-import com.openpackagedbot.plugin.PluginData;
+import com.papilertus.commands.core.Command;
+import com.papilertus.plugin.Plugin;
+import com.papilertus.plugin.PluginData;
 import net.dv8tion.jda.api.hooks.EventListener;
 
 import java.util.ArrayList;

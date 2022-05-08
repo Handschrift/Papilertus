@@ -1,27 +1,19 @@
 package com.papilertus.birthdays.init;
 
-import com.openpackagedbot.commands.core.Command;
-import com.openpackagedbot.init.OpenPackagedBot;
-import com.openpackagedbot.plugin.Plugin;
-import com.openpackagedbot.plugin.PluginData;
-import com.openpackagedbot.plugin.PluginDataStore;
 import com.papilertus.birthdays.commands.BirthdayCommand;
 import com.papilertus.birthdays.commands.WishlistCommand;
-import com.papilertus.birthdays.database.BirthdayUser;
 import com.papilertus.birthdays.database.GuildDatabase;
 import com.papilertus.birthdays.database.UserDatabase;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.User;
+import com.papilertus.commands.core.Command;
+import com.papilertus.plugin.Plugin;
+import com.papilertus.plugin.PluginData;
+import com.papilertus.plugin.PluginDataStore;
 import net.dv8tion.jda.api.hooks.EventListener;
 
-import java.awt.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class Birthdays implements Plugin {
     private static PluginDataStore store;

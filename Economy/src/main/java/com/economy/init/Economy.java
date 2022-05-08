@@ -12,11 +12,11 @@ import com.google.gson.Gson;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
-import com.openpackagedbot.commands.core.Command;
-import com.openpackagedbot.plugin.Plugin;
-import com.openpackagedbot.plugin.PluginConfig;
-import com.openpackagedbot.plugin.PluginData;
-import com.openpackagedbot.plugin.PluginDataStore;
+import com.papilertus.commands.core.Command;
+import com.papilertus.plugin.Plugin;
+import com.papilertus.plugin.PluginConfig;
+import com.papilertus.plugin.PluginData;
+import com.papilertus.plugin.PluginDataStore;
 import net.dv8tion.jda.api.hooks.EventListener;
 import org.bson.Document;
 

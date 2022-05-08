@@ -3,7 +3,7 @@ package com.economy.game.element;
 import com.economy.database.databases.UserDatabase;
 import com.economy.database.models.EconomyUser;
 import com.economy.init.Economy;
-import com.openpackagedbot.gui.button.Pressable;
+import com.papilertus.gui.button.Pressable;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 
 public class AnswerButton implements Pressable {

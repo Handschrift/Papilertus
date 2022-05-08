@@ -3,7 +3,7 @@ package com.economy.commands;
 import com.economy.database.databases.UserDatabase;
 import com.economy.database.models.EconomyUser;
 import com.economy.init.Economy;
-import com.openpackagedbot.commands.core.Command;
+import com.papilertus.commands.core.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

@@ -1,8 +1,8 @@
 package com.randomutils.init;
 
-import com.openpackagedbot.commands.core.Command;
-import com.openpackagedbot.plugin.Plugin;
-import com.openpackagedbot.plugin.PluginData;
+import com.papilertus.commands.core.Command;
+import com.papilertus.plugin.Plugin;
+import com.papilertus.plugin.PluginData;
 import com.randomutils.commands.ChoiceCommand;
 import com.randomutils.commands.DiceCommand;
 import net.dv8tion.jda.api.hooks.EventListener;

@@ -23,7 +23,7 @@ repositories {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.openpackagedbot.init.OpenPackagedBot'
+        attributes 'Main-Class': 'com.papilertus.init.OpenPackagedBot'
     }
 }
 

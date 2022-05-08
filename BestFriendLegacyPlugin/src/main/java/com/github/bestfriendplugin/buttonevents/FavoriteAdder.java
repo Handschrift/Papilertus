@@ -2,8 +2,8 @@ package com.github.bestfriendplugin.buttonevents;
 
 import com.github.bestfriendplugin.database.SpiritUser;
 import com.mongodb.client.model.Updates;
-import com.openpackagedbot.gui.button.Pressable;
-import com.openpackagedbot.plugin.PluginDataStore;
+import com.papilertus.gui.button.Pressable;
+import com.papilertus.plugin.PluginDataStore;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import org.bson.Document;
 

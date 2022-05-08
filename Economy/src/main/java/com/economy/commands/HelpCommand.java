@@ -1,6 +1,6 @@
 package com.economy.commands;
 
-import com.openpackagedbot.commands.core.Command;
+import com.papilertus.commands.core.Command;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 

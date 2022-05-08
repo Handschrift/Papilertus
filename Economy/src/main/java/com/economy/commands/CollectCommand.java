@@ -7,7 +7,7 @@ import com.economy.database.models.EconomyUserInventoryEntry;
 import com.economy.game.element.Forecast;
 import com.economy.init.Economy;
 import com.economy.util.MathUtils;
-import com.openpackagedbot.commands.core.Command;
+import com.papilertus.commands.core.Command;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 

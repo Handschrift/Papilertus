@@ -1,8 +1,8 @@
 package com.papilertus.birthdays.database;
 
 import com.mongodb.client.model.Updates;
-import com.openpackagedbot.plugin.PluginDataStore;
 import com.papilertus.birthdays.init.Birthdays;
+import com.papilertus.plugin.PluginDataStore;
 import org.bson.Document;
 
 import java.time.LocalDate;

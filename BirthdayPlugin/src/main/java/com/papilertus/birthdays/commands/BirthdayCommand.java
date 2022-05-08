@@ -1,6 +1,6 @@
 package com.papilertus.birthdays.commands;
 
-import com.openpackagedbot.commands.core.Command;
+import com.papilertus.commands.core.Command;
 import com.papilertus.birthdays.database.BirthdayUser;
 import com.papilertus.birthdays.database.GuildDatabase;
 import com.papilertus.birthdays.database.UserDatabase;

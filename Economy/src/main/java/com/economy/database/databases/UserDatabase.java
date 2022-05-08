@@ -6,7 +6,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
-import com.openpackagedbot.plugin.PluginDataStore;
+import com.papilertus.plugin.PluginDataStore;
 import org.bson.Document;
 
 import java.util.ArrayList;

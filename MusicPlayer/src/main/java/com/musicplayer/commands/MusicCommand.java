@@ -2,7 +2,7 @@ package com.musicplayer.commands;
 
 import com.musicplayer.audio.GuildMusicManager;
 import com.musicplayer.audio.SoundManager;
-import com.openpackagedbot.commands.core.Command;
+import com.papilertus.commands.core.Command;
 import net.dv8tion.jda.api.entities.Guild;
 
 import java.util.HashMap;

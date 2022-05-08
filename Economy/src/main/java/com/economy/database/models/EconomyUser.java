@@ -9,8 +9,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import com.openpackagedbot.gui.button.DiscordButton;
-import com.openpackagedbot.gui.generator.PapilertusMessageBuilder;
+import com.papilertus.gui.button.DiscordButton;
+import com.papilertus.gui.generator.PapilertusMessageBuilder;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
