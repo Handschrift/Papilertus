@@ -2,7 +2,6 @@ package com.openpackagedbot.plugin;
 
 import com.google.gson.Gson;
 import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.openpackagedbot.init.DatabaseConnection;
@@ -21,8 +20,7 @@ public final class PluginDataStore {
 
     private final DatabaseSignature signature = new DatabaseSignature();
     private final PluginData data;
-    private final MongoClient client = DatabaseConnection.getConnection(signature);
-    private final MongoDatabase database = client.getDatabase("Papilertus");
+    private final MongoDatabase database = DatabaseConnection.getBotDatabase(signature);
 
     public PluginDataStore(PluginData data) {
         this.data = data;
