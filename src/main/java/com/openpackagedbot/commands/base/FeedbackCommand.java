@@ -23,13 +23,13 @@ public class FeedbackCommand extends Command {
     protected void execute(SlashCommandInteractionEvent event) {
 
 
-        TextInput email = TextInput.create("title", "Title", TextInputStyle.SHORT)
+        final TextInput email = TextInput.create("title", "Title", TextInputStyle.SHORT)
                 .setPlaceholder("Enter a title for your feedback")
                 .setMinLength(5)
                 .setMaxLength(100) // or setRequiredRange(10, 100)
                 .build();
 
-        TextInput body = TextInput.create("body", "Text", TextInputStyle.PARAGRAPH)
+        final TextInput body = TextInput.create("body", "Text", TextInputStyle.PARAGRAPH)
                 .setPlaceholder("Your concerns go here")
                 .setMinLength(10)
                 .setMaxLength(1024)
@@ -37,7 +37,7 @@ public class FeedbackCommand extends Command {
 
         final EmbedBuilder feedbackBuilder = new EmbedBuilder();
 
-        DiscordModal modal = new DiscordModal(event.getUser().getId(), "Send feedback", modalInteractionEvent -> {
+        final DiscordModal modal = new DiscordModal(event.getUser().getId(), "Send feedback", modalInteractionEvent -> {
             modalInteractionEvent.getJDA().getUserById(recId).openPrivateChannel().queue(privateChannel -> {
                 feedbackBuilder.setAuthor(modalInteractionEvent.getUser().getName())
                         .setTitle(modalInteractionEvent.getValue("title").getAsString())
