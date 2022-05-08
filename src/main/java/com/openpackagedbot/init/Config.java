@@ -28,6 +28,8 @@ public final class Config {
 
     private String feedbackRecipientId = "";
 
+    private String databaseName = "Papilertus";
+
     static Config getConfig() {
         config = config.read();
         return config;
@@ -93,5 +95,9 @@ public final class Config {
 
     String getFeedbackRecipientId() {
         return feedbackRecipientId;
+    }
+
+    public String getDatabaseName() {
+        return databaseName;
     }
 }

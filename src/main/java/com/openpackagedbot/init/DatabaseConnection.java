@@ -5,6 +5,7 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
 import com.openpackagedbot.plugin.PluginDataStore;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -12,11 +13,12 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 public final class DatabaseConnection {
 
     private static MongoClient client;
+    private static final String databaseName = Config.getConfig().getDatabaseName();
 
     static MongoClient getConnection() {
-        Config config = Config.getConfig();
+        final Config config = Config.getConfig();
         if (client == null) {
-            final MongoCredential credential = MongoCredential.createCredential(config.getDatabaseUsername(), "Papilertus", config.getDatabasePassword().toCharArray());
+            final MongoCredential credential = MongoCredential.createCredential(config.getDatabaseUsername(), "admin", config.getDatabasePassword().toCharArray());
             final MongoClientSettings.Builder settings = MongoClientSettings.builder()
                     .applyConnectionString(new ConnectionString(config.getDatabaseUrl()))
                     .codecRegistry(CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry()
@@ -31,5 +33,11 @@ public final class DatabaseConnection {
 
     public static MongoClient getConnection(PluginDataStore.DatabaseSignature signature) {
         return getConnection();
+    }
+
+    public static MongoDatabase getBotDatabase(PluginDataStore.DatabaseSignature signature) {
+        if (client == null)
+            client = getConnection();
+        return client.getDatabase(databaseName);
     }
 }
