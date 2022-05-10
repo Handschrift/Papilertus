@@ -1,16 +1,21 @@
 package com.papilertus.init;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public final class Config {
 
     private static transient Config config = new Config();
-    private transient final File file = new File("config/config.json");
+    private transient final File file = new File("config/Papilertus.yaml");
+    private transient final ObjectMapper mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
 
     private String token = "";
     private String pluginDir = "plugins/";
@@ -36,26 +41,20 @@ public final class Config {
     }
 
     private void save() {
-        final Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-        try (FileWriter writer = new FileWriter(file)) {
-            gson.toJson(this, writer);
+        try {
+            mapper.writeValue(file, this);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
 
     private Config read() {
-        final Gson gson = new Gson();
-        try (FileReader reader = new FileReader(file)) {
-
-            final BufferedReader bufferedReader = new BufferedReader(reader);
-            return gson.fromJson(bufferedReader, Config.class);
-
+        try {
+            return mapper.readValue(file, Config.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     private Config() {
