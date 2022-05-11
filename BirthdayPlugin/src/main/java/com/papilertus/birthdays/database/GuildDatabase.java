@@ -15,9 +15,9 @@ public class GuildDatabase {
         Birthdays.getDataStore().addEntry("guilds", gson.toJson(object));
     }
 
- /*   public String getBirthdayChannel(String guildId) {
+    public String getBirthdayChannel(String guildId) {
         final Document document = new Document("_id", guildId);
         System.out.println(guildId + "gd");
-        return Birthdays.getDataStore().getEntry("guilds", document).getString("channelId");
-    }*/
+        return ""/*Birthdays.getDataStore().getEntry("guilds", document).getString("channelId");*/;
+    }
 }
