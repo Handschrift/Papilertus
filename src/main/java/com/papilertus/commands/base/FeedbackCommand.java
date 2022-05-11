@@ -25,12 +25,12 @@ public class FeedbackCommand extends Command {
 
         final TextInput email = TextInput.create("title", "Title", TextInputStyle.SHORT)
                 .setPlaceholder("Enter a title for your feedback")
-                .setMinLength(5)
-                .setMaxLength(100) // or setRequiredRange(10, 100)
+                .setMinLength(0)
+                .setMaxLength(100)
                 .build();
 
         final TextInput body = TextInput.create("body", "Text", TextInputStyle.PARAGRAPH)
-                .setPlaceholder("Your concerns go here")
+                .setPlaceholder("Your feedback go here")
                 .setMinLength(10)
                 .setMaxLength(1024)
                 .build();
