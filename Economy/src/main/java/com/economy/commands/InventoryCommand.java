@@ -27,6 +27,8 @@ public class InventoryCommand extends Command {
         final EconomyUser user = UserDatabase.fetch(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
         final EconomyUserInventory inventory = user.getInventory();
         final EmbedBuilder builder = new EmbedBuilder();
+        String footerString = "You have to wait for " + Economy.getEconomyConfig().getTimeToGrowDuration() + " " + Economy.getEconomyConfig().getTimeToGrowUnit().toLowerCase()
+                + " for the seeds to grow.";
 
         if (inventory.getEntries().size() == 0) {
             slashCommandInteractionEvent.reply("Your inventory is currently empty!").setEphemeral(true).queue();
@@ -39,8 +41,12 @@ public class InventoryCommand extends Command {
         }
 
 
-        builder.setFooter("You have to wait for " + Economy.getEconomyConfig().getTimeToGrowDuration() + " " + Economy.getEconomyConfig().getTimeToGrowUnit().toLowerCase()
-                + " for the seeds to grow. After " + Economy.getEconomyConfig().getTimeToDieDuration() + " " + Economy.getEconomyConfig().getTimeDieUnit().toLowerCase() + " the plants will rot.");
+        if (Economy.getEconomyConfig().isAutoCollect()) {
+            footerString = footerString + " After " + Economy.getEconomyConfig().getTimeToDieDuration() + " " + Economy.getEconomyConfig().getTimeDieUnit().toLowerCase() + " the plants will rot.";
+        } else {
+            footerString = footerString + " The plant's will be collected automatically!";
+        }
+        builder.setFooter(footerString);
 
         slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();
     }
