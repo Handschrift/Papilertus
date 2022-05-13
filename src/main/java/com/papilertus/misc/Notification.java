@@ -1,4 +1,6 @@
-package com.papilertus.init;
+package com.papilertus.misc;
+
+import com.papilertus.init.Config;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -7,9 +9,9 @@ public class Notification {
     private final ArrayList<String> messages = new ArrayList<>();
 
 
-    public Notification() {
-        final ArrayList<String> messages = Config.getConfig().getPossibleNotificationMessages();
-        while (this.messages.size() < 3) {
+    public Notification(int amount) {
+        final ArrayList<String> messages = Config.getConfig(new ConfigMiscTicket()).getPossibleNotificationMessages();
+        while (this.messages.size() < amount) {
             final String random = messages.get(new Random().nextInt(messages.size()));
             if (this.messages.contains(random)) {
                 continue;
@@ -23,7 +25,7 @@ public class Notification {
         final StringBuilder builder = new StringBuilder();
 
         for (String message : this.messages) {
-            builder.append("•").append(message).append("\n");
+            builder.append("• ").append(message).append("\n");
         }
         return builder.toString();
     }
