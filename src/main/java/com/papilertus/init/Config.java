@@ -37,6 +37,12 @@ public final class Config {
 
     private String databaseName = "Papilertus";
 
+    private ArrayList<String> possibleNotificationMessages = new ArrayList<>(){{
+        add("This is an open source bot!");
+        add("Richard stinkt richtig hart (haha)");
+        add("Linux ist halt einfach besser, ngl");
+    }};
+
     static Config getConfig() {
         config = config.read();
         return config;
@@ -108,5 +114,9 @@ public final class Config {
 
     public String getDatabaseName() {
         return databaseName;
+    }
+
+    public ArrayList<String> getPossibleNotificationMessages() {
+        return possibleNotificationMessages;
     }
 }
