@@ -42,9 +42,10 @@ public class InventoryCommand extends Command {
 
 
         if (Economy.getEconomyConfig().isAutoCollect()) {
-            footerString = footerString + " After " + Economy.getEconomyConfig().getTimeToDieDuration() + " " + Economy.getEconomyConfig().getTimeDieUnit().toLowerCase() + " the plants will rot.";
-        } else {
             footerString = footerString + " The plant's will be collected automatically!";
+        } else {
+            footerString = footerString + " After " + Economy.getEconomyConfig().getTimeToDieDuration() + " " + Economy.getEconomyConfig().getTimeDieUnit().toLowerCase() + " the plants will rot.";
+
         }
         builder.setFooter(footerString);
 
