@@ -8,6 +8,6 @@ public class MessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        System.out.println(event.getMessage().getContentRaw());
+
     }
 }
