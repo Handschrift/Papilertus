@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import com.papilertus.commands.core.ConfigCommandTicket;
+import com.papilertus.misc.ConfigMiscTicket;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import java.io.File;
@@ -38,6 +40,14 @@ public final class Config {
     static Config getConfig() {
         config = config.read();
         return config;
+    }
+
+    public static Config getConfig(ConfigCommandTicket ticket) {
+        return getConfig();
+    }
+
+    public static Config getConfig(ConfigMiscTicket ticket) {
+        return getConfig();
     }
 
     private void save() {
