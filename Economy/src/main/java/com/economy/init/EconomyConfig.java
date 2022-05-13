@@ -13,19 +13,18 @@ public class EconomyConfig {
     private boolean coinOnMessageSent = true;
     private int coinMessageCooldown = 20;
     private boolean coinOnVoiceActivity = true;
-    private float baseCoinOnMessageAmount = 1;
-    private float baseCoinOnVoiceActivityAmount = 1;
+    private float baseCoinOnMessageAmount = 4;
+    private float baseCoinOnVoiceActivityAmount = 0.2f;
     private boolean enableWorkMinigame = true;
     private int workCooldown = 60;
-    private float baseWorkGain = 3;
+    private float baseWorkGain = 6;
     private String convertCommandName = "plant";
     private float baseCollectablesOnBumpGain = 110;
-    private float collectableToCurrencyConversion = 2;
     private int decimals = 0;
     private float baseDailyGain = 50;
     private ArrayList<GameUpgrade> upgrades = new ArrayList<>() {
         {
-            add(new GameUpgrade("Monarch Butterfly", "Upgrades seed gain by voice", IncrementType.VOICE, ":butterfly:", 1.1F, 36.0F));
+            add(new GameUpgrade("Monarch Butterfly", "Upgrades seed gain by voice", IncrementType.VOICE, ":butterfly:", 1.1F, 54.0F));
             add(new GameUpgrade("Periander Metalmark", "Upgrades seed gain by message", IncrementType.MESSAGE, ":butterfly:", 1.1F, 18.2F));
             add(new GameUpgrade("Mountain Apollo", "Upgrades seed gain by work", IncrementType.WORK, ":butterfly:", 1.1F, 51.3F));
             add(new GameUpgrade("Great Purple Hairstreak", "Upgrades seed gain by bump", IncrementType.BUMP, ":butterfly:", 1.8F, 100.4F));
@@ -108,10 +107,6 @@ public class EconomyConfig {
 
     public float getBaseCollectablesOnBumpGain() {
         return baseCollectablesOnBumpGain;
-    }
-
-    public float getCollectableToCurrencyConversion() {
-        return collectableToCurrencyConversion;
     }
 
     public int getDecimals() {
