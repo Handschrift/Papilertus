@@ -62,7 +62,7 @@ public class GameUpgrade {
     }
 
     public float getUpgradePrice(EconomyUser user) {
-        final float price = (float) (getBasePrice() * Math.sqrt(user.getUpgradeLevel(getName())));
+        final float price = (float) (getBasePrice() * Math.pow(user.getUpgradeLevel(getName()) / 1.5, 2));
         return MathUtils.round(price);
     }
 }
