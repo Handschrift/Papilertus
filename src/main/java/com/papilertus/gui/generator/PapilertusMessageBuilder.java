@@ -16,19 +16,20 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class PapilertusMessageBuilder {
-    final ArrayList<DiscordButton> buttons = new ArrayList<>();
-    final MessageBuilder builder = new MessageBuilder();
+    private final ArrayList<DiscordButton> buttons = new ArrayList<>();
+    private final MessageBuilder builder = new MessageBuilder();
+    private final int MAX_PAGES = 5;
 
     public PapilertusMessageBuilder addButtons(DiscordButton... buttons) {
         this.buttons.addAll(List.of(buttons));
-        if (this.buttons.size() <= 5) {
+        if (this.buttons.size() <= MAX_PAGES) {
             builder.setActionRows(ActionRow.of(this.buttons.stream().map(DiscordButton::getButton).collect(Collectors.toList())));
             return this;
         }
         final ArrayList<ActionRow> actionRows = new ArrayList<>();
         //Using an intstream to get a "pagination" of the discord buttons
         //Stackoverflow link: https://stackoverflow.com/questions/43057690/java-stream-collect-every-n-elements
-        IntStream.range(0, (this.buttons.size() + 5 - 1) / 5).mapToObj(i -> this.buttons.subList(i * 5, Math.min(5 * (i + 1), this.buttons.size()))).forEach(
+        IntStream.range(0, (this.buttons.size() + MAX_PAGES - 1) / MAX_PAGES).mapToObj(i -> this.buttons.subList(i * MAX_PAGES, Math.min(MAX_PAGES * (i + 1), this.buttons.size()))).forEach(
                 discordButtons -> {
                     actionRows.add(ActionRow.of(discordButtons.stream().map(DiscordButton::getButton).collect(Collectors.toList())));
                 }
