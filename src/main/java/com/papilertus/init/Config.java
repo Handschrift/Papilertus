@@ -37,10 +37,12 @@ public final class Config {
 
     private String databaseName = "Papilertus";
 
-    private ArrayList<String> possibleNotificationMessages = new ArrayList<>(){{
+    private ArrayList<String> possibleNotificationMessages = new ArrayList<>() {{
         add("This is an open source bot!");
-        add("Richard stinkt richtig hart (haha)");
-        add("Linux ist halt einfach besser, ngl");
+        add("you can host it yourself");
+        add("you can send feedback with feedback");
+        add("You can add plugins to the bot");
+        add("You can turn off this message in the config");
     }};
 
     static Config getConfig() {
