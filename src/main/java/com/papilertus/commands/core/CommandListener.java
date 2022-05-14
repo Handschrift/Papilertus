@@ -39,7 +39,6 @@ public final class CommandListener extends ListenerAdapter {
             final EmbedBuilder builder = new EmbedBuilder();
             builder.setColor(Color.CYAN);
             builder.setDescription("Did you know: \n" + new Notification(3));
-            builder.setFooter("For testing purposes this message will appear more often");
             channel.sendMessageEmbeds(builder.build()).queue();
         }
     }
