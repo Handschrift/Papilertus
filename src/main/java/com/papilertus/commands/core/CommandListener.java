@@ -1,5 +1,6 @@
 package com.papilertus.commands.core;
 
+import com.papilertus.init.Config;
 import com.papilertus.misc.Notification;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -34,10 +35,10 @@ public final class CommandListener extends ListenerAdapter {
     }
 
     private void sendNotification(MessageChannel channel) {
-        if (Math.random() < 0.7) {
+        if (Math.random() < Config.getConfig(new ConfigCommandTicket()).getProbabilityForNotifications() / 100.0) {
             final EmbedBuilder builder = new EmbedBuilder();
             builder.setColor(Color.CYAN);
-            builder.setDescription("Did you know: \n" + new Notification(3).toString());
+            builder.setDescription("Did you know: \n" + new Notification(3));
             builder.setFooter("For testing purposes this message will appear more often");
             channel.sendMessageEmbeds(builder.build()).queue();
         }

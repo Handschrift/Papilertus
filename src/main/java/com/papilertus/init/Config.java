@@ -45,6 +45,8 @@ public final class Config {
         add("You can turn off this message in the config");
     }};
 
+    private int probabilityForNotifications = 1; //1%
+
     static Config getConfig() {
         config = config.read();
         return config;
@@ -120,5 +122,9 @@ public final class Config {
 
     public ArrayList<String> getPossibleNotificationMessages() {
         return possibleNotificationMessages;
+    }
+
+    public int getProbabilityForNotifications() {
+        return probabilityForNotifications;
     }
 }
