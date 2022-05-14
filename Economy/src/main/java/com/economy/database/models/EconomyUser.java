@@ -65,6 +65,14 @@ public class EconomyUser {
         this.coins += MathUtils.round(coins);
     }
 
+    public void alterCoins(double coins) {
+        if (coins < 0) {
+            removeCoins(coins);
+        } else {
+            addCoins(coins);
+        }
+    }
+
     public void removeCoins(double coins) {
         this.coins -= MathUtils.round(coins);
     }
