@@ -22,7 +22,10 @@ public class BumpListener extends ListenerAdapter {
             //I don't know if this is needed, but it is an extra verification step for a successful bump
             if (event.getMessage().getEmbeds().get(0).getImage().getUrl().equals("https://disboard.org/images/bot-command-image-bump.png")) {
                 final EconomyUser user = UserDatabase.fetch(bumpInteraction.getUser().getId(), event.getGuild().getId());
-                user.addCoins(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCollectablesOnBumpGain(), user, IncrementType.BUMP));
+                final float coins = GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCollectablesOnBumpGain(), user, IncrementType.BUMP);
+                if (coins == 0)
+                    return;
+                user.addCoins(coins);
                 UserDatabase.updateUser(user);
                 event.getChannel().sendMessage(bumpInteraction.getUser().getAsMention() + " bumped the server and got "
                         + GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCollectablesOnBumpGain(), user, IncrementType.BUMP) + " " + Economy.getEconomyConfig().getCollectableName() + "!").queue();
