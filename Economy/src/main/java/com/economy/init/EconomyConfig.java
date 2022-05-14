@@ -1,5 +1,6 @@
 package com.economy.init;
 
+import com.economy.game.element.Event;
 import com.economy.game.element.GameUpgrade;
 import com.economy.game.element.IncrementType;
 
@@ -46,6 +47,12 @@ public class EconomyConfig {
             add(":fire: Dry");
             add(":sunny: Sunny");
             add(":cloud_rain: Heavy rain");
+        }
+    };
+
+    private ArrayList<Event> events = new ArrayList<>() {
+        {
+
         }
     };
 
@@ -143,5 +150,9 @@ public class EconomyConfig {
 
     public ArrayList<String> getForecastNames() {
         return forecastNames;
+    }
+
+    public ArrayList<Event> getEvents() {
+        return events;
     }
 }
