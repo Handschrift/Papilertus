@@ -1,5 +1,13 @@
 package com.economy.game.element;
 
+import com.economy.database.databases.UserDatabase;
+import com.economy.database.models.EconomyUser;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageChannel;
+
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Event {
     public enum Type {
         POSITIVE, NEGATIVE;
@@ -33,15 +41,26 @@ public class Event {
         return type;
     }
 
-    public float getValue(float coins) {
+    public float getChangeValue(float coins) {
         switch (type) {
             case POSITIVE:
-                return coins + (coins * weight);
+                return coins * weight;
             case NEGATIVE:
-                return coins - (coins * weight);
+                return -coins * weight;
             default:
                 //should never happen
-                return coins;
+                return 0;
         }
+    }
+
+    public static void callRandomEvent(Member member, MessageChannel channel) {
+        final ArrayList<Event> events = new ArrayList<>();
+        events.add(new Event("VOll schlecht!", 0.6f, 0.05f, Type.NEGATIVE));
+        events.add(new Event("VOll gut!", 0.6f, 0.5f, Type.POSITIVE));
+        final Event current = events.get(new Random().nextInt(events.size()));
+        channel.sendMessage(current.getDescription()).queue();
+        final EconomyUser economyUser = UserDatabase.fetch(member.getId(), member.getGuild().getId());
+        economyUser.alterCoins(current.getChangeValue((float) economyUser.getCoins()));
+        UserDatabase.updateUser(economyUser);
     }
 }
