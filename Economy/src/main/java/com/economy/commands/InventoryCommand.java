@@ -27,7 +27,7 @@ public class InventoryCommand extends Command {
         final EconomyUser user = UserDatabase.fetch(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
         final EconomyUserInventory inventory = user.getInventory();
         final EmbedBuilder builder = new EmbedBuilder();
-        String footerString = "You have to wait for " + Economy.getEconomyConfig().getTimeToGrowDuration() + " " + Economy.getEconomyConfig().getTimeToGrowUnit().toLowerCase()
+        String footerString = "You have to wait for " + Economy.getEconomyConfig().getTimeToGrowDuration() + " " + getProperTimeUnitName(Economy.getEconomyConfig().getTimeToGrowUnit(), Economy.getEconomyConfig().getTimeToGrowDuration())
                 + " for the seeds to grow.";
 
         if (inventory.getEntries().size() == 0) {
@@ -42,13 +42,18 @@ public class InventoryCommand extends Command {
 
 
         if (Economy.getEconomyConfig().isAutoCollect()) {
-            footerString = footerString + " The plant's will be collected automatically!";
+            footerString = footerString + " The " + Economy.getEconomyConfig().getCurrencyName() + " will be collected automatically!";
         } else {
-            footerString = footerString + " After " + Economy.getEconomyConfig().getTimeToDieDuration() + " " + Economy.getEconomyConfig().getTimeDieUnit().toLowerCase() + " the plants will rot.";
+            footerString = footerString + " After " + Economy.getEconomyConfig().getTimeToDieDuration() + " " + getProperTimeUnitName(Economy.getEconomyConfig().getTimeDieUnit(), Economy.getEconomyConfig().getTimeToDieDuration()) + " the plants will rot.";
 
         }
         builder.setFooter(footerString);
 
         slashCommandInteractionEvent.replyEmbeds(builder.build()).queue();
     }
+
+    private String getProperTimeUnitName(String unitName, long amount) {
+        return amount == 1 ? unitName.toLowerCase().substring(0, unitName.length() - 1) : unitName.toLowerCase();
+    }
+
 }
