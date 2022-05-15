@@ -63,6 +63,8 @@ public final class Papilertus {
     }
 
     public static PluginJDA getPluginJDA() {
+        if (jda == null)
+            return null;
         if (pluginJDA == null) {
             pluginJDA = new PluginJDA(jda);
         }
