@@ -3,6 +3,7 @@ package com.economy.commands;
 import com.economy.database.databases.UserDatabase;
 import com.economy.database.models.EconomyUser;
 import com.economy.database.models.EconomyUserInventoryEntry;
+import com.economy.game.element.Event;
 import com.economy.init.Economy;
 import com.papilertus.commands.core.Command;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -36,6 +37,9 @@ public class SellCommand extends Command {
         user.removeCollectables(collectables);
         user.getInventory().addEntry(new EconomyUserInventoryEntry((float) collectables, System.currentTimeMillis()));
         UserDatabase.updateUser(user);
+        if (Math.random() < Economy.getEconomyConfig().getEventProbability() / 100.0) {
+            Event.callRandomEvent(slashCommandInteractionEvent.getMember(), slashCommandInteractionEvent.getChannel());
+        }
         slashCommandInteractionEvent.reply("You added " + collectables + " " + Economy.getEconomyConfig().getCollectableName()
                 + " to your farm!").queue();
     }
