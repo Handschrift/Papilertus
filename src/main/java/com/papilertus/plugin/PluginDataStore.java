@@ -64,7 +64,8 @@ public final class PluginDataStore {
     }
 
     public <T> T getEntry(String collectionName, Bson filter, Class<T> c) {
-        return database.getCollection(data.getName() + "_" + collectionName, c).find(filter).first();
+        final Document result = database.getCollection(data.getName() + "_" + collectionName).find(filter).first();
+        return result == null ? null : new Gson().fromJson(result.toJson(), c);
     }
 
     @Deprecated
@@ -91,9 +92,8 @@ public final class PluginDataStore {
     public <T> ArrayList<T> getEntries(Bson filter, Class<T> c) {
         final ArrayList<T> entries = new ArrayList<>();
         final FindIterable<Document> results = database.getCollection(data.getName()).find(filter);
-        final MongoCursor<Document> cursor = results.cursor();
-        while (cursor.hasNext()) {
-            entries.add(new Gson().fromJson(cursor.next().toJson(), c));
+        for (Document document : results) {
+            entries.add(new Gson().fromJson(document.toJson(), c));
         }
         return entries;
     }
