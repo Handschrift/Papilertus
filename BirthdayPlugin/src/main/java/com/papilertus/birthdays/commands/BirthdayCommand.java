@@ -1,9 +1,9 @@
 package com.papilertus.birthdays.commands;
 
-import com.papilertus.commands.core.Command;
 import com.papilertus.birthdays.database.BirthdayUser;
 import com.papilertus.birthdays.database.GuildDatabase;
 import com.papilertus.birthdays.database.UserDatabase;
+import com.papilertus.commands.core.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -52,8 +52,7 @@ public class BirthdayCommand extends Command {
                 .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
                 .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0);
         final DateTimeFormatter formatter = builder.toFormatter();
-        final UserDatabase database = new UserDatabase();
-        final BirthdayUser user = database.fetchUser(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
+        final BirthdayUser user = UserDatabase.fetchUser(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
 
         switch (slashCommandInteractionEvent.getSubcommandName()) {
             case "set":
@@ -71,7 +70,7 @@ public class BirthdayCommand extends Command {
                     return;
                 }
                 if (user == null) {
-                    database.addUser(slashCommandInteractionEvent.getUser().getId(),
+                    UserDatabase.addUser(slashCommandInteractionEvent.getUser().getId(),
                             slashCommandInteractionEvent.getGuild().getId(),
                             t.toLocalDate(), "Europe/Berlin", Period.between(raw.toLocalDate(), LocalDate.now()).getYears(), 5);
                     slashCommandInteractionEvent.reply("Your birthday was set to " + birthday).queue();
@@ -88,14 +87,14 @@ public class BirthdayCommand extends Command {
                 }
                 break;
             case "remove":
-                database.deleteUser(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
+                UserDatabase.deleteUser(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
                 slashCommandInteractionEvent.reply("Your birthday was removed").queue();
                 break;
             case "list":
                 final EmbedBuilder listBuilder = new EmbedBuilder()
                         .setTitle("Next birthdays");
                 int i = 0;
-                for (BirthdayUser birthdayUser : database.getAllAfter(slashCommandInteractionEvent.getGuild().getId(), LocalDate.now())) {
+                for (BirthdayUser birthdayUser : UserDatabase.getAllAfter(slashCommandInteractionEvent.getGuild().getId(), LocalDate.now())) {
                     if (i > 10)
                         break;
                     listBuilder.getDescriptionBuilder()
@@ -121,8 +120,7 @@ public class BirthdayCommand extends Command {
                 break;
             case "channel":
                 final MessageChannel channel = slashCommandInteractionEvent.getOption("channel").getAsMessageChannel();
-                final GuildDatabase guildDatabase = new GuildDatabase();
-                guildDatabase.addBirthdayChannel(slashCommandInteractionEvent.getGuild().getId(), channel.getId());
+                GuildDatabase.addBirthdayGuild(slashCommandInteractionEvent.getGuild().getId(), channel.getId());
                 slashCommandInteractionEvent.reply("Set!").queue();
                 break;
         }

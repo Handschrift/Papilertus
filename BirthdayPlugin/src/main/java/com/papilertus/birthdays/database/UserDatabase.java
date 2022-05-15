@@ -1,5 +1,7 @@
 package com.papilertus.birthdays.database;
 
+import com.google.gson.Gson;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Updates;
 import com.papilertus.birthdays.init.Birthdays;
 import com.papilertus.plugin.PluginDataStore;
@@ -12,13 +14,13 @@ import java.util.ArrayList;
 public class UserDatabase {
     private static final PluginDataStore dataStore = Birthdays.getDataStore();
 
-    public BirthdayUser fetchUser(String userId, String guildId) {
+    public static BirthdayUser fetchUser(String userId, String guildId) {
         final Document document = new Document("_id.userId", userId);
         document.append("_id.guildId", guildId);
         return dataStore.getEntry(document, BirthdayUser.class);
     }
 
-    public void addUser(String userId, String guildId, LocalDate date, String timezone, int age, int tries) {
+    public static void addUser(String userId, String guildId, LocalDate date, String timezone, int age, int tries) {
         BirthdayUser user = new BirthdayUser(userId, guildId);
         user.setTries(tries);
         user.setAge(age);
@@ -27,17 +29,17 @@ public class UserDatabase {
         dataStore.addEntry(user);
     }
 
-    public void addUser(BirthdayUser user) {
+    public static void addUser(BirthdayUser user) {
         dataStore.addEntry(user);
     }
 
-    public void deleteUser(String userId, String guildId) {
+    public static void deleteUser(String userId, String guildId) {
         final Document document = new Document("_id.userId", userId);
         document.append("_id.guildId", guildId);
         dataStore.modifyEntry(document, Updates.set("birthday", ""));
     }
 
-    public ArrayList<BirthdayUser> getAllAfter(String guildId, LocalDate date) {
+    public static ArrayList<BirthdayUser> getAllAfter(String guildId, LocalDate date) {
         final Document filter = new Document("_id.guildId", guildId);
         final ArrayList<BirthdayUser> results = new ArrayList<>();
         for (BirthdayUser user : dataStore.getEntries(filter, BirthdayUser.class)) {
@@ -50,17 +52,18 @@ public class UserDatabase {
         return results;
     }
 
-    public ArrayList<BirthdayUser> getByDate(LocalDate date) {
+    public static ArrayList<BirthdayUser> getByDate(LocalDate date) {
+        final ArrayList<BirthdayUser> users = new ArrayList<>();
         final LocalDate newDate = LocalDate.of(LocalDate.now().getYear(), date.getMonth(), date.getDayOfMonth());
         final Document filter = new Document("birthday", newDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        final ArrayList<BirthdayUser> results = new ArrayList<>();
-        for (BirthdayUser user : dataStore.getEntries(filter, BirthdayUser.class)) {
-            results.add(user);
+        final FindIterable<Document> documents = dataStore.getIterableList(filter);
+        for (Document document : documents) {
+            users.add(new Gson().fromJson(document.toJson(), BirthdayUser.class));
         }
-        return results;
+        return users;
     }
 
-    public void updateUser(String userId, String guildId, String key, Object value) {
+    public static void updateUser(String userId, String guildId, String key, Object value) {
         final Document document = new Document("_id.userId", userId);
         document.append("_id.guildId", guildId);
         dataStore.modifyEntry(document, Updates.set(key, value));

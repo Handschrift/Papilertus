@@ -1,30 +1,49 @@
 package com.papilertus.birthdays.database;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class BirthdayUser {
-    private final String userId;
-    private final String guildId;
+    @SerializedName(value = "_id")
+    private final BirthdayUserKey id;
     private int age;
     private String timezone;
     private String birthday;
     private int tries;
     private final ArrayList<String> wishlist;
 
+    private static final class BirthdayUserKey {
+        private final String userId;
+        private final String guildId;
+
+        public BirthdayUserKey(String userId, String guildId) {
+            this.userId = userId;
+            this.guildId = guildId;
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public String getGuildId() {
+            return guildId;
+        }
+    }
+
     public BirthdayUser(String userId, String guildId) {
-        this.userId = userId;
-        this.guildId = guildId;
+        this.id = new BirthdayUserKey(userId, guildId);
         wishlist = new ArrayList<>();
     }
 
     public String getUserId() {
-        return userId;
+        return this.id.userId;
     }
 
     public String getGuildId() {
-        return guildId;
+        return this.id.guildId;
     }
 
     public String getBirthday() {
@@ -41,20 +60,17 @@ public class BirthdayUser {
 
     public void addWish(String item) {
         wishlist.add(item);
-        final UserDatabase database = new UserDatabase();
-        database.updateUser(getUserId(), getGuildId(), "wishlist", wishlist);
+        UserDatabase.updateUser(getUserId(), getGuildId(), "wishlist", wishlist);
     }
 
     public void removeWish(String item) {
         wishlist.remove(item);
-        final UserDatabase database = new UserDatabase();
-        database.updateUser(getUserId(), getGuildId(), "wishlist", wishlist);
+        UserDatabase.updateUser(getUserId(), getGuildId(), "wishlist", wishlist);
     }
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        final UserDatabase database = new UserDatabase();
-        database.updateUser(getUserId(), getGuildId(), "birthday", birthday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        UserDatabase.updateUser(getUserId(), getGuildId(), "birthday", birthday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 
     public int getAge() {
@@ -63,8 +79,7 @@ public class BirthdayUser {
 
     public void setAge(int age) {
         this.age = age;
-        final UserDatabase database = new UserDatabase();
-        database.updateUser(getUserId(), getGuildId(), "age", age);
+        UserDatabase.updateUser(getUserId(), getGuildId(), "age", age);
 
     }
 
@@ -74,8 +89,7 @@ public class BirthdayUser {
 
     public void setTimezone(String timezone) {
         this.timezone = timezone;
-        final UserDatabase database = new UserDatabase();
-        database.updateUser(getUserId(), getGuildId(), "timezone", timezone);
+        UserDatabase.updateUser(getUserId(), getGuildId(), "timezone", timezone);
     }
 
     public int getTries() {
@@ -84,6 +98,6 @@ public class BirthdayUser {
 
     public void setTries(int tries) {
         this.tries = tries;
-        final UserDatabase database = new UserDatabase();
+        UserDatabase.updateUser(getUserId(), getGuildId(), "tries", tries);
     }
 }

@@ -29,27 +29,27 @@ public class Birthdays implements Plugin {
     @Override
     public void onLoad(PluginData pluginData) {
         store = new PluginDataStore(pluginData);
-        final UserDatabase database = new UserDatabase();
-        final GuildDatabase guildDatabase = new GuildDatabase();
         final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
         final EmbedBuilder notificationBuilder = new EmbedBuilder();
         service.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                for (BirthdayUser user : database.getByDate(LocalDate.now())) {
-                    database.updateUser(user.getUserId(), user.getGuildId(), "birthday", user.getBirthdayDate().plusYears(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                for (BirthdayUser user : UserDatabase.getByDate(LocalDate.now())) {
+                    if (Papilertus.getPluginJDA() == null) //jda didn't load yet
+                        return;
+
                     final User discordUser = Papilertus.getPluginJDA().getUserById(user.getUserId());
-                    final String channelId = guildDatabase.getBirthdayChannel(user.getGuildId());
+                    final String channelId = GuildDatabase.getBirthdayGuild(user.getGuildId()).getChannelId();
 
                     if (channelId != null) {
-                        //To be changed
                         notificationBuilder.setDescription("Happy birthday to " + discordUser.getName() + " \uD83C\uDF89")
                                 .setColor(Color.CYAN);
                         Papilertus.getPluginJDA().getTextChannelById(channelId).sendMessageEmbeds(notificationBuilder.build()).queue();
+                        UserDatabase.updateUser(user.getUserId(), user.getGuildId(), "birthday", user.getBirthdayDate().plusYears(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                     }
                 }
             }
-        }, 0, 10, TimeUnit.SECONDS);
+        }, 0, 1, TimeUnit.SECONDS);
 
     }
 
