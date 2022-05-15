@@ -2,10 +2,12 @@ package com.economy.game.element;
 
 import com.economy.database.databases.UserDatabase;
 import com.economy.database.models.EconomyUser;
+import com.economy.init.Economy;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class Event {
@@ -54,13 +56,27 @@ public class Event {
     }
 
     public static void callRandomEvent(Member member, MessageChannel channel) {
-        final ArrayList<Event> events = new ArrayList<>();
-        events.add(new Event("VOll schlecht!", 0.6f, 0.05f, Type.NEGATIVE));
-        events.add(new Event("VOll gut!", 0.6f, 0.5f, Type.POSITIVE));
-        final Event current = events.get(new Random().nextInt(events.size()));
-        channel.sendMessage(current.getDescription()).queue();
+        final Event current = getRandom();
         final EconomyUser economyUser = UserDatabase.fetch(member.getId(), member.getGuild().getId());
+        channel.sendMessage(current.getDescription() + " You " + (current.type == Type.POSITIVE ? " got " : " lost ") + Math.abs(current.getChangeValue((float) economyUser.getCoins()))
+                + Economy.getEconomyConfig().getCurrencyName()).queue();
         economyUser.alterCoins(current.getChangeValue((float) economyUser.getCoins()));
         UserDatabase.updateUser(economyUser);
+    }
+
+    private static Event getRandom() {
+        final ArrayList<Event> events = Economy.getEconomyConfig().getEvents();
+        final double p = Math.random();
+        double cumulative = 0;
+        Collections.shuffle(events);
+
+        for (Event event : events) {
+            cumulative += event.probability;
+            if (p <= cumulative) {
+                return event;
+            }
+        }
+
+        return events.get(new Random().nextInt(events.size()));
     }
 }
