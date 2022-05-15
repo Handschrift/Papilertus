@@ -52,9 +52,14 @@ public class EconomyConfig {
 
     private ArrayList<Event> events = new ArrayList<>() {
         {
-
+            add(new Event("A human burned your plants.", 0.5f, 0.05f, Event.Type.NEGATIVE));
+            add(new Event("Tourists are planting seeds for you.", 0.5f, 0.05f, Event.Type.POSITIVE));
+            add(new Event("Your forest is burning!", 0.01f, 0.25f, Event.Type.NEGATIVE));
+            add(new Event("Overall pollution is deteriorating", 0.05f, 0.10f, Event.Type.POSITIVE));
         }
     };
+
+    private int eventProbability = 5;
 
     public EconomyConfig() {
 
@@ -154,5 +159,9 @@ public class EconomyConfig {
 
     public ArrayList<Event> getEvents() {
         return events;
+    }
+
+    public int getEventProbability() {
+        return eventProbability;
     }
 }
