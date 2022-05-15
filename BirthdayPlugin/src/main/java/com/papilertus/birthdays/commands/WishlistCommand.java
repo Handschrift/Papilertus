@@ -1,8 +1,8 @@
 package com.papilertus.birthdays.commands;
 
-import com.papilertus.commands.core.Command;
 import com.papilertus.birthdays.database.BirthdayUser;
 import com.papilertus.birthdays.database.UserDatabase;
+import com.papilertus.commands.core.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
