@@ -35,6 +35,11 @@ public class GiveCommand extends Command {
             return;
         }
 
+        if (sender.getUserId().equals(receiver.getUserId())) {
+            slashCommandInteractionEvent.reply("You cannot send to yourself!").setEphemeral(true).queue();
+            return;
+        }
+
         if (amount > sender.getCoins()) {
             slashCommandInteractionEvent.reply(MessageFormat.format("You don't have enough {0}!", Economy.getEconomyConfig().getCurrencyName())).setEphemeral(true).queue();
             return;
