@@ -30,6 +30,11 @@ public class GiveCommand extends Command {
         final EconomyUser sender = UserDatabase.fetch(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
         final EconomyUser receiver = UserDatabase.fetch(receiverUser.getId(), slashCommandInteractionEvent.getGuild().getId());
 
+        if (receiverUser.isBot() || receiverUser.isSystem()) {
+            slashCommandInteractionEvent.reply(MessageFormat.format("You cannot give {0} to bots!", Economy.getEconomyConfig().getCurrencyName())).setEphemeral(true).queue();
+            return;
+        }
+
         if (amount > sender.getCoins()) {
             slashCommandInteractionEvent.reply(MessageFormat.format("You don't have enough {0}!", Economy.getEconomyConfig().getCurrencyName())).setEphemeral(true).queue();
             return;
@@ -49,7 +54,7 @@ public class GiveCommand extends Command {
 
         UserDatabase.updateUser(sender);
         UserDatabase.updateUser(receiver);
-        slashCommandInteractionEvent.reply(MessageFormat.format("You gave {0}{1} to {2}", amount, Economy.getEconomyConfig().getCurrencyName(), receiverUser.getAsMention())).queue();
+        slashCommandInteractionEvent.reply(MessageFormat.format("You gave {0} {1} to {2}", amount, Economy.getEconomyConfig().getCurrencyName(), receiverUser.getAsMention())).queue();
 
     }
 }
