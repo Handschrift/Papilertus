@@ -3,6 +3,7 @@ package com.economy.game.element;
 import com.economy.database.databases.UserDatabase;
 import com.economy.database.models.EconomyUser;
 import com.economy.init.Economy;
+import com.economy.util.MathUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 
@@ -58,8 +59,8 @@ public class Event {
     public static void callRandomEvent(Member member, MessageChannel channel) {
         final Event current = getRandom();
         final EconomyUser economyUser = UserDatabase.fetch(member.getId(), member.getGuild().getId());
-        channel.sendMessage(current.getDescription() + " You " + (current.type == Type.POSITIVE ? " got " : " lost ") + Math.abs(current.getChangeValue((float) economyUser.getCoins()))
-                + Economy.getEconomyConfig().getCurrencyName()).queue();
+        channel.sendMessage(current.getDescription() + " You " + (current.type == Type.POSITIVE ? " got " : " lost ") + MathUtils.round(Math.abs(current.getChangeValue((float) economyUser.getCoins())))
+                + " " + Economy.getEconomyConfig().getCurrencyName()).queue();
         economyUser.alterCoins(current.getChangeValue((float) economyUser.getCoins()));
         UserDatabase.updateUser(economyUser);
     }
