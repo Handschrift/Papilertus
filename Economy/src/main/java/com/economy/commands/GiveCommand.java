@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
+import java.text.MessageFormat;
+
 public class GiveCommand extends Command {
 
     public GiveCommand() {
@@ -29,7 +31,7 @@ public class GiveCommand extends Command {
         final EconomyUser receiver = UserDatabase.fetch(receiverUser.getId(), slashCommandInteractionEvent.getGuild().getId());
 
         if (amount > sender.getCoins()) {
-            slashCommandInteractionEvent.reply("You don't have enough money!").setEphemeral(true).queue();
+            slashCommandInteractionEvent.reply(MessageFormat.format("You don't have enough {0}!", Economy.getEconomyConfig().getCurrencyName())).setEphemeral(true).queue();
             return;
         }
 
@@ -47,6 +49,7 @@ public class GiveCommand extends Command {
 
         UserDatabase.updateUser(sender);
         UserDatabase.updateUser(receiver);
-        slashCommandInteractionEvent.reply("You gave " + amount + " " + Economy.getEconomyConfig().getCurrencyName()).queue();
+        slashCommandInteractionEvent.reply(MessageFormat.format("You gave {0}{1} to {2}", amount, Economy.getEconomyConfig().getCurrencyName(), receiverUser.getAsMention())).queue();
+
     }
 }
