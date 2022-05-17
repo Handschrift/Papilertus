@@ -1,0 +1,5 @@
+{
+  "name": "FunPlugin",
+  "author": "Handschrift",
+  "mainClass": "com.funplugin.init.FunPlugin"
+}
