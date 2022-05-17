@@ -242,7 +242,7 @@ public class EconomyUser {
     }
 
     public boolean canSend(float amount) {
-        return getSentToday() + amount < 1000;
+        return getSentToday() + amount <= 1000;
     }
 
     public boolean canReceive(float amount) {
