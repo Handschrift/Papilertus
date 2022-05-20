@@ -13,4 +13,8 @@ public class EconomyUserInventory {
         return this.entries;
     }
 
+    public int getSize() {
+        return getEntries().size();
+    }
+
 }
