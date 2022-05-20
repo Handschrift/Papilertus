@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
+import java.text.MessageFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.concurrent.TimeUnit;
@@ -42,9 +43,9 @@ public class InventoryCommand extends Command {
 
 
         if (Economy.getEconomyConfig().isAutoCollect()) {
-            footerString = footerString + " The " + Economy.getEconomyConfig().getCurrencyName() + " will be collected automatically!";
+            footerString = MessageFormat.format("{0} The {1} will be collected automatically.", footerString, Economy.getEconomyConfig().getCurrencyName());
         } else {
-            footerString = footerString + " After " + Economy.getEconomyConfig().getTimeToDieDuration() + " " + getProperTimeUnitName(Economy.getEconomyConfig().getTimeDieUnit(), Economy.getEconomyConfig().getTimeToDieDuration()) + " the plants will rot.";
+            footerString = MessageFormat.format("{0} After {1} {2} the plants will rot.\n Collect them with /collect!", footerString, Economy.getEconomyConfig().getTimeToDieDuration(), getProperTimeUnitName(Economy.getEconomyConfig().getTimeDieUnit(), Economy.getEconomyConfig().getTimeToDieDuration()));
 
         }
         builder.setFooter(footerString);
