@@ -34,6 +34,11 @@ public class SellCommand extends Command {
             return;
         }
 
+        if (user.getInventory().getSize() >= 10) {
+            slashCommandInteractionEvent.reply("You cannot have more than 10 entries in your inventory.").setEphemeral(true).queue();
+            return;
+        }
+
         user.removeCollectables(collectables);
         user.getInventory().addEntry(new EconomyUserInventoryEntry((float) collectables, System.currentTimeMillis()));
         UserDatabase.updateUser(user);
