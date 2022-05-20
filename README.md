@@ -41,7 +41,7 @@ Make sure that you have the latest version of docker and docker-compose installe
 
 ### Clone from GitHub:
 
-`git clone https://github.com/Handschrift/OpenPackagedBot.git`
+`git clone https://github.com/Handschrift/Papilertus.git`
 
 ### Build the docker container
 
