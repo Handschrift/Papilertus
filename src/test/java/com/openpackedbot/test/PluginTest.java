@@ -11,19 +11,11 @@ public class PluginTest {
 
     @Test
     public void testEmptyConfig() {
-        PluginConfig config = new PluginConfig();
-        Assertions.assertEquals("{}", config.toString());
+
     }
 
     @Test
     public void testConfigWithEntry() {
-        PluginConfig config = new PluginConfig();
-        config.addEntry("min", 23);
 
-        JsonObject object = new JsonObject();
-        object.addProperty("min", 23);
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        Assertions.assertEquals(gson.toJson(object), config.toString());
     }
 }
