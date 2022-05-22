@@ -151,9 +151,13 @@ public class EconomyUser {
                     + Economy.getEconomyConfig().getCurrencyIcon(), upgrade.getDescription(), false);
         }
         shopBuilder.getDescriptionBuilder().append("Your stats:").append("\n")
-                .append("Your ").append(currencyName).append(": ").append(getCoins()).append(Economy.getEconomyConfig().getCurrencyIcon()).append("\n")
-                .append(collectableName).append(" per bump: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCollectablesOnBumpGain(), this, IncrementType.BUMP)).append("\n")
-                .append(collectableName).append(" per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCoinOnVoiceActivityAmount(), this, IncrementType.VOICE)).append("\n")
+                .append("Your ").append(currencyName).append(": ").append(getCoins()).append(Economy.getEconomyConfig().getCurrencyIcon()).append("\n");
+        //for the public instance because it is usually not allowed to give rewards after a disboard-bump
+        if (Economy.getEconomyConfig().getBaseCollectablesOnBumpGain() > 0) {
+            shopBuilder.getDescriptionBuilder().append(collectableName).append(" per bump: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCollectablesOnBumpGain(), this, IncrementType.BUMP)).append("\n");
+        }
+
+        shopBuilder.getDescriptionBuilder().append(collectableName).append(" per minute in VoiceChat: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCoinOnVoiceActivityAmount(), this, IncrementType.VOICE)).append("\n")
                 .append(collectableName).append(" per message: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseCoinOnMessageAmount(), this, IncrementType.MESSAGE)).append("\n")
                 .append(collectableName).append(" per daily: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseDailyGain(), this, IncrementType.DAILY)).append("\n")
                 .append(currencyName).append(" per work: ").append(GameUpgrade.getAggregatedUpgradeValue(Economy.getEconomyConfig().getBaseWorkGain(), this, IncrementType.WORK));
