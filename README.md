@@ -18,17 +18,17 @@ Currently the bot is in a very early state so feel free to open any issues if th
 
 ### Clone from GitHub:
 
-`git clone https://github.com/Handschrift/OpenPackagedBot.git`
+`git clone https://github.com/Handschrift/Papilertus.git`
 
 ### Build the jar with all dependencies:
 
 `./gradlew shadowJar`
 
-This should create an executable OpenPackagedBot-1.0-all.jar
+This should create an executable Papilertus-1.0-all.jar
 
 ### Run the .jar with:
 
-`java -jar OpenPackagedBot-1.0-all.jar`
+`java -jar Papilertus-1.0-all.jar`
 
 After the first start it should create a configuration file where you can enter your bot token.
 If you don't have a token, create a bot at the [Discord developer portal](https://discord.com/developers).
