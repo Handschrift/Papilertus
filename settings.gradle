@@ -1,4 +1,4 @@
-rootProject.name = 'OpenPackagedBot'
+rootProject.name = 'Papilertus'
 include 'BestFriendLegacyPlugin'
 include 'RandomUtils'
 include 'MusicPlayer'
