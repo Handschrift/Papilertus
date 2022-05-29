@@ -102,6 +102,14 @@ edit the config you created and restart the docker containers.
 | possibleNotificationMessages | list (see above)       | list of possible notifications                      |
 | probabilityForNotifications  | 1 (equals 1%)          | probability for a notification to be sent           |
 
+# Core Commands
+These are commands build into Papilertus without any plugins needed
+
+| Command  | Description                                        |
+|----------|----------------------------------------------------|
+| feedback | Sends feedback to the user specified in the config |
+
+
 # Plugins
 
 ## How to install plugins
