@@ -94,6 +94,12 @@ public class BirthdayCommand extends Command {
                 final EmbedBuilder listBuilder = new EmbedBuilder()
                         .setTitle("Next birthdays");
                 int i = 0;
+                if (UserDatabase.getAllAfter(slashCommandInteractionEvent.getGuild().getId(), LocalDate.now()).isEmpty()) {
+                    listBuilder.getDescriptionBuilder().append("There are no specified birthdays");
+                    slashCommandInteractionEvent.replyEmbeds(listBuilder.build()).setEphemeral(true).queue();
+                    break;
+
+                }
                 for (BirthdayUser birthdayUser : UserDatabase.getAllAfter(slashCommandInteractionEvent.getGuild().getId(), LocalDate.now())) {
                     if (i > 10)
                         break;
