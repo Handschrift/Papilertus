@@ -36,12 +36,13 @@ public class SpiritAnimalCommand extends Command {
     @Override
     protected void execute(SlashCommandInteractionEvent slashCommandInteractionEvent) {
 
-        long userId = slashCommandInteractionEvent.getUser().getIdLong();
-        int sumOfDays = LocalDate.now().getDayOfMonth() + LocalDate.now().getYear() + LocalDate.now().getMonthValue();
-        int random = new Random(userId / sumOfDays).nextInt(FunPlugin.getConfig().readInt("amount_of_images"));
+        final long userId = slashCommandInteractionEvent.getUser().getIdLong();
+        final int sumOfDays = LocalDate.now().getDayOfMonth() + LocalDate.now().getYear() + LocalDate.now().getMonthValue();
         final Document document = new Document("_id.userId", slashCommandInteractionEvent.getUser().getId());
         document.append("_id.guildId", slashCommandInteractionEvent.getGuild().getId());
         final SpiritUser user = dataStore.getEntry(document, SpiritUser.class);
+        final File spiritAnimalDir = new File("spirit_animals");
+        final int random = new Random(userId / sumOfDays).nextInt(spiritAnimalDir.list().length);
         switch (slashCommandInteractionEvent.getSubcommandName()) {
             case "favorite-show":
                 if (user == null || user.getFavoriteIds().isEmpty()) {
@@ -66,14 +67,15 @@ public class SpiritAnimalCommand extends Command {
                 slashCommandInteractionEvent.reply("Your favorite animal has been removed!").setEphemeral(true).queue();
                 break;
             case "show":
-                final EmbedBuilder builder = new EmbedBuilder().setImage("attachment://" + random + ".png")
+                final File randomFile = spiritAnimalDir.listFiles()[random];
+                final EmbedBuilder builder = new EmbedBuilder().setImage("attachment://" + randomFile.getName())
                         .setAuthor(slashCommandInteractionEvent.getUser().getAsTag(), null, slashCommandInteractionEvent.getUser().getEffectiveAvatarUrl())
                         .setDescription("And your today's spirit animal is...")
                         .setFooter("Execute the command tomorrow to see your next spirit animal!");
                 final PapilertusMessageBuilder papilertusMessageBuilder = new PapilertusMessageBuilder();
                 papilertusMessageBuilder.setEmbeds(builder.build())
                         .addButtons(new DiscordButton(slashCommandInteractionEvent.getUser().getId(), new FavoriteAdder(dataStore), ButtonStyle.PRIMARY, "Mark as favorite"));
-                slashCommandInteractionEvent.reply(papilertusMessageBuilder.build()).addFile(new File("spirit_animals/" + random + ".png")).queue();
+                slashCommandInteractionEvent.reply(papilertusMessageBuilder.build()).addFile(randomFile).queue();
                 break;
         }
     }

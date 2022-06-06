@@ -8,9 +8,9 @@ public class SpiritUser {
     @JsonProperty("_id")
     private final UserId _id;
     //Using this to provide extensibility, currently just the first element is used and added
-    private final ArrayList<Integer> favoriteIds;
+    private final ArrayList<String> favoriteIds;
 
-    public SpiritUser(String userId, String guildId, ArrayList<Integer> list) {
+    public SpiritUser(String userId, String guildId, ArrayList<String> list) {
         this._id = new UserId(userId, guildId);
         this.favoriteIds = list;
     }
@@ -24,7 +24,7 @@ public class SpiritUser {
     }
 
 
-    public ArrayList<Integer> getFavoriteIds() {
+    public ArrayList<String> getFavoriteIds() {
         return favoriteIds;
     }
 

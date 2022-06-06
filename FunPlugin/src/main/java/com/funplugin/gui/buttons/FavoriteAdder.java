@@ -19,11 +19,11 @@ public class FavoriteAdder implements Pressable {
     @Override
     public void onClick(ButtonInteractionEvent buttonClickEvent) {
         final String url = buttonClickEvent.getMessage().getEmbeds().get(0).getImage().getUrl();
-        int id = Integer.parseInt(url.substring(url.lastIndexOf("/") + 1).replace(".png", ""));
+        final String id = url.substring(url.lastIndexOf("/") + 1).replace(".png", "");
         final Document filter = new Document("_id.userId", buttonClickEvent.getUser().getId());
         filter.append("_id.guildId", buttonClickEvent.getGuild().getId());
         final SpiritUser user = dataStore.getEntry(filter, SpiritUser.class);
-        final ArrayList<Integer> ids = new ArrayList<>();
+        final ArrayList<String> ids = new ArrayList<>();
         ids.add(id);
 
         if (user == null) {
@@ -32,7 +32,7 @@ public class FavoriteAdder implements Pressable {
             return;
         }
 
-        if (!user.getFavoriteIds().isEmpty() && user.getFavoriteIds().get(0) == id) {
+        if (!user.getFavoriteIds().isEmpty() && user.getFavoriteIds().get(0).equals(id)) {
             buttonClickEvent.reply("This animal is already your favorite!").setEphemeral(true).queue();
             return;
         }
