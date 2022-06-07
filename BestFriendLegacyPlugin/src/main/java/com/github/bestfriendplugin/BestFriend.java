@@ -32,7 +32,6 @@ public class BestFriend implements Plugin {
         commands.add(new LuckCommand());
         commands.add(new UnluckCommand());
         commands.add(new PickupCommand());
-        commands.add(new SpiritAnimalCommand(dataStore));
         return commands;
     }
 
