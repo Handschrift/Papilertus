@@ -11,6 +11,8 @@ import com.papilertus.plugin.Plugin;
 import com.papilertus.plugin.PluginData;
 import com.papilertus.plugin.PluginDataStore;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.hooks.EventListener;
 
@@ -44,7 +46,8 @@ public class Birthdays implements Plugin {
                     if (channelId != null) {
                         notificationBuilder.setDescription("Happy birthday to " + discordUser.getName() + " \uD83C\uDF89")
                                 .setColor(Color.CYAN);
-                        Papilertus.getPluginJDA().getTextChannelById(channelId).sendMessageEmbeds(notificationBuilder.build()).queue();
+                        final Message notification = new MessageBuilder().setEmbeds(notificationBuilder.build()).setContent(discordUser.getAsMention()).build();
+                        Papilertus.getPluginJDA().getTextChannelById(channelId).sendMessage(notification).queue();
                         UserDatabase.updateUser(user.getUserId(), user.getGuildId(), "birthday", user.getBirthdayDate().plusYears(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                     }
                 }
