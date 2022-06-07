@@ -43,14 +43,13 @@ public class BirthdayCommand extends Command {
             return;
         }
         final DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
-        builder.appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                .appendOptional(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-                .appendOptional(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                .appendOptional(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
-                .appendOptional(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+        builder.appendOptional(DateTimeFormatter.ofPattern("MM-dd"))
+                .appendOptional(DateTimeFormatter.ofPattern("dd.MM"))
+                .appendOptional(DateTimeFormatter.ofPattern("dd/MM"))
                 .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
                 .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0);
+                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+                .parseDefaulting(ChronoField.YEAR, LocalDate.now().getYear());
         final DateTimeFormatter formatter = builder.toFormatter();
         final BirthdayUser user = UserDatabase.fetchUser(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
 
@@ -76,7 +75,6 @@ public class BirthdayCommand extends Command {
                     slashCommandInteractionEvent.reply("Your birthday was set to " + birthday).queue();
                     return;
                 } else {
-                    //TODO: Add cooldown or restriction
                     if (user.getTries() == 0) {
                         slashCommandInteractionEvent.reply("You cannot set your birthday anymore!").setEphemeral(true).queue();
                         break;
@@ -88,7 +86,7 @@ public class BirthdayCommand extends Command {
                 break;
             case "remove":
                 UserDatabase.deleteUser(slashCommandInteractionEvent.getUser().getId(), slashCommandInteractionEvent.getGuild().getId());
-                slashCommandInteractionEvent.reply("Your birthday was removed").queue();
+                slashCommandInteractionEvent.reply("Your birthday has been removed!").queue();
                 break;
             case "list":
                 final EmbedBuilder listBuilder = new EmbedBuilder()
@@ -120,14 +118,13 @@ public class BirthdayCommand extends Command {
                 embedBuilder.addField("Your Birthday!", user.getBirthday(), true)
                         .setThumbnail(slashCommandInteractionEvent.getUser().getEffectiveAvatarUrl())
                         .setAuthor(slashCommandInteractionEvent.getUser().getName(), null, slashCommandInteractionEvent.getUser().getEffectiveAvatarUrl())
-                        .setFooter("Made by Handschrift")
                         .setTitle("Your profile");
                 slashCommandInteractionEvent.replyEmbeds(embedBuilder.build()).queue();
                 break;
             case "channel":
                 final MessageChannel channel = slashCommandInteractionEvent.getOption("channel").getAsMessageChannel();
                 GuildDatabase.addBirthdayGuild(slashCommandInteractionEvent.getGuild().getId(), channel.getId());
-                slashCommandInteractionEvent.reply("Set!").queue();
+                slashCommandInteractionEvent.reply(channel.getAsMention() + " is now the birthday-channel!").queue();
                 break;
         }
 
