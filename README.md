@@ -119,6 +119,7 @@ or build it yourself and put the .jar into the "plugins" folder.
 
 You have to restart the bot after you have installed a plugin!
 
+You can find all plugins in the extra GitHub repository: https://github.com/Handschrift/Papilertus-Plugins
 ### Attention!
 
 - Even with the ability to write custom plugins, we are not responsible for any damage done with plugins of third
