@@ -1,8 +1,2 @@
 rootProject.name = 'Papilertus'
 include 'BestFriendLegacyPlugin'
-include 'RandomUtils'
-include 'MusicPlayer'
-include 'Economy'
-include 'BirthdayPlugin'
-include 'FunPlugin'
-
