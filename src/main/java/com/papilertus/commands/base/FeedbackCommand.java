@@ -33,7 +33,7 @@ public class FeedbackCommand extends Command {
                 .build();
 
         final TextInput body = TextInput.create("body", "Text", TextInputStyle.PARAGRAPH)
-                .setPlaceholder("Your feedback go here")
+                .setPlaceholder("Your feedback goes here")
                 .setMinLength(10)
                 .setMaxLength(1024)
                 .build();
