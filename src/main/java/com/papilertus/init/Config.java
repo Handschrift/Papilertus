@@ -37,6 +37,8 @@ public final class Config {
 
     private String databaseName = "Papilertus";
 
+    private boolean fosscordMode = false;
+
     private ArrayList<String> possibleNotificationMessages = new ArrayList<>() {{
         add("This is an open source bot!");
         add("you can host it yourself");
@@ -126,5 +128,9 @@ public final class Config {
 
     public int getProbabilityForNotifications() {
         return probabilityForNotifications;
+    }
+
+    public boolean isFosscordMode() {
+        return fosscordMode;
     }
 }

@@ -14,8 +14,11 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
+import net.dv8tion.jda.internal.requests.Requester;
 
 import javax.security.auth.login.LoginException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 public final class Papilertus {
     private static JDA jda;
@@ -57,6 +60,23 @@ public final class Papilertus {
         builder.disableCache(config.getCacheFlags());
 
         jda = builder.build().awaitReady();
+
+        //Setting fosscord as the api endpoint to provide fosscord compatibility
+        if (config.isFosscordMode()) {
+            try {
+                Field field = Requester.class.getDeclaredField("DISCORD_API_PREFIX");
+                field.setAccessible(true);
+
+                Field modifiers = Field.class.getDeclaredField("modifiers");
+                modifiers.setAccessible(true);
+                modifiers.set(field, field.getModifiers() & ~Modifier.FINAL);
+                field.set(null, "https://api.fosscord.com");
+
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         //register commands on all guilds
         final CommandListUpdateAction action = jda.updateCommands();
         action.addCommands(commandClient.getData()).queue();
