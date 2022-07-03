@@ -22,6 +22,9 @@ public class FeedbackCommand extends Command {
     @Override
     protected void execute(SlashCommandInteractionEvent event) {
 
+        if (recId.isBlank() || recId.isEmpty()) {
+            event.reply("There was no recipient set in the configuration! Please contact a server administrator.").setEphemeral(true).queue();
+        }
 
         final TextInput email = TextInput.create("title", "Title", TextInputStyle.SHORT)
                 .setPlaceholder("Enter a title for your feedback")
