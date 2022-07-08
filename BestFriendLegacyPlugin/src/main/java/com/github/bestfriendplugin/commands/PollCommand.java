@@ -2,6 +2,7 @@ package com.github.bestfriendplugin.commands;
 
 import com.papilertus.commands.core.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -55,7 +56,7 @@ public class PollCommand extends Command {
             interactionHook.retrieveOriginal().queue(message -> {
                 for (int i = 0; i < 10; i++) {
                     if (slashCommandInteractionEvent.getOption("answer" + i) != null) {
-                        message.addReaction(numberToEmote[i]).queue();
+                        message.addReaction(Emoji.fromUnicode(numberToEmote[i])).queue();
                     }
                 }
             });

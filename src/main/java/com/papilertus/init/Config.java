@@ -26,7 +26,7 @@ public final class Config {
     private String databasePassword = "admin";
     private final ArrayList<CacheFlag> cacheFlags = new ArrayList<>() {
         {
-            add(CacheFlag.EMOTE);
+            add(CacheFlag.EMOJI);
             add(CacheFlag.ACTIVITY);
             add(CacheFlag.CLIENT_STATUS);
             add(CacheFlag.ONLINE_STATUS);
