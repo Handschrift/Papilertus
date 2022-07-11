@@ -85,14 +85,11 @@ public final class PluginLoader {
                 Object commandList = commandMethod.invoke(instance);
                 Object listenerList = listenerMethod.invoke(instance);
 
-                if (listenerList instanceof List) {
-                    List<Object> currentListeners = (List<Object>) listenerList;
+                if (listenerList instanceof List currentListeners) {
                     eventListeners.addAll(currentListeners);
                 }
 
-                if (commandList instanceof List) {
-                    List<Command> currentCommands = (List<Command>) commandList;
-
+                if (commandList instanceof List currentCommands) {
                     commands.addAll(currentCommands);
                     loadedPlugins.add(data);
                 }
@@ -102,7 +99,7 @@ public final class PluginLoader {
                 fileStream.close();
                 jarStream.close();
             } catch (IOException | NoSuchMethodException | ClassNotFoundException | InvocationTargetException
-                    | InstantiationException | IllegalAccessException e) {
+                     | InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
