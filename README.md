@@ -9,7 +9,7 @@ Currently the bot is in a very early state so feel free to open any issues if th
 
 # Requirements
 
-- Java 11
+- Java 17
 - MongoDB 5.0.4
 
 # Installation
