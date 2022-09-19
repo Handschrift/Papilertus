@@ -1,0 +1,32 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group = 'org.papilertus'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io/" }
+}
+
+dependencies {
+    testImplementation "org.jetbrains.kotlin:kotlin-test"
+    implementation "net.dv8tion:JDA:5.0.0-alpha.19"
+    implementation "com.github.MinnDevelopment:jda-reactor:1.5.0"
+    implementation "com.github.minndevelopment:jda-ktx:fc7d7de58af04e25eb58c0e8b4923621e3179719"
+    implementation "com.google.code.gson:gson:2.9.1"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+}
