@@ -10,7 +10,11 @@ import kotlin.system.exitProcess
 
 lateinit var config: Config;
 fun main() {
-    val configTomlFile = File("Papilertus.toml")
+    val configTomlFile = File("config/Papilertus.toml")
+
+    if (!configTomlFile.parentFile.exists()) {
+        configTomlFile.parentFile.mkdir()
+    }
 
     if (!configTomlFile.exists()) {
         println("No config file cannot be found... creating one...")

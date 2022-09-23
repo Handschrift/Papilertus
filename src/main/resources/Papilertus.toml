@@ -1,1 +1,12 @@
 token = ""
+pluginDir = "plugins/"
+databaseUrl = "mongodb://localhost/"
+databaseUsername = "admin"
+databasePassword = "admin"
+cacheFlags = ["EMOJI", "ACTIVITY", "CLIENT_STATUS", "ONLINE_STATUS"]
+feedbackRecipientId = ""
+databaseName = "Papilertus"
+fosscordMode = false
+possibleNotificationMessages = ["This is an open source bot!", "you can host it yourself", "you can send feedback with feedback",
+    "You can add plugins to the bot", "You can turn off this message in the config"]
+probabilityForNotifications = 1
