@@ -1,5 +1,9 @@
 package com.papilertus.init
 
+import com.papilertus.command.CommandClient
+import com.papilertus.command.CommandListener
+import com.papilertus.command.core.FeedbackCommand
+import com.papilertus.gui.modal.ModalListener
 import com.sksamuel.hoplite.ConfigLoaderBuilder
 import com.sksamuel.hoplite.addFileSource
 import dev.minn.jda.ktx.jdabuilder.createJDA
@@ -8,7 +12,7 @@ import java.io.File
 import java.nio.file.Files
 import kotlin.system.exitProcess
 
-lateinit var config: Config;
+private lateinit var config: Config;
 fun main() {
     val configTomlFile = File("config/Papilertus.toml")
 
@@ -34,5 +38,18 @@ fun main() {
 
     val jda =
         createJDA(config.token, enableCoroutines = true, intents = GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
+
+    val commandClient = CommandClient()
+
+    commandClient.addCommands(
+        FeedbackCommand()
+    )
+
+    jda.addEventListener(CommandListener(commandClient))
+    jda.addEventListener(ModalListener())
+
+    jda.awaitReady()
+
+    jda.updateCommands().addCommands(commandClient.getData()).complete()
 
 }
