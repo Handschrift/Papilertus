@@ -6,6 +6,7 @@ import com.papilertus.command.core.FeedbackCommand
 import com.papilertus.gui.contextMenu.ContextMenuListener
 import com.papilertus.gui.contextMenu.core.UserInfoContextMenuEntry
 import com.papilertus.gui.modal.ModalListener
+import com.papilertus.plugin.PluginLoader
 import com.sksamuel.hoplite.ConfigLoaderBuilder
 import com.sksamuel.hoplite.addFileSource
 import dev.minn.jda.ktx.jdabuilder.createJDA
@@ -43,9 +44,14 @@ fun main() {
 
     val commandClient = CommandClient()
 
+    val loader = PluginLoader(config.pluginDir)
+    loader.load()
+
     commandClient.addCommands(
         FeedbackCommand()
     )
+
+    commandClient.addCommands(*loader.commands.toTypedArray())
 
     commandClient.addContextMenuEntries(
         UserInfoContextMenuEntry()
@@ -54,6 +60,7 @@ fun main() {
     jda.addEventListener(CommandListener(commandClient))
     jda.addEventListener(ContextMenuListener(commandClient))
     jda.addEventListener(ModalListener())
+    jda.addEventListener(*loader.eventListeners.toTypedArray())
 
     jda.awaitReady()
 

@@ -18,6 +18,7 @@ dependencies {
     implementation "com.sksamuel.hoplite:hoplite-core:2.6.3"
     implementation "com.sksamuel.hoplite:hoplite-toml:2.6.3"
     implementation "com.github.minndevelopment:jda-ktx:fc7d7de58af04e25eb58c0e8b4923621e3179719"
+    implementation 'com.google.code.gson:gson:2.9.1'
     implementation "org.jetbrains.exposed:exposed:0.17.14"
 }
 
