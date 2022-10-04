@@ -47,15 +47,17 @@ fun main() {
     val loader = PluginLoader(config.pluginDir)
     loader.load()
 
-    commandClient.addCommands(
-        FeedbackCommand()
-    )
+    if (!config.disableAllCoreInteractions) {
+        commandClient.addCommands(
+            FeedbackCommand(config)
+        )
+        commandClient.addContextMenuEntries(
+            UserInfoContextMenuEntry()
+        )
+    }
 
     commandClient.addCommands(*loader.commands.toTypedArray())
 
-    commandClient.addContextMenuEntries(
-        UserInfoContextMenuEntry()
-    )
 
     jda.addEventListener(CommandListener(commandClient))
     jda.addEventListener(ContextMenuListener(commandClient))
