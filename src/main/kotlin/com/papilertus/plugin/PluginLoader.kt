@@ -35,11 +35,11 @@ class PluginLoader(initialPath: String) {
 
             val fileStream = FileInputStream(path)
             val jarStream = JarInputStream(fileStream)
-            var jeTemp: JarEntry
+            var jeTemp: JarEntry?
             var data: PluginData? = null
 
             while (jarStream.nextJarEntry.also { jeTemp = it } != null) {
-                if (jeTemp.name != "plugin.json") continue
+                if (jeTemp!!.name != "plugin.json") continue
                 val pluginData = ByteArray(je.size.toInt())
                 jarStream.read(pluginData, 0, pluginData.size)
                 data = getFromJson(String(pluginData))
