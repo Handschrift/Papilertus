@@ -1,6 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.7.10'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'application'
 }
 
 group = 'org.papilertus'
@@ -28,6 +29,18 @@ test {
 
 compileKotlin {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+}
+
+task buildDev {
+    buildDev.finalizedBy(shadowJar {
+        exclude '**/*.kotlin_metadata'
+        exclude '**/*.kotlin_builtins'
+
+    })
+}
+
+application{
+    mainClass = "com.papilertus.init.PapilertusKt"
 }
 
 compileTestKotlin {
