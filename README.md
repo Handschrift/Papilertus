@@ -10,7 +10,10 @@ Currently the bot is in a very early state so feel free to open any issues if th
 # Requirements
 
 - Java 17
+
+<!-- 
 - MongoDB 5.0.4
+--->
 
 # Installation
 
@@ -33,6 +36,7 @@ This should create an executable Papilertus-1.0-all.jar
 After the first start it should create a configuration file where you can enter your bot token.
 If you don't have a token, create a bot at the [Discord developer portal](https://discord.com/developers).
 
+<!-- 
 ## Docker
 
 ### Prerequisites
@@ -86,6 +90,7 @@ You just have to provide the bot token. You can leave the other fields if you do
 
 If you want to edit the config just terminate the docker containers with `docker-compose -f docker-compose.yml down`
 edit the config you created and restart the docker containers.
+--->
 
 ## Configuration
 
@@ -103,12 +108,12 @@ edit the config you created and restart the docker containers.
 | probabilityForNotifications  | 1 (equals 1%)          | probability for a notification to be sent           |
 
 # Core Commands
-These are commands build into Papilertus without any plugins needed
+
+These are commands build into Papilertus
 
 | Command  | Description                                        |
 |----------|----------------------------------------------------|
 | feedback | Sends feedback to the user specified in the config |
-
 
 # Plugins
 
@@ -118,10 +123,87 @@ On the first start, the bot should have created a folder called "plugins". To in
 or build it yourself and put the .jar into the "plugins" folder.
 
 You have to restart the bot after you have installed a plugin!
+
 ### Attention!
 
 - Even with the ability to write custom plugins, we are not responsible for any damage done with plugins of third
   parties
+
+### Creating Plugins
+
+#### Clone from GitHub:
+
+`git clone https://github.com/Handschrift/Papilertus.git`
+
+#### Build the library version of Papilertus:
+
+`./gradlew buildDev`
+
+A jar should be generated in build/libs which you can use as a dependency in a gradle project.
+
+#### plugin.json
+
+Every plugin needs a plugin.json which you can create in the resources directory of your project
+
+The file should contain the following:
+
+```json
+{
+  "name": "NAME_OF_THE_PLUGIN",
+  "author": "NAME_OF_THE_AUTHOR",
+  "mainClass": "MAIN_CLASS_PATH"
+}
+```
+
+#### Basic setup
+
+Create a Class which implements the Plugin interface and the overrides the corresponding methods:
+
+```kotlin
+class MyPlugin : Plugin {
+    override fun getCommands(): List<Command> {
+
+    }
+
+    override fun getContextMenuEntries(): List<ContextMenuEntry> {
+
+    }
+
+    override fun getListeners(): List<EventListener> {
+
+    }
+
+    override fun onLoad(data: PluginData) {
+        println("Hello World")
+    }
+
+    override fun onUnload() {
+
+    }
+}
+```
+
+#### Creating commands
+
+First create a class extending the Command class provided by Papilertus:
+
+```kotlin
+class MyCommand : Command("name", "description") {
+    override fun execute(event: SlashCommandInteractionEvent) {
+        event.reply("Test!").queue()
+    }
+}
+```
+
+Then in your main class you have to add the command to the command list:
+
+```kotlin
+override fun getCommands(): List<Command> {
+    return listOf(
+        MyCommand()
+    )
+}
+```
 
 # Supporting this project
 
@@ -130,4 +212,6 @@ You can support this project with:
 - contributing to the code
 - adding the bot to your server / host your own instance
 - testing
+<!-- 
 - donations
+--- >
