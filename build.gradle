@@ -31,14 +31,6 @@ compileKotlin {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
 }
 
-task buildDev {
-    buildDev.finalizedBy(shadowJar {
-        exclude '**/*.kotlin_metadata'
-        exclude '**/*.kotlin_builtins'
-
-    })
-}
-
 application{
     mainClass = "com.papilertus.init.PapilertusKt"
 }
