@@ -15,11 +15,13 @@ class PluginData private constructor(val author: String, val mainClass: String, 
         }
     }
 
-    fun <T> registerConfig(config: T) {
+    inline fun <reified T: Any> registerConfig(): T {
         val configFile = File("config/$name.toml")
 
         if (!configFile.exists()) {
             val r = ClassLoader.getSystemClassLoader().getResourceAsStream(configFile.name)
+            println(r)
+            println(configFile.name)
             if (r != null) {
                 Files.copy(r, configFile.toPath())
             }

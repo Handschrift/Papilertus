@@ -137,7 +137,7 @@ You have to restart the bot after you have installed a plugin!
 
 #### Build the library version of Papilertus:
 
-`./gradlew buildDev`
+`./gradlew shadowJar`
 
 A jar should be generated in build/libs which you can use as a dependency in a gradle project.
 
