@@ -1,4 +1,7 @@
 package com.papilertus.plugin
 
-class PluginDataStore {
+class PluginDataStore(
+    private val data: PluginData
+) {
+
 }
