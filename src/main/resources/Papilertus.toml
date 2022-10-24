@@ -1,6 +1,7 @@
 token = ""
 pluginDir = "plugins/"
-databaseUrl = "mongodb://localhost/"
+databaseManagementSystem = ""
+databaseUrl = ""
 databaseUsername = "admin"
 databasePassword = "admin"
 cacheFlags = ["EMOJI", "ACTIVITY", "CLIENT_STATUS", "ONLINE_STATUS"]

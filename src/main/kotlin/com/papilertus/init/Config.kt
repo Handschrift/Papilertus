@@ -4,5 +4,6 @@ data class Config(
     val token: String,
     val pluginDir: String,
     val feedbackRecipientId: String,
-    val disableAllCoreInteractions: Boolean
+    val disableAllCoreInteractions: Boolean,
+    val databaseManagementSystem: String
     )
