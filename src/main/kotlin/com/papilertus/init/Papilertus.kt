@@ -14,18 +14,14 @@ import net.dv8tion.jda.api.requests.GatewayIntent
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.name
+import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import java.nio.file.Files
 import kotlin.system.exitProcess
 
 private lateinit var config: Config;
-
-object Test : Table() {
-    val id = integer("id").autoIncrement()
-    val name = varchar("name", 50)
-    override val primaryKey = PrimaryKey(id, name = "test_id")
-}
 
 fun main() {
     val configTomlFile = File("config/Papilertus.toml")
@@ -50,15 +46,7 @@ fun main() {
         .build()
         .loadConfigOrThrow()
 
-    val database = connectDatabase(config)
-
-
-    transaction {
-        SchemaUtils.create(Test)
-        Test.insert {
-            it[name] = "Lucasdercoole"
-        }
-    }
+    connectDatabase(config)
 
 
     val jda =
