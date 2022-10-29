@@ -1,8 +1,6 @@
 package com.papilertus.init
 
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.transactions.TransactionManager
-import java.sql.Connection
 
 fun connectDatabase(config: Config): Database? {
 
@@ -10,8 +8,12 @@ fun connectDatabase(config: Config): Database? {
         return null
     }
 
-    TransactionManager.manager.defaultIsolationLevel =
-        Connection.TRANSACTION_SERIALIZABLE
+    when {
+        config.databaseManagementSystem.lowercase() == "mysql" || config.databaseManagementSystem.lowercase() == "mariadb" -> {
+            return Database.connect("jdbc:mysql://${config.databaseUrl}:3306/", driver = "com.mysql.cj.jdbc.Driver",
+                user = config.databaseUsername, password = config.databasePassword)
+        }
+    }
 
     return Database.connect("jdbc:sqlite:data.db", "org.sqlite.JDBC")
 }
