@@ -42,7 +42,7 @@ fun main() {
         .build()
         .loadConfigOrThrow()
 
-    connectDatabase(config)
+    Database.connect(config)
 
 
     jda =
