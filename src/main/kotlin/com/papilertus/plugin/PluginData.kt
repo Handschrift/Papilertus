@@ -1,6 +1,8 @@
 package com.papilertus.plugin
 
 import com.google.gson.Gson
+import com.mongodb.client.MongoCollection
+import com.papilertus.init.Database
 import com.sksamuel.hoplite.ConfigLoaderBuilder
 import com.sksamuel.hoplite.addFileSource
 import java.io.File
@@ -15,7 +17,7 @@ class PluginData private constructor(val author: String, val mainClass: String, 
         }
     }
 
-    inline fun <reified T: Any> registerConfig(): T {
+    inline fun <reified T : Any> registerConfig(): T {
         val configFile = File("config/$name.toml")
 
         if (!configFile.exists()) {
@@ -31,5 +33,9 @@ class PluginData private constructor(val author: String, val mainClass: String, 
             .addFileSource(configFile)
             .build()
             .loadConfigOrThrow()
+    }
+
+    fun <T> getPluginDataStore(name: String, clazz: Class<T>): MongoCollection<T> {
+        return Database.connection!!.getDatabase("Papilertus_${this.name}").getCollection(name ,clazz)
     }
 }
