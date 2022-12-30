@@ -13,13 +13,14 @@ import java.util.jar.JarFile
 import java.util.jar.JarInputStream
 import kotlin.system.exitProcess
 
+
 class PluginLoader(initialPath: String) {
     private val initialPath = File(initialPath)
-    public val commands = mutableListOf<Command>()
-    public val eventListeners = mutableListOf<EventListener>()
-    public val contextMenuEntries = mutableListOf<ContextMenuEntry>()
+    val commands = mutableListOf<Command>()
+    val eventListeners = mutableListOf<EventListener>()
+    val contextMenuEntries = mutableListOf<ContextMenuEntry>()
 
-    public fun load() {
+    fun load() {
         if (!initialPath.exists()) {
             initialPath.mkdir()
             return
