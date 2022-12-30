@@ -13,9 +13,9 @@ import java.util.jar.JarFile
 import java.util.jar.JarInputStream
 import kotlin.system.exitProcess
 
-
 class PluginLoader(initialPath: String) {
     private val initialPath = File(initialPath)
+    private val loadedPlugins = mutableListOf<Class<*>>()
     val commands = mutableListOf<Command>()
     val eventListeners = mutableListOf<EventListener>()
     val contextMenuEntries = mutableListOf<ContextMenuEntry>()
@@ -88,6 +88,8 @@ class PluginLoader(initialPath: String) {
                     contextMenuEntries.add(o as ContextMenuEntry)
                 }
             }
+
+            loadedPlugins.add(c)
 
             println("$s loaded!")
 
