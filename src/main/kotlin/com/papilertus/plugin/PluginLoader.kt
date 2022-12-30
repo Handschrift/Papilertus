@@ -13,9 +13,9 @@ import java.util.jar.JarFile
 import java.util.jar.JarInputStream
 import kotlin.system.exitProcess
 
-
 class PluginLoader(initialPath: String) {
     private val initialPath = File(initialPath)
+    private val loadedPlugins = mutableListOf<Class<*>>()
     val commands = mutableListOf<Command>()
     val eventListeners = mutableListOf<EventListener>()
     val contextMenuEntries = mutableListOf<ContextMenuEntry>()
@@ -89,11 +89,24 @@ class PluginLoader(initialPath: String) {
                 }
             }
 
+            loadedPlugins.add(c)
+
             println("$s loaded!")
 
             fileStream.close()
             jarStream.close()
 
+        }
+    }
+
+    fun unload() {
+        for (c in loadedPlugins) {
+            val unloadMethod = c.getMethod("onUnload")
+
+            val t = c.getDeclaredConstructor()
+            val instance = t.newInstance()
+
+            unloadMethod.invoke(instance)
         }
     }
 }

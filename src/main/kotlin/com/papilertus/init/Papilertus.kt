@@ -10,6 +10,7 @@ import com.papilertus.plugin.PluginLoader
 import com.sksamuel.hoplite.ConfigLoaderBuilder
 import com.sksamuel.hoplite.addFileSource
 import dev.minn.jda.ktx.jdabuilder.createJDA
+import kotlinx.coroutines.runBlocking
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.requests.GatewayIntent
 import java.io.File
@@ -53,6 +54,12 @@ fun main() {
     val loader = PluginLoader(config.pluginDir)
     loader.load()
 
+    Runtime.getRuntime().addShutdownHook(object: Thread(){
+        override fun run() = runBlocking {
+            loader.unload()
+        }
+    })
+
     if (!config.disableAllCoreInteractions) {
         commandClient.addCommands(
             FeedbackCommand(config)
@@ -73,5 +80,6 @@ fun main() {
     jda.awaitReady()
 
     jda.updateCommands().addCommands(commandClient.getData()).complete()
+
 
 }
