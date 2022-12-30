@@ -10,18 +10,14 @@ import com.papilertus.plugin.PluginLoader
 import com.sksamuel.hoplite.ConfigLoaderBuilder
 import com.sksamuel.hoplite.addFileSource
 import dev.minn.jda.ktx.jdabuilder.createJDA
+import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.requests.GatewayIntent
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.name
-import org.jetbrains.exposed.sql.transactions.TransactionManager
-import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import java.nio.file.Files
 import kotlin.system.exitProcess
 
 private lateinit var config: Config;
+lateinit var jda: JDA;
 
 fun main() {
     val configTomlFile = File("config/Papilertus.toml")
@@ -49,7 +45,7 @@ fun main() {
     connectDatabase(config)
 
 
-    val jda =
+    jda =
         createJDA(config.token, enableCoroutines = true, intents = GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
 
     val commandClient = CommandClient()
