@@ -98,4 +98,15 @@ class PluginLoader(initialPath: String) {
 
         }
     }
+
+    fun unload() {
+        for (c in loadedPlugins) {
+            val unloadMethod = c.getMethod("onUnload")
+
+            val t = c.getDeclaredConstructor()
+            val instance = t.newInstance()
+
+            unloadMethod.invoke(instance)
+        }
+    }
 }
