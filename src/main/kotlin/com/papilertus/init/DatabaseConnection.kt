@@ -1,19 +1,46 @@
 package com.papilertus.init
 
-import org.jetbrains.exposed.sql.Database
+import com.mongodb.ConnectionString
+import com.mongodb.MongoClientSettings
+import com.mongodb.MongoCredential
+import com.mongodb.client.MongoClient
+import org.bson.codecs.configuration.CodecRegistries
+import org.bson.codecs.pojo.PojoCodecProvider
+import org.litote.kmongo.KMongo
 
-fun connectDatabase(config: Config): Database? {
 
-    if (config.databaseManagementSystem.isEmpty()) {
-        return null
-    }
+object Database {
+    fun connect(config: Config) {
 
-    when {
-        config.databaseManagementSystem.lowercase() == "mysql" || config.databaseManagementSystem.lowercase() == "mariadb" -> {
-            return Database.connect("jdbc:mysql://${config.databaseUrl}:3306/", driver = "com.mysql.cj.jdbc.Driver",
-                user = config.databaseUsername, password = config.databasePassword)
+        if (connection != null) {
+            return
         }
+
+        if (config.databaseName.isEmpty() || config.databaseUrl.isEmpty()) {
+            return
+        }
+
+        val settings = MongoClientSettings.builder()
+            .applyConnectionString(ConnectionString("mongodb://${config.databaseUrl}:${config.databasePort}/${config.databaseName}"))
+            .codecRegistry(
+                CodecRegistries.fromRegistries(
+                    MongoClientSettings.getDefaultCodecRegistry(),
+                    CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())
+                )
+            )
+
+        if (config.databasePassword.isNotEmpty() && config.databaseUsername.isNotEmpty()) {
+            val credential = MongoCredential.createCredential(
+                config.databaseUsername,
+                config.databaseName,
+                config.databasePassword.toCharArray()
+            )
+            settings.credential(credential)
+        }
+
+        connection = KMongo.createClient(settings.build())
+
     }
 
-    return Database.connect("jdbc:sqlite:data.db", "org.sqlite.JDBC")
+    var connection: MongoClient? = null
 }
