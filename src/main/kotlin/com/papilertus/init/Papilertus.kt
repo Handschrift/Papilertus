@@ -13,13 +13,15 @@ import dev.minn.jda.ktx.jdabuilder.createJDA
 import kotlinx.coroutines.runBlocking
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.requests.GatewayIntent
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.file.Files
 import kotlin.system.exitProcess
 
 private lateinit var config: Config;
 lateinit var jda: JDA;
-
+val logger: Logger = LoggerFactory.getLogger("Papilertus")
 fun main() {
     val configTomlFile = File("config/Papilertus.toml")
 
@@ -28,10 +30,10 @@ fun main() {
     }
 
     if (!configTomlFile.exists()) {
-        println("No config file cannot be found... creating one...")
+        logger.info("No config file cannot be found... creating one...")
         val r = ClassLoader.getSystemClassLoader().getResourceAsStream(configTomlFile.name)
         if (r == null) {
-            System.err.println("There was an error creating the config file...");
+            logger.error("An error occurred while creating a logging file")
             exitProcess(1)
         }
         Files.copy(r, configTomlFile.toPath());
@@ -54,8 +56,9 @@ fun main() {
     val loader = PluginLoader(config.pluginDir)
     loader.load()
 
-    Runtime.getRuntime().addShutdownHook(object: Thread(){
+    Runtime.getRuntime().addShutdownHook(object : Thread() {
         override fun run() = runBlocking {
+            logger.info("Shutting down Papilertus and unloading plugins...")
             loader.unload()
         }
     })
@@ -81,6 +84,7 @@ fun main() {
     jda.awaitReady()
 
     jda.updateCommands().addCommands(commandClient.getData()).complete()
+    logger.info("Papilertus started successfully")
 
 
 }

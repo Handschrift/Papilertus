@@ -22,8 +22,6 @@ class PluginData private constructor(val author: String, val mainClass: String, 
 
         if (!configFile.exists()) {
             val r = ClassLoader.getSystemClassLoader().getResourceAsStream(configFile.name)
-            println(r)
-            println(configFile.name)
             if (r != null) {
                 Files.copy(r, configFile.toPath())
             }

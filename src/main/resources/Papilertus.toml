@@ -1,6 +1,6 @@
 token = ""
 pluginDir = "plugins/"
-databaseManagementSystem = ""
+databasePort = 27017
 databaseUrl = ""
 databaseUsername = "admin"
 databasePassword = "admin"
