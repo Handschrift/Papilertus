@@ -70,6 +70,7 @@ fun main() {
     }
 
     commandClient.addCommands(*loader.commands.toTypedArray())
+    commandClient.addContextMenuEntries(*loader.contextMenuEntries.toTypedArray())
 
 
     jda.addEventListener(CommandListener(commandClient))
