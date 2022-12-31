@@ -4,8 +4,8 @@ import com.papilertus.gui.modal.ModalRegistry.registerModal
 import com.papilertus.gui.modal.ModalRegistry.unregisterModal
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent
 import net.dv8tion.jda.api.interactions.components.ActionRow
-import net.dv8tion.jda.api.interactions.components.Modal
 import net.dv8tion.jda.api.interactions.components.text.TextInput
+import net.dv8tion.jda.api.interactions.modals.Modal
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
