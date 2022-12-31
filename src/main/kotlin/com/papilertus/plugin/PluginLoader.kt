@@ -2,6 +2,7 @@ package com.papilertus.plugin
 
 import com.papilertus.command.Command
 import com.papilertus.gui.contextMenu.ContextMenuEntry
+import com.papilertus.init.logger
 import com.papilertus.plugin.PluginData.Companion.getFromJson
 import net.dv8tion.jda.api.hooks.EventListener
 import java.io.File
@@ -26,7 +27,7 @@ class PluginLoader(initialPath: String) {
             return
         }
         for (s in initialPath.list()!!) {
-            println("Loading $s...")
+            logger.info("Loading $s...")
             val path = initialPath.path + "/" + s
 
             val file = JarFile(path)
@@ -91,7 +92,7 @@ class PluginLoader(initialPath: String) {
 
             loadedPlugins.add(c)
 
-            println("$s loaded!")
+            logger.info("$s loaded!")
 
             fileStream.close()
             jarStream.close()
