@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle
 
 class FeedbackCommand(private val config: Config) : Command("feedback", "Sends feedback to the bot owner") {
 
-    override fun execute(event: SlashCommandInteractionEvent) {
+    override fun execute(event: SlashCommandInteractionEvent): Boolean {
         val text = TextInput(
             "text",
             "Feedback",
@@ -26,5 +26,6 @@ class FeedbackCommand(private val config: Config) : Command("feedback", "Sends f
 
         }, text)
         event.replyModal(modal.buildModal()).queue()
+        return true
     }
 }
