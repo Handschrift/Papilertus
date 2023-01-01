@@ -12,6 +12,6 @@ abstract class Command(
 ) {
     val commandData: SlashCommandData = Commands.slash(name, description)
 
-    public abstract fun execute(event: SlashCommandInteractionEvent)
+    abstract fun execute(event: SlashCommandInteractionEvent)
 
 }
