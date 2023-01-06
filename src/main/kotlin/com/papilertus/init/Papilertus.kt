@@ -78,10 +78,11 @@ fun main() {
     commandClient.addContextMenuEntries(*loader.contextMenuEntries.toTypedArray())
 
 
+    jda.addEventListener(*loader.eventListeners.toTypedArray())
+
     jda.addEventListener(CommandListener(commandClient))
     jda.addEventListener(ContextMenuListener(commandClient))
     jda.addEventListener(ModalListener())
-    jda.addEventListener(*loader.eventListeners.toTypedArray())
 
     jda.awaitReady()
 
