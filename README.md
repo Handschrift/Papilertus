@@ -212,6 +212,3 @@ You can support this project with:
 - contributing to the code
 - adding the bot to your server / host your own instance
 - testing
-<!-- 
-- donations
---- >
