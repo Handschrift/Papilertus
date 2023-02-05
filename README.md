@@ -124,10 +124,12 @@ or build it yourself and put the .jar into the "plugins" folder.
 
 You have to restart the bot after you have installed a plugin!
 
+A collection of plugins can be found at gitlab: https://gitlab.com/papilertus/
+
 ### Attention!
 
-- Even with the ability to write custom plugins, we are not responsible for any damage done with plugins of third
-  parties
+Even with the ability to write custom plugins, we are not responsible for any damage done with plugins of third
+  parties. Plugins are arbitrary chunks of code which are able to execute any kind instruction including reading or deleting files or extracting your bot's token! 
 
 ### Creating Plugins
 
