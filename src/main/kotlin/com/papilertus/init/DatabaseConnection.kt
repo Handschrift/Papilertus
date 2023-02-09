@@ -4,8 +4,6 @@ import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
 import com.mongodb.MongoCredential
 import com.mongodb.client.MongoClient
-import org.bson.codecs.configuration.CodecRegistries
-import org.bson.codecs.pojo.PojoCodecProvider
 import org.litote.kmongo.KMongo
 
 
@@ -22,12 +20,6 @@ object Database {
 
         val settings = MongoClientSettings.builder()
             .applyConnectionString(ConnectionString("mongodb://${config.databaseUrl}:${config.databasePort}/${config.databaseName}"))
-            .codecRegistry(
-                CodecRegistries.fromRegistries(
-                    MongoClientSettings.getDefaultCodecRegistry(),
-                    CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())
-                )
-            )
 
         if (config.databasePassword.isNotEmpty() && config.databaseUsername.isNotEmpty()) {
             val credential = MongoCredential.createCredential(
