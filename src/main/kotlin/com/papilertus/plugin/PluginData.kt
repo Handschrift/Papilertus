@@ -5,6 +5,8 @@ import com.mongodb.client.MongoCollection
 import com.papilertus.init.Database
 import com.sksamuel.hoplite.ConfigLoaderBuilder
 import com.sksamuel.hoplite.addFileSource
+import org.bson.codecs.configuration.CodecRegistries
+import org.bson.codecs.configuration.CodecRegistry
 import java.io.File
 import java.nio.file.Files
 
@@ -34,6 +36,8 @@ class PluginData private constructor(val author: String, val mainClass: String, 
     }
 
     fun <T> getPluginDataStore(name: String, clazz: Class<T>): MongoCollection<T> {
-        return Database.connection!!.getDatabase("Papilertus_${this.name}").getCollection(name ,clazz)
+        return Database.connection!!.getDatabase("Papilertus_${this.name}").run {
+            withCodecRegistry(CodecRegistries.fromRegistries(CodecRegistries.fromProviders(this.codecRegistry)))
+        }.getCollection(name ,clazz)
     }
 }
