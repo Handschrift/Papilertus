@@ -36,6 +36,19 @@ class DiscordModal {
         this.title = title
     }
 
+    constructor(
+        userId: String,
+        title: String,
+        modallable: Modallable,
+        vararg inputs: TextInput
+    ) {
+        id = UUID.randomUUID().toString()
+        this.userId = userId
+        this.modallable = modallable
+        this.inputs = inputs
+        this.title = title
+    }
+
     constructor(title: String, modallable: (event: ModalInteractionEvent) -> Unit, vararg inputs: TextInput) {
         id = UUID.randomUUID().toString()
         this.modallable = object : Modallable {
