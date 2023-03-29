@@ -63,7 +63,7 @@ class DiscordModal {
     fun buildModal(): Modal {
         val builder = Modal.create(id, title)
         for (input in inputs) {
-            builder.addActionRows(ActionRow.of(input))
+            builder.addActionRow(input)
         }
         modal = builder.build()
         registerModal(id, this)
