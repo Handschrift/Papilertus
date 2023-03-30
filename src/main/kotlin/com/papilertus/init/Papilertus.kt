@@ -19,8 +19,8 @@ import java.io.File
 import java.nio.file.Files
 import kotlin.system.exitProcess
 
-private lateinit var config: Config;
-lateinit var jda: JDA;
+private lateinit var config: Config
+lateinit var jda: JDA
 val logger: Logger = LoggerFactory.getLogger("Papilertus")
 fun main() {
     val configTomlFile = File("config/Papilertus.toml")
