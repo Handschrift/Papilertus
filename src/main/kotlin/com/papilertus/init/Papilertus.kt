@@ -61,7 +61,7 @@ fun main() {
         override fun run() = runBlocking {
             logger.info("Shutting down Papilertus and unloading plugins...")
             loader.unload()
-            if(Database.connection != null)
+            if (Database.connection != null)
                 Database.connection!!.close()
         }
     })
