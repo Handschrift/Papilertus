@@ -3,6 +3,7 @@ package com.papilertus.init
 import com.papilertus.command.CommandClient
 import com.papilertus.command.CommandListener
 import com.papilertus.command.core.FeedbackCommand
+import com.papilertus.command.core.ReloadCommand
 import com.papilertus.command.core.UnloadCommand
 import com.papilertus.gui.contextMenu.ContextMenuListener
 import com.papilertus.gui.contextMenu.core.UserInfoContextMenuEntry
@@ -22,6 +23,7 @@ import kotlin.system.exitProcess
 
 private lateinit var config: Config
 lateinit var jda: JDA
+    private set
 val logger: Logger = LoggerFactory.getLogger("Papilertus")
 fun main() {
     val configTomlFile = File("config/Papilertus.toml")
