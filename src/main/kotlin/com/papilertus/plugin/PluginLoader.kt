@@ -115,7 +115,15 @@ class PluginLoader(initialPath: String) {
                 }
             }
 
-            loadedPlugins.add(c)
+            loadedPlugins.add(
+                LoadedPlugin(
+                    data,
+                    c,
+                    commandList as List<Command>,
+                    contextMenuEntryList as List<ContextMenuEntry>,
+                    listenerList as List<EventListener>
+                )
+            )
 
             logger.info("$s loaded!")
 
