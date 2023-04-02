@@ -4,13 +4,11 @@ import com.papilertus.command.Command
 import com.papilertus.command.CommandClient
 import com.papilertus.plugin.PluginLoader
 import com.papilertus.plugin.PluginUnloadResult
-import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.interactions.commands.OptionType
 
 class UnloadCommand(
     private val pluginLoader: PluginLoader,
-    private val jda: JDA,
     private val commandClient: CommandClient
 ) :
     Command("unload", "Unloads a plugin", false, true, false, true) {
@@ -25,10 +23,9 @@ class UnloadCommand(
         val name = event.getOption("plugin")!!.asString
         val guild = event.getOption("guild")?.asString
 
-        val result = if (guild == null) pluginLoader.unload(name, jda, commandClient) else
+        val result = if (guild == null) pluginLoader.unload(name, commandClient) else
             pluginLoader.unload(
                 name,
-                jda,
                 guild
             )
 
