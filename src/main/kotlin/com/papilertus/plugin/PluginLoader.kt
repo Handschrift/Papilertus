@@ -3,9 +3,9 @@ package com.papilertus.plugin
 import com.papilertus.command.Command
 import com.papilertus.command.CommandClient
 import com.papilertus.gui.contextMenu.ContextMenuEntry
+import com.papilertus.init.jda
 import com.papilertus.init.logger
 import com.papilertus.plugin.PluginData.Companion.getFromJson
-import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.hooks.EventListener
 import java.io.File
 import java.io.FileInputStream
@@ -115,7 +115,7 @@ class PluginLoader(initialPath: String) {
         }
     }
 
-    fun unload(name: String, jda: JDA, commandClient: CommandClient): PluginUnloadResult {
+    fun unload(name: String, commandClient: CommandClient): PluginUnloadResult {
         val plugin = this.loadedPlugins.find { it.pluginData.name == name }
         return if (plugin != null) {
             this.loadedPlugins.remove(plugin)
@@ -132,7 +132,7 @@ class PluginLoader(initialPath: String) {
         }
     }
 
-    fun unload(name: String, jda: JDA, guildId: String): PluginUnloadResult {
+    fun unload(name: String, guildId: String): PluginUnloadResult {
         val plugin = this.loadedPlugins.find { it.pluginData.name == name }
         if (plugin != null) {
 
@@ -147,9 +147,49 @@ class PluginLoader(initialPath: String) {
         }
     }
 
-    fun unload() {
+    fun reload(name: String, commandClient: CommandClient) {
+        unload(name, commandClient)
+        loadPluginByNameRT(name, commandClient)
+
+    }
+
+    fun unloadAll() {
         for (c in loadedPlugins) {
             c.unload()
+        }
+    }
+
+    fun loadPluginByNameRT(name: String, commandClient: CommandClient) {
+        if (!initialPath.exists()) {
+            initialPath.mkdir()
+            return
+        }
+        for (s in initialPath.list()!!) {
+            val path = initialPath.path + "/" + s
+            val fileStream = FileInputStream(path)
+            val jarStream = JarInputStream(fileStream)
+
+            val data = getPluginDataByPath(path)
+
+            if (data == null || data.name.isEmpty() || data.mainClass.isEmpty())
+                continue
+
+            if (data.name != name)
+                continue
+
+            loadedPlugins.add(
+                getLoadedPluginFromData(data, path)
+            )
+            commandClient.addCommands(*getCommands().toTypedArray())
+            commandClient.addContextMenuEntries(*getContextMenuEntries().toTypedArray())
+            jda.addEventListener(*getListeners().toTypedArray())
+
+
+            logger.info("$s loaded!")
+
+            fileStream.close()
+            jarStream.close()
+
         }
     }
 
@@ -165,5 +205,57 @@ class PluginLoader(initialPath: String) {
     fun getListeners(): List<EventListener> {
 
         return loadedPlugins.map { it.listeners }.flatten()
+    }
+
+    private fun getPluginDataByPath(path: String): PluginData? {
+        val file = JarFile(path)
+        val je = file.getJarEntry("plugin.json") ?: return null
+
+        val fileStream = FileInputStream(path)
+        val jarStream = JarInputStream(fileStream)
+        var jeTemp: JarEntry?
+
+        while (jarStream.nextJarEntry.also { jeTemp = it } != null) {
+            if (jeTemp!!.name != "plugin.json") continue
+            val pluginData = ByteArray(je.size.toInt())
+            jarStream.read(pluginData, 0, pluginData.size)
+            return getFromJson(String(pluginData))
+        }
+        return null
+    }
+
+    private fun getLoadedPluginFromData(data: PluginData, path: String): LoadedPlugin {
+
+        val file = JarFile(path)
+        val urls = arrayOf(URL("jar:file:$path!/"))
+        val cl = URLClassLoader.newInstance(urls)
+
+        val mainClassName = data.mainClass.replace(".", "/") + ".class"
+        val mainClass = file.getJarEntry(mainClassName)
+        var className = mainClass.name.substring(0, mainClass.name.length - 6)
+        className = className.replace('/', '.')
+        val c = cl.loadClass(className)
+
+        val loadMethod = c.getMethod("onLoad", PluginData::class.java)
+
+        val t = c.getDeclaredConstructor()
+        val instance = t.newInstance()
+        loadMethod.invoke(instance, data)
+
+        val commandMethod = c.getMethod("getCommands")
+        val listenerMethod = c.getMethod("getListeners")
+        val contextMenuEntryMethod = c.getMethod("getContextMenuEntries")
+
+        val commandList = commandMethod.invoke(instance)
+        val listenerList = listenerMethod.invoke(instance)
+        val contextMenuEntryList = contextMenuEntryMethod.invoke(instance)
+
+        return LoadedPlugin(
+            data,
+            c,
+            commandList as List<Command>,
+            contextMenuEntryList as List<ContextMenuEntry>,
+            listenerList as List<EventListener>
+        )
     }
 }
