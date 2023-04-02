@@ -37,7 +37,7 @@ fun main() {
             logger.error("An error occurred while creating a logging file")
             exitProcess(1)
         }
-        Files.copy(r, configTomlFile.toPath());
+        Files.copy(r, configTomlFile.toPath())
         exitProcess(0)
     }
 
