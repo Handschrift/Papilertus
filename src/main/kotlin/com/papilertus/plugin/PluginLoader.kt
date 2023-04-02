@@ -44,9 +44,6 @@ sealed class PluginUnloadResult {
 class PluginLoader(initialPath: String) {
     private val initialPath = File(initialPath)
     private val loadedPlugins = mutableListOf<LoadedPlugin>()
-    val commands = mutableListOf<Command>()
-    val eventListeners = mutableListOf<EventListener>()
-    val contextMenuEntries = mutableListOf<ContextMenuEntry>()
 
     fun load() {
         if (!initialPath.exists()) {
@@ -99,23 +96,6 @@ class PluginLoader(initialPath: String) {
             val listenerList = listenerMethod.invoke(instance)
             val contextMenuEntryList = contextMenuEntryMethod.invoke(instance)
 
-            if (listenerList is List<*>) {
-                for (o in listenerList) {
-                    eventListeners.add(o as EventListener)
-                }
-            }
-
-            if (commandList is List<*>) {
-                for (o in commandList) {
-                    commands.add(o as Command)
-                }
-            }
-
-            if (contextMenuEntryList is List<*>) {
-                for (o in contextMenuEntryList) {
-                    contextMenuEntries.add(o as ContextMenuEntry)
-                }
-            }
 
             loadedPlugins.add(
                 LoadedPlugin(
@@ -137,21 +117,18 @@ class PluginLoader(initialPath: String) {
 
     fun unload(name: String, jda: JDA, commandClient: CommandClient): PluginUnloadResult {
         val plugin = this.loadedPlugins.find { it.pluginData.name == name }
-        if (plugin != null) {
+        return if (plugin != null) {
             this.loadedPlugins.remove(plugin)
-            this.commands.removeAll(plugin.commands)
-            this.contextMenuEntries.removeAll(plugin.contextMenuEntries)
-            this.eventListeners.removeAll(plugin.listeners)
 
             jda.removeEventListener(plugin.listeners)
-            jda.updateCommands().addCommands(this.commands.map { it.commandData }).queue()
-            jda.updateCommands().addCommands(this.contextMenuEntries.map { it.contextMenuData }).queue()
+            jda.updateCommands().addCommands(plugin.commands.map { it.commandData }).queue()
+            jda.updateCommands().addCommands(plugin.contextMenuEntries.map { it.contextMenuData }).queue()
             commandClient.removeCommands(plugin.commands)
             commandClient.removeContextMenuEntries(plugin.contextMenuEntries)
             plugin.unload()
-            return PluginUnloadResult.Success
+            PluginUnloadResult.Success
         } else {
-            return PluginUnloadResult.Error.PluginNotFound(name)
+            PluginUnloadResult.Error.PluginNotFound(name)
         }
     }
 
@@ -161,8 +138,8 @@ class PluginLoader(initialPath: String) {
 
             val guild = jda.getGuildById(guildId) ?: return PluginUnloadResult.Error.GuildNotFound(guildId)
 
-            guild.updateCommands().addCommands(this.commands.map { it.commandData }).queue()
-            guild.updateCommands().addCommands(this.contextMenuEntries.map { it.contextMenuData })
+            guild.updateCommands().addCommands(plugin.commands.map { it.commandData }).queue()
+            guild.updateCommands().addCommands(plugin.contextMenuEntries.map { it.contextMenuData })
                 .queue()
             return PluginUnloadResult.Success
         } else {
@@ -174,5 +151,19 @@ class PluginLoader(initialPath: String) {
         for (c in loadedPlugins) {
             c.unload()
         }
+    }
+
+    fun getCommands(): List<Command> {
+        return loadedPlugins.map { it.commands }.flatten()
+    }
+
+    fun getContextMenuEntries(): List<ContextMenuEntry> {
+
+        return loadedPlugins.map { it.contextMenuEntries }.flatten()
+    }
+
+    fun getListeners(): List<EventListener> {
+
+        return loadedPlugins.map { it.listeners }.flatten()
     }
 }
