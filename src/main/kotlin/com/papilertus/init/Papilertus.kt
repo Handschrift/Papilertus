@@ -62,7 +62,7 @@ fun main() {
     Runtime.getRuntime().addShutdownHook(object : Thread() {
         override fun run() = runBlocking {
             logger.info("Shutting down Papilertus and unloading plugins...")
-            loader.unload()
+            loader.unloadAll()
             if (Database.connection != null)
                 Database.connection!!.close()
         }
