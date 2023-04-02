@@ -3,6 +3,7 @@ package com.papilertus.init
 import com.papilertus.command.CommandClient
 import com.papilertus.command.CommandListener
 import com.papilertus.command.core.FeedbackCommand
+import com.papilertus.command.core.UnloadCommand
 import com.papilertus.gui.contextMenu.ContextMenuListener
 import com.papilertus.gui.contextMenu.core.UserInfoContextMenuEntry
 import com.papilertus.gui.modal.ModalListener
@@ -67,7 +68,8 @@ fun main() {
 
     if (!config.disableAllCoreInteractions) {
         commandClient.addCommands(
-            FeedbackCommand(config)
+            FeedbackCommand(config),
+            UnloadCommand(loader, jda, commandClient)
         )
         commandClient.addContextMenuEntries(
             UserInfoContextMenuEntry()
