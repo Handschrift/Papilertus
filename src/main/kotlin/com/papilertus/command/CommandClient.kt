@@ -28,6 +28,35 @@ class CommandClient {
         }
     }
 
+    fun removeCommands(vararg commands: Command) {
+        for (command in commands) {
+            commandsMap.remove(command.name)
+            commandDataSet.remove(command.commandData)
+        }
+    }
+
+    fun removeCommands(commands: List<Command>) {
+        for (command in commands) {
+            commandsMap.remove(command.name)
+            commandDataSet.remove(command.commandData)
+        }
+    }
+
+
+    fun removeContextMenuEntries(entries: List<ContextMenuEntry>) {
+        for (entry in entries) {
+            contextMenuEntryMap.remove(entry.name)
+            commandDataSet.remove(entry.contextMenuData)
+        }
+    }
+
+    fun removeContextMenuEntries(vararg entries: ContextMenuEntry) {
+        for (entry in entries) {
+            contextMenuEntryMap.remove(entry.name)
+            commandDataSet.remove(entry.contextMenuData)
+        }
+    }
+
     fun getData(): Collection<CommandData> {
         return commandDataSet
     }
