@@ -14,9 +14,34 @@ import java.util.jar.JarFile
 import java.util.jar.JarInputStream
 import kotlin.system.exitProcess
 
+private data class LoadedPlugin(
+    val pluginData: PluginData,
+    val rawClass: Class<*>,
+    val commands: List<Command>,
+    val contextMenuEntries: List<ContextMenuEntry>,
+    val listeners: List<EventListener>
+) {
+    fun unload() {
+        val unloadMethod = rawClass.getMethod("onUnload")
+
+        val t = rawClass.getDeclaredConstructor()
+        val instance = t.newInstance()
+
+        unloadMethod.invoke(instance)
+    }
+}
+
+sealed class PluginUnloadResult {
+    object Success : PluginUnloadResult()
+    sealed class Error : PluginUnloadResult() {
+        data class PluginNotFound(val name: String) : Error()
+        data class GuildNotFound(val guildId: String) : Error()
+    }
+}
+
 class PluginLoader(initialPath: String) {
     private val initialPath = File(initialPath)
-    private val loadedPlugins = mutableListOf<Class<*>>()
+    private val loadedPlugins = mutableListOf<LoadedPlugin>()
     val commands = mutableListOf<Command>()
     val eventListeners = mutableListOf<EventListener>()
     val contextMenuEntries = mutableListOf<ContextMenuEntry>()
