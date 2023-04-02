@@ -71,7 +71,8 @@ fun main() {
     if (!config.disableAllCoreInteractions) {
         commandClient.addCommands(
             FeedbackCommand(config),
-            UnloadCommand(loader, jda, commandClient)
+            UnloadCommand(loader, commandClient),
+            ReloadCommand(loader, commandClient)
         )
         commandClient.addContextMenuEntries(
             UserInfoContextMenuEntry()
