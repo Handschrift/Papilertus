@@ -1,9 +1,11 @@
 package com.papilertus.plugin
 
 import com.papilertus.command.Command
+import com.papilertus.command.CommandClient
 import com.papilertus.gui.contextMenu.ContextMenuEntry
 import com.papilertus.init.logger
 import com.papilertus.plugin.PluginData.Companion.getFromJson
+import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.hooks.EventListener
 import java.io.File
 import java.io.FileInputStream
@@ -133,14 +135,44 @@ class PluginLoader(initialPath: String) {
         }
     }
 
+    fun unload(name: String, jda: JDA, commandClient: CommandClient): PluginUnloadResult {
+        val plugin = this.loadedPlugins.find { it.pluginData.name == name }
+        if (plugin != null) {
+            this.loadedPlugins.remove(plugin)
+            this.commands.removeAll(plugin.commands)
+            this.contextMenuEntries.removeAll(plugin.contextMenuEntries)
+            this.eventListeners.removeAll(plugin.listeners)
+
+            jda.removeEventListener(plugin.listeners)
+            jda.updateCommands().addCommands(this.commands.map { it.commandData }).queue()
+            jda.updateCommands().addCommands(this.contextMenuEntries.map { it.contextMenuData }).queue()
+            commandClient.removeCommands(plugin.commands)
+            commandClient.removeContextMenuEntries(plugin.contextMenuEntries)
+            plugin.unload()
+            return PluginUnloadResult.Success
+        } else {
+            return PluginUnloadResult.Error.PluginNotFound(name)
+        }
+    }
+
+    fun unload(name: String, jda: JDA, guildId: String): PluginUnloadResult {
+        val plugin = this.loadedPlugins.find { it.pluginData.name == name }
+        if (plugin != null) {
+
+            val guild = jda.getGuildById(guildId) ?: return PluginUnloadResult.Error.GuildNotFound(guildId)
+
+            guild.updateCommands().addCommands(this.commands.map { it.commandData }).queue()
+            guild.updateCommands().addCommands(this.contextMenuEntries.map { it.contextMenuData })
+                .queue()
+            return PluginUnloadResult.Success
+        } else {
+            return PluginUnloadResult.Error.PluginNotFound(name)
+        }
+    }
+
     fun unload() {
         for (c in loadedPlugins) {
-            val unloadMethod = c.getMethod("onUnload")
-
-            val t = c.getDeclaredConstructor()
-            val instance = t.newInstance()
-
-            unloadMethod.invoke(instance)
+            c.unload()
         }
     }
 }
