@@ -17,8 +17,8 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.requests.GatewayIntent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.File
 import java.nio.file.Files
+import kotlin.io.path.*
 import kotlin.system.exitProcess
 
 private lateinit var config: Config
@@ -26,25 +26,25 @@ lateinit var jda: JDA
     private set
 val logger: Logger = LoggerFactory.getLogger("Papilertus")
 fun main() {
-    val configTomlFile = File("config/Papilertus.toml")
+    val configTomlFile = Path("config/Papilertus.toml")
 
-    if (!configTomlFile.parentFile.exists()) {
-        configTomlFile.parentFile.mkdir()
+    if (configTomlFile.parent.notExists()) {
+        configTomlFile.parent.createDirectory()
     }
 
-    if (!configTomlFile.exists()) {
+    if (configTomlFile.notExists()) {
         logger.info("No config file cannot be found... creating one...")
         val r = ClassLoader.getSystemClassLoader().getResourceAsStream(configTomlFile.name)
         if (r == null) {
             logger.error("An error occurred while creating a logging file")
             exitProcess(1)
         }
-        Files.copy(r, configTomlFile.toPath())
+        Files.copy(r, configTomlFile)
         exitProcess(0)
     }
 
     config = ConfigLoaderBuilder.default()
-        .addFileSource(configTomlFile)
+        .addFileSource(configTomlFile.toFile())
         .build()
         .loadConfigOrThrow()
 

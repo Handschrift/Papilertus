@@ -7,13 +7,13 @@ import com.papilertus.init.jda
 import com.papilertus.init.logger
 import com.papilertus.plugin.PluginData.Companion.getFromJson
 import net.dv8tion.jda.api.hooks.EventListener
-import java.io.File
 import java.io.FileInputStream
 import java.net.URL
 import java.net.URLClassLoader
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 import java.util.jar.JarInputStream
+import kotlin.io.path.*
 import kotlin.system.exitProcess
 
 private data class LoadedPlugin(
@@ -42,76 +42,30 @@ sealed class PluginUnloadResult {
 }
 
 class PluginLoader(initialPath: String) {
-    private val initialPath = File(initialPath)
+    private val initialPath = Path(initialPath)
     private val loadedPlugins = mutableListOf<LoadedPlugin>()
 
     fun load() {
-        if (!initialPath.exists()) {
-            initialPath.mkdir()
+        if (initialPath.notExists()) {
+            initialPath.createDirectory()
             return
         }
-        for (s in initialPath.list()!!) {
-            logger.info("Loading $s...")
-            val path = initialPath.path + "/" + s
+        for (s in initialPath.listDirectoryEntries()) {
+            logger.info("Loading ${s.name}...")
+            val path = s.pathString
 
-            val file = JarFile(path)
-            val urls = arrayOf(URL("jar:file:$path!/"))
-            val cl = URLClassLoader.newInstance(urls)
-            val je = file.getJarEntry("plugin.json") ?: continue
-
-            val fileStream = FileInputStream(path)
-            val jarStream = JarInputStream(fileStream)
-            var jeTemp: JarEntry?
-            var data: PluginData? = null
-
-            while (jarStream.nextJarEntry.also { jeTemp = it } != null) {
-                if (jeTemp!!.name != "plugin.json") continue
-                val pluginData = ByteArray(je.size.toInt())
-                jarStream.read(pluginData, 0, pluginData.size)
-                data = getFromJson(String(pluginData))
-            }
+            val data: PluginData? = getPluginDataByPath(path)
 
             if (data == null || data.name.isEmpty() || data.mainClass.isEmpty()) {
                 System.err.println("Plugin Couldn't be loaded!")
                 exitProcess(-1)
             }
 
-            val mainClassName = data.mainClass.replace(".", "/") + ".class"
-            val mainClass = file.getJarEntry(mainClassName)
-            var className = mainClass.name.substring(0, mainClass.name.length - 6)
-            className = className.replace('/', '.')
-            val c = cl.loadClass(className)
-
-            val loadMethod = c.getMethod("onLoad", PluginData::class.java)
-
-            val t = c.getDeclaredConstructor()
-            val instance = t.newInstance()
-            loadMethod.invoke(instance, data)
-
-            val commandMethod = c.getMethod("getCommands")
-            val listenerMethod = c.getMethod("getListeners")
-            val contextMenuEntryMethod = c.getMethod("getContextMenuEntries")
-
-            val commandList = commandMethod.invoke(instance)
-            val listenerList = listenerMethod.invoke(instance)
-            val contextMenuEntryList = contextMenuEntryMethod.invoke(instance)
-
-
             loadedPlugins.add(
-                LoadedPlugin(
-                    data,
-                    c,
-                    commandList as List<Command>,
-                    contextMenuEntryList as List<ContextMenuEntry>,
-                    listenerList as List<EventListener>
-                )
+                getLoadedPluginFromData(data, path)
             )
 
-            logger.info("$s loaded!")
-
-            fileStream.close()
-            jarStream.close()
-
+            logger.info("${s.name} loaded!")
         }
     }
 
@@ -160,14 +114,12 @@ class PluginLoader(initialPath: String) {
     }
 
     fun loadPluginByNameRT(name: String, commandClient: CommandClient) {
-        if (!initialPath.exists()) {
-            initialPath.mkdir()
+        if (initialPath.notExists()) {
+            initialPath.createDirectory()
             return
         }
-        for (s in initialPath.list()!!) {
-            val path = initialPath.path + "/" + s
-            val fileStream = FileInputStream(path)
-            val jarStream = JarInputStream(fileStream)
+        for (s in initialPath.listDirectoryEntries()) {
+            val path = s.pathString
 
             val data = getPluginDataByPath(path)
 
@@ -186,9 +138,6 @@ class PluginLoader(initialPath: String) {
 
 
             logger.info("$s loaded!")
-
-            fileStream.close()
-            jarStream.close()
 
         }
     }
@@ -214,14 +163,18 @@ class PluginLoader(initialPath: String) {
         val fileStream = FileInputStream(path)
         val jarStream = JarInputStream(fileStream)
         var jeTemp: JarEntry?
+        var data: PluginData? = null
 
         while (jarStream.nextJarEntry.also { jeTemp = it } != null) {
             if (jeTemp!!.name != "plugin.json") continue
             val pluginData = ByteArray(je.size.toInt())
             jarStream.read(pluginData, 0, pluginData.size)
-            return getFromJson(String(pluginData))
+            data = getFromJson(String(pluginData))
+            break
         }
-        return null
+        fileStream.close()
+        jarStream.close()
+        return data
     }
 
     private fun getLoadedPluginFromData(data: PluginData, path: String): LoadedPlugin {
