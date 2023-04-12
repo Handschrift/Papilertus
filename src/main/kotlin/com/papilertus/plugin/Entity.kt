@@ -7,12 +7,16 @@ import org.litote.kmongo.deleteOneById
 import org.litote.kmongo.findOneById
 import org.litote.kmongo.save
 
-abstract class Entity<T : Any>(
+abstract class Entity<T : Entity<T>>(
     @JsonIgnore
     private val store: MongoCollection<T>,
 ) {
+    /**
+     * The id of the instance.
+     */
     @BsonId
     val id: String = ""
+
     companion object {
         inline fun <reified T : Entity<T>> get(store: MongoCollection<T>, id: String, f: () -> T): T {
             return store.findOneById(id) ?: f()
@@ -22,6 +26,14 @@ abstract class Entity<T : Any>(
             return store.findOneById(id) != null
         }
     }
+
+    /**
+     * Searches an element from the database by the [id] provided in the instance.
+     *
+     * @return An instance of the entity or null if no entity with the given id exists
+     */
+    fun getById(): T? = store.findOneById(id)
+    fun exists(): Boolean = store.findOneById(id) != null
     fun save() = store.save(this as T)
     fun delete() = store.deleteOneById(this.id)
 
