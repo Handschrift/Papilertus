@@ -21,7 +21,7 @@ dependencies {
     implementation("com.sksamuel.hoplite:hoplite-core:2.7.3")
     implementation("com.sksamuel.hoplite:hoplite-toml:2.7.3")
     implementation("com.github.minndevelopment:jda-ktx:9fc90f616b7c9b68b8680c7bf37d6af361bb0fbb")
-    implementation("com.google.code.gson:gson:2.9.1")
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.litote.kmongo:kmongo:4.9.0")
     implementation("org.mongodb:mongodb-driver-sync:4.9.1")
     implementation("ch.qos.logback:logback-classic:1.2.9")
