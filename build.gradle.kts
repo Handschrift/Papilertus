@@ -24,7 +24,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.litote.kmongo:kmongo:4.9.0")
     implementation("org.mongodb:mongodb-driver-sync:4.9.1")
-    implementation("ch.qos.logback:logback-classic:1.2.9")
+    implementation("ch.qos.logback:logback-classic:1.4.7")
 }
 
 application {
