@@ -4,4 +4,4 @@ RUN apt install git -y
 WORKDIR /papilertus
 RUN git clone https://github.com/Handschrift/Papilertus.git .
 RUN ./gradlew shadowJar
-CMD ["java", "-jar", "Papilertus-1.0-all.jar"]
+CMD ["java", "-jar", "build/libs/Papilertus-1.0-all.jar"]
