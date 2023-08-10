@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.8.20"
+    kotlin("jvm") version "1.9.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     application
 }
@@ -16,11 +16,11 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("net.dv8tion:JDA:5.0.0-beta.8")
+    implementation("net.dv8tion:JDA:5.0.0-beta.13")
     implementation("com.github.MinnDevelopment:jda-reactor:1.5.0")
     implementation("com.sksamuel.hoplite:hoplite-core:2.7.3")
     implementation("com.sksamuel.hoplite:hoplite-toml:2.7.3")
-    implementation("com.github.minndevelopment:jda-ktx:9fc90f616b7c9b68b8680c7bf37d6af361bb0fbb")
+    implementation("com.github.minndevelopment:jda-ktx:9370cb13cc64646862e6f885959d67eb4b157e4a")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.litote.kmongo:kmongo:4.9.0")
     implementation("org.mongodb:mongodb-driver-sync:4.9.1")

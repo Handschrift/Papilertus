@@ -8,7 +8,7 @@ class UserInfoContextMenuEntry : ContextMenuEntry("Info") {
     override fun execute(event: UserContextInteractionEvent) {
 
         val embed = Embed {
-            title = event.target.asTag
+            title = event.target.name
             field {
                 name = "ID"
                 value = event.target.id
