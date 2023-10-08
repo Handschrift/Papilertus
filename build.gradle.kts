@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("net.dv8tion:JDA:5.0.0-beta.13")
+    implementation("net.dv8tion:JDA:5.0.0-beta.15")
     implementation("com.github.MinnDevelopment:jda-reactor:1.5.0")
     implementation("com.sksamuel.hoplite:hoplite-core:2.7.3")
     implementation("com.sksamuel.hoplite:hoplite-toml:2.7.3")
