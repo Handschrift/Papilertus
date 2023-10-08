@@ -25,6 +25,7 @@ dependencies {
     implementation("org.litote.kmongo:kmongo:4.9.0")
     implementation("org.mongodb:mongodb-driver-sync:4.9.1")
     implementation("ch.qos.logback:logback-classic:1.4.7")
+    implementation("com.github.ygimenez:Pagination-Utils:4.0.6")
 }
 
 application {
