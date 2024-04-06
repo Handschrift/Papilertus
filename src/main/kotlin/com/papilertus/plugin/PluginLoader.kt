@@ -8,6 +8,7 @@ import com.papilertus.init.logger
 import com.papilertus.plugin.PluginData.Companion.getFromJson
 import net.dv8tion.jda.api.hooks.EventListener
 import java.io.FileInputStream
+import java.net.URI
 import java.net.URL
 import java.net.URLClassLoader
 import java.util.jar.JarEntry
@@ -180,7 +181,7 @@ class PluginLoader(initialPath: String) {
     private fun getLoadedPluginFromData(data: PluginData, path: String): LoadedPlugin {
 
         val file = JarFile(path)
-        val urls = arrayOf(URL("jar:file:$path!/"))
+        val urls = arrayOf(URI.create("jar:file:$path!/").toURL())
         val cl = URLClassLoader.newInstance(urls)
 
         val mainClassName = data.mainClass.replace(".", "/") + ".class"

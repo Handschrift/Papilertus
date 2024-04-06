@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.9.0"
+    kotlin("jvm") version "1.9.22"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     application
 }
@@ -16,15 +16,15 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("net.dv8tion:JDA:5.0.0-beta.15")
+    implementation("net.dv8tion:JDA:5.0.0-beta.21")
     implementation("com.github.MinnDevelopment:jda-reactor:1.5.0")
     implementation("com.sksamuel.hoplite:hoplite-core:2.7.3")
     implementation("com.sksamuel.hoplite:hoplite-toml:2.7.3")
-    implementation("com.github.minndevelopment:jda-ktx:9370cb13cc64646862e6f885959d67eb4b157e4a")
+    implementation("com.github.minndevelopment:jda-ktx:78dbf827d51fd314194688425e193758c77dfbe1")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.litote.kmongo:kmongo:4.9.0")
     implementation("org.mongodb:mongodb-driver-sync:4.9.1")
-    implementation("ch.qos.logback:logback-classic:1.4.7")
+    implementation("ch.qos.logback:logback-classic:1.4.14")
     implementation("com.github.ygimenez:Pagination-Utils:4.0.6")
 }
 
@@ -48,5 +48,5 @@ tasks.shadowJar {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_21.toString()
 }
